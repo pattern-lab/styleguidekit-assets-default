@@ -22,8 +22,9 @@ In order to modify these assets you need to install the following:
 Once you've installed the requirements do the following to set-up for development:
 
 1. `cd /path/to/dev-edition/packages/pattern-lab/styleguidekit-assets-default`
-2. `npm install`
-3. `bower install`
+2. `git config branch.dev.remote origin`
+3. `npm install`
+4. `bower install`
 
 ## Making Changes
 
