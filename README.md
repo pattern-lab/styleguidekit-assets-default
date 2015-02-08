@@ -29,10 +29,10 @@ Once you've installed the requirements do the following to set-up for developmen
 
 To make changes **always edit files in `src/`**. To make sure that these changes are reflected in the front-end and `dist/` folder run the following:
 
-    `gulp`
+    gulp
 
 To watch for changes you can use:
 
-    `gulp --watch`
+    gulp --watch
 
 At this point changes to the static assets should compile to the correct locations in the project as well as `dist/`.
