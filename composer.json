@@ -41,7 +41,7 @@
 			"config": [
 				{ "ishMinimum": "240" },
 				{ "ishMaximum": "2600" },
-				{ "ishControlsHide": "hay" }
+				{ "ishControlsHide": ["hay"] }
 			]
 		}
 	}
