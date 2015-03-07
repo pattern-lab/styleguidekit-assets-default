@@ -42,11 +42,11 @@
 					{ "css/custom/*": "styleguide/css/*" }
 				]
 			},
-			"config": [
-				{ "ishMinimum": "240" },
-				{ "ishMaximum": "2600" },
-				{ "ishControlsHide": ["hay"] }
-			]
+			"config": {
+				"ishMinimum": "240",
+				"ishMaximum": "2600",
+				"ishControlsHide": ["hay"]
+			}
 		}
 	}
 }
