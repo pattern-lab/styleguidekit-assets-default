@@ -23,6 +23,9 @@
 		"wiki":           "http://patternlab.io/docs/",
 		"source":         "https://github.com/pattern-lab/styleguidekit-assets-default/releases"
 	},
+	"require": {
+		"pattern-lab/core"  "0.*"
+	},
 	"extra": {
 		"patternlab": {
 			"dist": {
