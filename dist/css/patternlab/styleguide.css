@@ -532,6 +532,7 @@ span.sg-pattern-state:before {
   font-weight: normal;
   padding: 1em 0;
   border-bottom: 1px solid #808080;
+  background: purple;
 }
 .sg-pattern-head a {
   display: block;
