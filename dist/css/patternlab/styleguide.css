@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*------------------------------------*\
     $PATTERN LAB STYLES
 \*------------------------------------*/
@@ -11,13 +12,7 @@
      $CONTENTS
 \*------------------------------------*/
 /**
- * STYLE GUIDE VARIABLES------------------Declarations of Sass variables 
- * -----Font
- * -----Colors
- * -----Typography
- * -----Defaults
- * -----Breakpoints
- * MIXINS---------------------------------Sass mixins 
+ * STYLE GUIDE VARIABLES------------------Declarations of Sass variables
  * GLOBAL ELEMENTS------------------------Establish global styles
  * -----Main
  * -----Headings
@@ -36,15 +31,6 @@
  */
 /*------------------------------------*\
     $PATTERN LAB VARIABLES 
-\*------------------------------------*/
-/*Fonts*/
-/* Style Guide Interface Colors */
-/* Typography */
-/* Defaults */
-/* Dimensions */
-/* Breakpoints */
-/*------------------------------------*\
-    $PATTERN LAB MIXINS 
 \*------------------------------------*/
 /*------------------------------------*\
     $PATTERN LAB INTERFACE 
@@ -115,11 +101,11 @@
   text-decoration: none;
   display: block;
   line-height: 1;
-  padding: 1em;
-  -webkit-transition: background 0.15s ease-out;
-  transition: background 0.15s ease-out;
-  -webkit-transition: color 0.15s ease-out;
-  transition: color 0.15s ease-out;
+  padding: 1em 0.7em;
+  -webkit-transition: background 0.1s ease-out;
+          transition: background 0.1s ease-out;
+  -webkit-transition: color 0.1s ease-out;
+          transition: color 0.1s ease-out;
 }
 .sg-header a:hover, .sg-header a:focus, .sg-header a.active {
   color: #fff;
@@ -143,18 +129,18 @@
   display: inline-block;
   padding-right: 0.2em;
 }
-@media all and (min-width: 48em) {
+@media all and (min-width: 42em) {
   .sg-header .sg-nav-toggle {
     display: none;
   }
 }
 
-@media all and (max-width: 48em) {
+@media all and (max-width: 42em) {
   .sg-nav-container {
     overflow: hidden;
     max-height: 0;
     -webkit-transition: max-height 0.1s ease-out;
-    transition: max-height 0.1s ease-out;
+            transition: max-height 0.1s ease-out;
   }
   .sg-nav-container.active {
     max-height: 50em;
@@ -170,7 +156,7 @@
 .sg-nav > li {
   cursor: pointer;
 }
-@media all and (min-width: 48em) {
+@media all and (min-width: 42em) {
   .sg-nav > li {
     border-bottom: 0;
     border-right: 1px solid rgba(255, 255, 255, 0.05);
@@ -186,21 +172,33 @@
 
 /* Accordion */
 .sg-acc-handle:after {
-  content: ' +';
-  float: right;
-  font-size: 70%;
+  content: '▼';
+  color: rgba(255, 255, 255, 0.25);
+  display: inline-block;
+  font-size: 7px;
+  position: relative;
+  top: -1px;
+  right: -2px;
+  -webkit-transition: all 0.1s ease-out;
+          transition: all 0.1s ease-out;
 }
-@media all and (min-width: 48em) {
+@media all and (min-width: 42em) {
   .sg-acc-handle:after {
     float: none;
   }
+}
+.sg-acc-handle:hover:after, .sg-acc-handle:focus:after {
+  color: #808080;
 }
 .sg-acc-handle.active {
   color: #fff;
   background: rgba(255, 255, 255, 0.05);
 }
 .sg-acc-handle.active:after {
-  content: ' -';
+  color: #808080;
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 .sg-acc-handle.sg-icon:after {
   content: "";
@@ -209,7 +207,7 @@
 .sg-header .sg-icon {
   width: auto;
   font-size: 1rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.7rem;
 }
 
 .sg-acc-panel {
@@ -217,7 +215,7 @@
   max-height: 0;
   min-width: 10em;
   -webkit-transition: max-height 0.1s ease-out;
-  transition: max-height 0.1s ease-out;
+          transition: max-height 0.1s ease-out;
 }
 .sg-acc-panel li {
   background: #000;
@@ -252,12 +250,12 @@
 .sg-control-trigger {
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
-@media all and (min-width: 48em) {
+@media all and (min-width: 42em) {
   .sg-control-trigger {
     border: 0;
   }
 }
-@media all and (min-width: 72em) {
+@media all and (min-width: 56em) {
   .sg-control-trigger {
     float: left;
     width: 6em;
@@ -267,7 +265,7 @@
 .sg-control > li {
   float: left;
 }
-@media all and (min-width: 48em) {
+@media all and (min-width: 42em) {
   .sg-control > li {
     border-bottom: 0;
     border-left: 1px solid rgba(255, 255, 255, 0.05);
@@ -275,8 +273,9 @@
 }
 .sg-control .sg-input {
   padding: 0.1em;
-  -webkit-transition: all 0.2s ease-out;
-  transition: all 0.2s ease-out;
+  border-radius: 3px;
+  -webkit-transition: all 0.1s ease-out;
+          transition: all 0.1s ease-out;
 }
 .sg-control .sg-input:active, .sg-control .sg-input:focus {
   outline: 0;
@@ -293,7 +292,7 @@
   background: #999;
   color: #000;
 }
-@media all and (min-width: 72em) {
+@media all and (min-width: 56em) {
   .sg-current-size {
     float: left;
   }
@@ -302,13 +301,13 @@
 .sg-size {
   width: 135px;
 }
-@media all and (min-width: 48em) {
+@media all and (min-width: 42em) {
   .sg-size {
     width: auto;
   }
 }
 
-@media all and (min-width: 72em) {
+@media all and (min-width: 56em) {
   .sg-size-options {
     float: left;
     position: static;
@@ -325,7 +324,7 @@
 #sg-size-mq {
   display: none;
 }
-@media all and (min-width: 72em) {
+@media all and (min-width: 56em) {
   #sg-size-mq {
     display: block;
   }
@@ -346,9 +345,12 @@
   width: 25px;
   text-align: right;
 }
-@media all and (min-width: 48em) {
+@media all and (min-width: 42em) {
   .sg-input {
     width: 35px;
+  }
+  .sg-input.sg-size-px {
+    width: 30px;
   }
 }
 
@@ -406,7 +408,6 @@ span.sg-pattern-state:before {
   margin-left: 4px;
 }
 
-/* pattern states */
 .inprogress:before {
   color: #FF4136 !important;
 }
@@ -422,7 +423,6 @@ span.sg-pattern-state:before {
 /*------------------------------------*\
     $PATTERN LAB VIEWPORT
 \*------------------------------------*/
-/* Viewport */
 #sg-vp-wrap {
   text-align: center;
   width: 100%;
@@ -435,7 +435,7 @@ span.sg-pattern-state:before {
 }
 #sg-vp-wrap.wrap-animate {
   -webkit-transition: left 0.3s ease-out;
-  transition: left 0.3s ease-out;
+          transition: left 0.3s ease-out;
 }
 
 #sg-viewport {
@@ -453,7 +453,7 @@ span.sg-pattern-state:before {
 }
 #sg-viewport.hay-mode {
   -webkit-transition: all 40s linear;
-  transition: all 40s linear;
+          transition: all 40s linear;
 }
 
 .no-resize #sg-cover, .no-resize #sg-rightpull-container {
@@ -483,7 +483,7 @@ span.sg-pattern-state:before {
 }
 #sg-gen-container.hay-mode {
   -webkit-transition: all 40s linear;
-  transition: all 40s linear;
+          transition: all 40s linear;
 }
 
 #sg-rightpull-container {
@@ -499,8 +499,8 @@ span.sg-pattern-state:before {
   width: 100%;
   height: 100%;
   background: #999;
-  -webkit-transition: background 0.2s ease-out;
-  transition: background 0.2s ease-out;
+  -webkit-transition: background 0.1s ease-out;
+          transition: background 0.1s ease-out;
 }
 #sg-rightpull:hover {
   background: #666;
@@ -512,7 +512,7 @@ span.sg-pattern-state:before {
 
 .vp-animate {
   -webkit-transition: width 0.8s ease-out;
-  transition: width 0.8s ease-out;
+          transition: width 0.8s ease-out;
 }
 
 /*------------------------------------*\
@@ -530,9 +530,9 @@ span.sg-pattern-state:before {
   font-family: "HelveticaNeue", "Helvetica", "Arial", sans-serif;
   font-size: 70%;
   font-weight: normal;
-  padding: 1em 0;
+  padding: 1em 0 0.5em;
   border-bottom: 1px solid #808080;
-  background: purple;
+  position: relative;
 }
 .sg-pattern-head a {
   display: block;
@@ -542,6 +542,18 @@ span.sg-pattern-state:before {
 }
 .sg-pattern-head a:hover {
   color: #000;
+}
+
+.sg-pattern-extra-trigger {
+  font-size: 9px;
+  position: absolute;
+  top: 10px;
+  right: 0;
+  padding: 1px;
+  line-height: 1;
+  font-weight: normal;
+  border: 1px solid #808080;
+  border-radius: 10px;
 }
 
 /* Section Body */
@@ -576,8 +588,7 @@ span.sg-pattern-state:before {
 }
 .sg-view-container.anim-ready {
   -webkit-transition: bottom 0.3s ease-out;
-  -webkit-transition: bottom 0.3s ease-out;
-  transition: bottom 0.3s ease-out;
+          transition: bottom 0.3s ease-out;
 }
 
 .sg-view-close {
