@@ -13,13 +13,7 @@
      $CONTENTS
 \*------------------------------------*/
 /**
- * STYLE GUIDE VARIABLES------------------Declarations of Sass variables 
- * -----Font
- * -----Colors
- * -----Typography
- * -----Defaults
- * -----Breakpoints
- * MIXINS---------------------------------Sass mixins 
+ * STYLE GUIDE VARIABLES------------------Declarations of Sass variables
  * GLOBAL ELEMENTS------------------------Establish global styles
  * -----Main
  * -----Headings
@@ -44,59 +38,47 @@
 /*------------------------------------*\
     $PATTERN LAB VARIABLES 
 \*------------------------------------*/
-/*Fonts*/
+// Fonts
 $sg-font : "HelveticaNeue", "Helvetica", "Arial", sans-serif;
 
-/* Style Guide Interface Colors */ 
-$sg-primary : #222;
-$sg-secondary : #808080;
-$sg-tertiary : #ddd;
-$sg-quaternary : #fff;
-$sg-quinary : #999;
+// Style Guide Interface Colors
+$sg-black : #000;
+$sg-white : #fff;
+$sg-gray-light : #eee;
+$sg-gray-light-2 : #ddd;
+$sg-gray-light-3 : #999;
+$sg-gray : #808080;
+$sg-gray-dark : #222;
 $sg-tint : rgba(255,255,255,0.05);
 $sg-tint-2 : rgba(255,255,255,0.25);
 $sg-tone : rgba(0,0,0,0.1);
 $sg-tone-2 : rgba(0,0,0,0.3);
 
-/* Typography */
-$sg-font-size-norm : 100%;
+// Typography
 $sg-font-size-sm : 70%;
+$sg-font-size-norm : 100%;
 $sg-font-size-large : 120%;
 
-/* Defaults */
+// Defaults
 $sg-space : 1em;
 $sg-doublespace : $sg-space*2;
 $sg-pad : 1em;
 $sg-pad-half : $sg-pad/2;
 
-/* Dimensions */
+// Dimensions
 $offset-top: 2em;
 
-/* Breakpoints */
+// Breakpoints
 $sg-bp-small : 24em;
-$sg-bp-small-2 : 30em;
-$sg-bp-med : 48em;
-$sg-bp-large : 72em;
-$sg-bp-xl : 81em;
+$sg-bp-med : 42em;
+$sg-bp-large : 53em;
 
-$animate-quick: 0.2s;
+// Animations
+$animate-quick: 0.1s;
 
-
-
-
-
-/*------------------------------------*\
-    $PATTERN LAB MIXINS 
-\*------------------------------------*/
-@mixin sg-transition($transition-property, $transition-time, $method) {
-	-webkit-transition: $transition-property $transition-time $method;
-	-moz-transition: $transition-property $transition-time $method;
-	-ms-transition: $transition-property $transition-time $method;
-	-o-transition: $transition-property $transition-time $method;
-	transition: $transition-property $transition-time $method;
-}
-
-
+// Border
+$border-radius: 3px;
+$border-radius-med: 6px;
 
 
 
@@ -108,13 +90,13 @@ $animate-quick: 0.2s;
 #patternlab-html, #patternlab-body {
 	margin: 0;
 	padding: 0;
-	background: $sg-tertiary;
+	background: $sg-gray-light-2;
 	-webkit-text-size-adjust: 100%;
 }
 
 .sg-nav-wrapper {
 	overflow: hidden;
-	background: $sg-tertiary;
+	background: $sg-gray-light-2;
 }
 
 .is-vishidden {
@@ -149,8 +131,8 @@ $animate-quick: 0.2s;
 \*------------------------------------*/
 /* Header */
 .sg-header {
-	background: $sg-primary;
-	color: $sg-quaternary;
+	background: $sg-black;
+	color: $sg-white;
 	font-family: $sg-font;
 	text-transform: uppercase;
 	position: fixed;
@@ -172,22 +154,21 @@ $animate-quick: 0.2s;
 
 	li {
 		list-style: none;
-		border-bottom: 1px solid $sg-tint;
 	}
 
 	a {
 		font-size: $sg-font-size-sm;
-		color: $sg-secondary;
+		color: $sg-gray;
 		text-decoration: none;
 		display: block;
 		line-height: 1;
-		padding: $sg-pad;
-		@include sg-transition(background,0.15s,ease-out);
-		@include sg-transition(color,0.15s,ease-out);
+		padding: 1em 0.7em;
+		transition: background $animate-quick ease-out;
+		transition: color $animate-quick ease-out;
 		
 		&:hover, &:focus, &.active {
-			color: $sg-quaternary;
-			background: $sg-tint;
+			color: $sg-white;
+			background: $sg-gray-dark;
 		}
 	}
 
@@ -202,16 +183,9 @@ $animate-quick: 0.2s;
 /* Navigation */
 .sg-header .sg-nav-toggle {
 	display: inline-block;
-	padding: 0.9em $sg-pad;
-	border-bottom: 1px solid rgba(0,0,0,0);
 	position: relative;
 	text-transform: uppercase;
 	z-index: 2;
-	
-	span {
-		display: inline-block;
-		padding-right: 0.2em;
-	}
 
 	@media all and (min-width: $sg-bp-med) {
 		display: none;
@@ -222,7 +196,7 @@ $animate-quick: 0.2s;
 	@media all and (max-width: $sg-bp-med) {
 		overflow: hidden;
 		max-height: 0;
-		@include sg-transition(max-height,0.1s,ease-out);
+		transition: max-height $animate-quick ease-out;
 		
 		&.active {
 			max-height: 50em;
@@ -241,7 +215,6 @@ $animate-quick: 0.2s;
 
 		@media all and (min-width: $sg-bp-med) {
 			border-bottom: 0;
-			border-right: 1px solid $sg-tint;
 			float: left;
 			position: relative;
 			
@@ -257,21 +230,38 @@ $animate-quick: 0.2s;
 
 /* Accordion */
 .sg-acc-handle {
+	
 	&:after {
-		content: ' +';
-		float: right;
-		font-size: $sg-font-size-sm;
-		
+		content: '▼';
+		color: $sg-tint-2;
+		display: inline-block;
+		font-size: 7px;
+		position: relative;
+		top: -1px;
+		right: -2px;
+		transition: all $animate-quick ease-out;
+				
 		@media all and (min-width: $sg-bp-med) {
 			float: none;
 		}
 	}
 	
-	&.active {
-		color: $sg-quaternary;
-		background: $sg-tint;
+	&:hover, &:focus {
 		&:after {
-			content: ' -';
+			color: $sg-gray;
+		}
+	}
+	
+	&.active {
+		color: $sg-white;
+		background: $sg-gray-dark;
+		
+		&:after {
+			top: -2px;
+			color: $sg-gray;
+			-webkit-transform: rotate(180deg);  
+			-ms-transform: rotate(180deg);
+			transform: rotate(180deg);
 		}
 	}
 
@@ -283,17 +273,23 @@ $animate-quick: 0.2s;
 .sg-header .sg-icon {
 	width: auto;
 	font-size: 1rem;
-	padding: 0.5rem 1rem;
+	padding: 0.5rem 0.7rem;
 }
 
 .sg-acc-panel {
 	overflow: hidden;
 	max-height: 0;
 	min-width: 10em;
-	@include sg-transition(max-height,0.1s,ease-out);
+	transition: max-height $animate-quick ease-out;
 
 	li {
-		background: $sg-primary;
+		background: $sg-gray-dark;
+	}
+	
+	li:last-child {
+		overflow: hidden;
+		border-bottom-left-radius: $border-radius-med;
+		border-bottom-right-radius: $border-radius-med;
 	}
 
 	&.active {
@@ -330,12 +326,6 @@ $animate-quick: 0.2s;
 }
 
 .sg-control-trigger {
-	border-bottom: 1px solid $sg-tint;
-	
-	@media all and (min-width: $sg-bp-med) {
-		border: 0;
-	}
-	
 	@media all and (min-width: $sg-bp-large) {
 		float: left;
 		width: 6em;
@@ -345,40 +335,13 @@ $animate-quick: 0.2s;
 .sg-control {
 	> li {
 		float: left;
-
-		@media all and (min-width: $sg-bp-med) {
-			border-bottom: 0;
-			border-left: 1px solid $sg-tint;
-		}
-	}
-	
-	.sg-input {
-		padding: 0.1em;
-		-webkit-transition: all $animate-quick ease-out;
-	    -moz-transition: all $animate-quick ease-out;
-	    -ms-transition: all $animate-quick ease-out;
-	    -o-transition: all $animate-quick ease-out;
-	    transition: all $animate-quick ease-out;
-
-		&:active, &:focus {
-			outline: 0;
-			background: $sg-quinary;
-			color: #000;
-		}
 	}
 }
 
 .sg-current-size {
 	font-size: 70%;
-	color: $sg-secondary;
+	color: $sg-gray;
 	padding: 0.85em 0.7em;
-
-	&:hover {
-		.sg-input {
-			background: $sg-quinary;
-			color: #000;
-		}
-	}
 
 	@media all and (min-width: $sg-bp-large) {
 		float: left;
@@ -394,27 +357,16 @@ $animate-quick: 0.2s;
 }
 
 .sg-size-options {
-
-	@media all and (min-width: $sg-bp-large) {
-		float: left;
-		position: static;
-		max-height: none;
-		max-width: none;
-
-		> li {
-			float: left;
-			border: 0;
-			border-left: 1px solid $sg-tint;
-		}
-	}
-}
-
-//Media Queries Dropdown
-#sg-size-mq {
 	display: none;
 
 	@media all and (min-width: $sg-bp-large) {
 		display: block;
+		float: left;
+		position: static;
+
+		> li {
+			float: left;
+		}
 	}
 }
 
@@ -426,21 +378,33 @@ $animate-quick: 0.2s;
 
 .sg-input {
 	margin: -2px 0 0 0;
-	padding: 0;
+	padding: 0.1em;
 	border: 0;
-	background-color: #222;
-	color: gray;
+	border-radius: $border-radius;
+	background: $sg-black; 
+	color: $sg-gray;
 	width: 25px;
 	text-align: right;
+	transition: all $animate-quick ease-out;
+	    
+    &:hover {
+	    color: $sg-white;
+	    background: $sg-gray-dark;
+    }
+
+	&:active, &:focus {
+		outline: 0;
+		background: $sg-gray;
+		color: $sg-white;
+	}
 
 	@media all and (min-width: $sg-bp-med) {
 		width: 35px;
+		
+		&.sg-size-px {
+			width: 30px;
+		}
 	}
-}
-
-.sg-input-active {
-	background-color: #fff;
-	color: #000;
 }
 
 .sg-view {
@@ -496,7 +460,7 @@ $animate-quick: 0.2s;
 
 /* call out for pattern's pattern state */
 span.sg-pattern-state {
-	color: #999;
+	color: $sg-gray-light-3;
 }
 
 span.sg-pattern-state:before {
@@ -504,7 +468,7 @@ span.sg-pattern-state:before {
 	margin-left: 4px;
 }
 
-/* pattern states */
+// Pattern states
 .inprogress:before {
 	color: #FF4136 !important;
 }
@@ -518,12 +482,11 @@ span.sg-pattern-state:before {
 }
 
 
-
 /*------------------------------------*\
     $PATTERN LAB VIEWPORT
 \*------------------------------------*/
 
-/* Viewport */
+// Viewport
 #sg-vp-wrap {
 	text-align: center;
 	width: 100%;
@@ -535,10 +498,6 @@ span.sg-pattern-state:before {
 	z-index: 0;
 
 	&.wrap-animate {
-		-webkit-transition: left 0.3s ease-out;
-	    -moz-transition: left 0.3s ease-out;
-	    -ms-transition: left 0.3s ease-out;
-	    -o-transition: left 0.3s ease-out;
 	    transition: left 0.3s ease-out;
 	}
 
@@ -558,10 +517,6 @@ span.sg-pattern-state:before {
 	background-color: white;
 
   &.hay-mode {
-		-webkit-transition: all 40s linear;
-	    -moz-transition: all 40s linear;
-	    -ms-transition: all 40s linear;
-	    -o-transition: all 40s linear;
 	    transition: all 40s linear;
 	}
 }
@@ -596,10 +551,6 @@ span.sg-pattern-state:before {
 	overflow-x: hidden;
 
 	&.hay-mode {
-		-webkit-transition: all 40s linear;
-	    -moz-transition: all 40s linear;
-	    -ms-transition: all 40s linear;
-	    -o-transition: all 40s linear;
 	    transition: all 40s linear;
 	}
 }
@@ -616,11 +567,7 @@ span.sg-pattern-state:before {
 	margin: 0; 
 	width: 100%; 
 	height: 100%; 
-	background: #999;
-	-webkit-transition: background $animate-quick ease-out;
-    -moz-transition: background $animate-quick ease-out;
-    -ms-transition: background $animate-quick ease-out;
-    -o-transition: background $animate-quick ease-out;
+	background: $sg-gray-light-3;
     transition: background $animate-quick ease-out;
 
 	&:hover {
@@ -634,10 +581,6 @@ span.sg-pattern-state:before {
 }
 
 .vp-animate {
-  -webkit-transition: width 0.8s ease-out;
-  -moz-transition: width 0.8s ease-out;
-  -ms-transition: width 0.8s ease-out;
-  -o-transition: width 0.8s ease-out;
   transition: width 0.8s ease-out;
 }
 
@@ -658,26 +601,85 @@ span.sg-pattern-state:before {
 
 /* Section Head */
 .sg-pattern-head {
-	margin: $sg-doublespace 0;
+	margin: $sg-doublespace 0 0;
 	font-family: $sg-font;
 	font-size: $sg-font-size-sm;
 	font-weight: normal;
-	padding: $sg-pad 0;
-	border-bottom: 1px solid $sg-secondary;
+	position: relative;
 
-	a {
-		display: block;
-		color: $sg-secondary;
+	h3 a {
+		display: inline-block;
+		padding: $sg-pad 0 0.3em;
+		color: $sg-gray;
 		text-decoration: none;
 		cursor: pointer;
 		
 		&:hover {
-			color: $sg-primary;
+			color: $sg-black;
 		}
 	}
 }
 
-//Annotations and code view container
+// Toggle for pattern info
+.sg-pattern-extra-toggle {
+	font-size: 9px;
+	position: absolute;
+	bottom: -1px;
+	right: 0;
+	z-index: 1;
+	padding: 0.65em;
+	line-height: 1;
+	font-weight: normal;
+	border: 1px solid $sg-gray-light-2;
+	border-top-left-radius: $border-radius-med;
+	border-top-right-radius: $border-radius-med;
+	transition: background $animate-quick ease-out;
+	
+	&:hover, &.active {
+		background: $sg-gray-light;
+		color: $sg-gray-dark;
+	}
+	
+	&.active {
+		border-bottom-color: $sg-gray-light;
+	}
+}
+
+
+// Pattern Info Panel
+.sg-pattern-extra {
+	background: $sg-gray-light;
+	border-top: 1px solid $sg-gray-light-2;
+	margin-bottom: $sg-space;
+	overflow: hidden;
+	max-height: 1px;
+	transition: all $animate-quick ease-out;
+	
+	&.active {
+		border: 1px solid $sg-gray-light-2;
+		border-radius: $border-radius-med;
+		border-top-right-radius: 0;
+		padding: $sg-pad;
+		max-height: 40em;
+	}
+}
+
+// Pattern Extra Info and Code
+.sg-pattern-extra-info {
+	@media all and (min-width: 30em) {
+		float: left;
+		width: 50%;
+	}
+}
+
+.sg-pattern-extra-info {
+	@media all and (min-width: 30em) {
+		float: left;
+		width: 50%;
+	}
+}
+
+// Annotations and code view container
 .sg-view-container {
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
@@ -685,8 +687,8 @@ span.sg-pattern-state:before {
 	font-family: $sg-font;
 	line-height: 1.4;
 	font-size: 90%;
-	background: $sg-primary;
-	color: $sg-secondary;
+	background: $sg-black;
+	color: $sg-gray;
 	position: fixed;
 	top: auto;
 	padding: $sg-pad;
@@ -699,7 +701,7 @@ span.sg-pattern-state:before {
 	overflow-x: hidden;
 
   	a {
-    	color: $sg-quinary;
+    	color: $sg-gray-light-3;
     }
 
      pre {
@@ -707,11 +709,6 @@ span.sg-pattern-state:before {
 	}
 
 	&.anim-ready {
-		-webkit-transition: bottom 0.3s ease-out;
-		-moz-transition: bottom 0.3s ease-out;
-	  	-webkit-transition: bottom 0.3s ease-out;
-	  	-ms-transition: bottom 0.3s ease-out; 
-	  	-o-transition: bottom 0.3s ease-out;
 	  	transition:  bottom 0.3s ease-out;
 	}
 }
@@ -733,18 +730,18 @@ span.sg-pattern-state:before {
 //Annotated elements Styles
 .has-annotation {
 	cursor: help !important;
-	box-shadow: 0 0 10px $sg-secondary;
+	box-shadow: 0 0 10px $sg-gray;
 
 	a, input {
 		cursor: help !important;
 	}
 
 	&:hover {
-		box-shadow: 0 0 10px $sg-primary;
+		box-shadow: 0 0 10px $sg-black;
 	}
 
 	&.active {
-		box-shadow: inset 0 0 20px $sg-secondary;
+		box-shadow: inset 0 0 20px $sg-gray;
 	}
 	
 }
@@ -786,8 +783,8 @@ span.sg-pattern-state:before {
 
 .sg-code, .sg-annotations {
 	clear: both;
-	background: $sg-tertiary;
-	color: $sg-primary;
+	background: $sg-gray-light-2;
+	color: $sg-black;
 	padding: $sg-pad $sg-pad-half;
 	margin: $sg-space 0;
 
@@ -811,19 +808,19 @@ span.sg-pattern-state:before {
 .sg-code-contains {
 	margin-bottom: 1rem;
 	font-size: 85%;
-	color: $sg-secondary;
+	color: $sg-gray;
 
 	code {
 		padding: 0.2em;
 		background: $sg-tone-2;
-		color: $sg-quinary;
+		color: $sg-gray-light-3;
 		position: relative;
 		top: -2px;
 	}
 }
 
 .sg-code-head {
-	color: $sg-secondary;
+	color: $sg-gray;
 	font-size: 1em;
 }
 
@@ -885,7 +882,92 @@ div.clear {
 	opacity: .7;
 }
 
-/* Pattern Lab icon fonts */
+
+
+
+
+#sg-find {
+	color: #000;
+	text-transform: lowercase;
+}
+
+.show-overflow {
+	overflow: visible;
+}
+
+
+
+
+
+/*------------------------------------*\
+    $TYPEAHEAD
+\*------------------------------------*/
+
+.typeahead,
+.tt-query,
+.tt-hint {
+  width: 220px;
+  height: 30px;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 16px;
+  border: 2px solid #ccc;
+  outline: none;
+}
+
+.typeahead {
+  background-color: #fff;
+}
+
+.typeahead:focus {
+  border: 2px solid #999;
+}
+
+.tt-query {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+  color: #999
+}
+
+.tt-dropdown-menu {
+  width: 422px;
+  padding: 8px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  text-align: left;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+  padding: 3px 13px;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.tt-suggestion.tt-cursor {
+  color: #fff;
+  background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+
+
+
+
+/*------------------------------------*\
+    $PATTERN LAB ICON FONTS 
+\*------------------------------------*/
+
 @font-face {
 	font-family: 'icomoon';
 	src:url('../fonts/icomoon.eot?srsv7g');
@@ -941,9 +1023,6 @@ div.clear {
 }
 .sg-icon-keyboard:before {
 	content: "\e609";
-}
-.sg-icon-qrcode:before {
-	content: "\e60a";
 }
 .sg-icon-eye:before {
 	content: "\e60b";

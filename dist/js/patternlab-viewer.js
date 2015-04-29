@@ -713,6 +713,8 @@ var codeViewer = {
 		var templateRendered = templateCompiled.render(patternData);
 		document.getElementById("sg-code-container").innerHTML = templateRendered;
 		
+		Dispatcher.trigger("codePanelRenderDone", [ patternData ] );
+		
 		// when clicking on a lineage item change the iframe source
 		$('#sg-code-lineage-fill a, #sg-code-lineager-fill a').on("click", function(e){
 			e.preventDefault();
@@ -733,7 +735,7 @@ var codeViewer = {
 		// request the mustache markup version of the pattern
 		var m = new XMLHttpRequest();
 		m.onload = this.saveMustache;
-		m.open("GET", fileName.replace(/\.html/,".mustache") + "?" + (new Date()).getTime(), true);
+		m.open("GET", fileName.replace(/\.html/,"."+patternData.patternExtension) + "?" + (new Date()).getTime(), true);
 		m.send();
 		
 		// if css is enabled request the css for the pattern
@@ -1314,7 +1316,10 @@ window.addEventListener("message", receiveIframeMessage, false);
 		$headerHeight = $('.sg-header').height(),
 		discoID = false,
 		discoMode = false,
+		fullMode = true,
 		hayMode = false;
+		
+	
 	
 	//Update dimensions on resize
 	$(w).resize(function() {
@@ -1322,6 +1327,10 @@ window.addEventListener("message", receiveIframeMessage, false);
 		sh = $(document).height();
 
 		setAccordionHeight();
+		
+		if(fullMode === true) {
+			sizeiframe(sw, false);
+		}
 	});
 
 	// Accordion dropdown
@@ -1375,6 +1384,7 @@ window.addEventListener("message", receiveIframeMessage, false);
 		e.preventDefault();
 		killDisco();
 		killHay();
+		fullMode = false;
 		
 		var val = $(this).attr('data-size');
 		
@@ -1392,6 +1402,7 @@ window.addEventListener("message", receiveIframeMessage, false);
 	function goSmall() {
 		killDisco();
 		killHay();
+		fullMode = false;
 		sizeiframe(getRandom(minViewportWidth,500));
 	}
 	
@@ -1409,6 +1420,7 @@ window.addEventListener("message", receiveIframeMessage, false);
 	function goMedium() {
 		killDisco();
 		killHay();
+		fullMode = false;
 		sizeiframe(getRandom(500,800));
 	}
 	
@@ -1426,6 +1438,7 @@ window.addEventListener("message", receiveIframeMessage, false);
 	function goLarge() {
 		killDisco();
 		killHay();
+		fullMode = false;
 		sizeiframe(getRandom(800,1200));
 	}
 	
@@ -1444,6 +1457,7 @@ window.addEventListener("message", receiveIframeMessage, false);
 		e.preventDefault();
 		killDisco();
 		killHay();
+		fullMode = true;
 		sizeiframe(sw);
 	});
 	
@@ -1452,6 +1466,7 @@ window.addEventListener("message", receiveIframeMessage, false);
 		e.preventDefault();
 		killDisco();
 		killHay();
+		fullMode = false;
 		sizeiframe(getRandom(minViewportWidth,sw));
 	});
 	
@@ -1459,6 +1474,7 @@ window.addEventListener("message", receiveIframeMessage, false);
 	$('#sg-size-disco').on("click", function(e){
 		e.preventDefault();
 		killHay();
+		fullMode = false;
 
 		if (discoMode) {
 			killDisco();
@@ -1727,6 +1743,8 @@ window.addEventListener("message", receiveIframeMessage, false);
 		var origClientX = event.clientX;
 		var origViewportWidth = $sgViewport.width();
 		
+		fullMode = false;
+		
 		// show the cover
 		$("#sg-cover").css("display","block");
 		
@@ -1906,7 +1924,7 @@ window.addEventListener("message", receiveIframeMessage, false);
 				}
 			} else if (data.keyPress == 'ctrl+shift+0') {
 				sizeiframe(320,true);
-			} else if (found = data.keyPress.match(/ctrl\+shift\+([1-9])/)) {
+			} else if (found == data.keyPress.match(/ctrl\+shift\+([1-9])/)) {
 				var val = mqs[(found[1]-1)];
 				var type = (val.indexOf("px") !== -1) ? "px" : "em";
 				val = val.replace(type,"");
@@ -1928,3 +1946,65 @@ window.addEventListener("message", receiveIframeMessage, false);
 	}*/
 	
 })(this);
+/*!
+ * Plugin Loader
+ *
+ * Copyright (c) 2015 Dave Olsen, http://dmolsen.com
+ * Licensed under the MIT license
+ *
+ * Takes the assets they can be loaded for plugins and adds them to the DOM
+ *
+ * @requires styleguide.js
+ *
+ */
+
+var pluginLoader = {
+	
+	init: function () {
+		
+		var s, t, l, c, n;
+		
+		for (var i = 0; i < plugins.length; ++i) {
+			
+			var plugin = plugins[i];
+			
+			// load the templates
+			for (var key in plugin.templates) {
+				if (plugin.templates.hasOwnProperty(key)) {
+					t           = document.getElementsByTagName('script');
+					l           = t.length - 1;
+					s           = t[l];
+					n           = document.createElement('script');
+					n.type      = 'text/mustache';
+					n.id        = plugin.name.replace("\/","-")+"-"+key+"-template";
+					n.innerHTML = plugin.templates[key];
+					s.parentNode.insertBefore(n, s.nextSibling);
+				}
+			}
+			
+			// load the stylesheets
+			for (var k = 0; k < plugin.stylesheets.length; ++k) {
+				s       = plugin.stylesheets[k];
+				t       = document.getElementsByTagName('link');
+				l       = t.length - 1;
+				c       = t[l];
+				n       = document.createElement('link');
+				n.type  = 'text/css';
+				n.rel   = 'stylesheet';
+				n.href  = 'patternlab-components/'+plugin.name+'/'+s;
+				n.media = 'screen';
+				c.parentNode.insertBefore(n, c.nextSibling);
+			}
+			
+			// load the javascript
+			// $script.path('patternlab-components/'+plugin.name+'/');
+			$script(plugin.javascripts, plugin.name, eval('(function() { '+plugin.callback+' })'));
+			$script.ready([plugin.name], eval('(function() { '+plugin.onready+' })'));
+			
+		}
+		
+	}
+	
+};
+
+pluginLoader.init();

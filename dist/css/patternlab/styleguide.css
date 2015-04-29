@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*------------------------------------*\
     $PATTERN LAB STYLES
 \*------------------------------------*/
@@ -11,13 +12,7 @@
      $CONTENTS
 \*------------------------------------*/
 /**
- * STYLE GUIDE VARIABLES------------------Declarations of Sass variables 
- * -----Font
- * -----Colors
- * -----Typography
- * -----Defaults
- * -----Breakpoints
- * MIXINS---------------------------------Sass mixins 
+ * STYLE GUIDE VARIABLES------------------Declarations of Sass variables
  * GLOBAL ELEMENTS------------------------Establish global styles
  * -----Main
  * -----Headings
@@ -37,28 +32,19 @@
 /*------------------------------------*\
     $PATTERN LAB VARIABLES 
 \*------------------------------------*/
-/*Fonts*/
-/* Style Guide Interface Colors */
-/* Typography */
-/* Defaults */
-/* Dimensions */
-/* Breakpoints */
-/*------------------------------------*\
-    $PATTERN LAB MIXINS 
-\*------------------------------------*/
 /*------------------------------------*\
     $PATTERN LAB INTERFACE 
 \*------------------------------------*/
 #patternlab-html, #patternlab-body {
   margin: 0;
   padding: 0;
-  background: #dddddd;
+  background: #ddd;
   -webkit-text-size-adjust: 100%;
 }
 
 .sg-nav-wrapper {
   overflow: hidden;
-  background: #dddddd;
+  background: #ddd;
 }
 
 .is-vishidden {
@@ -87,8 +73,8 @@
 \*------------------------------------*/
 /* Header */
 .sg-header {
-  background: #222222;
-  color: white;
+  background: #000;
+  color: #fff;
   font-family: "HelveticaNeue", "Helvetica", "Arial", sans-serif;
   text-transform: uppercase;
   position: fixed;
@@ -107,23 +93,22 @@
 }
 .sg-header li {
   list-style: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 .sg-header a {
   font-size: 70%;
-  color: gray;
+  color: #808080;
   text-decoration: none;
   display: block;
   line-height: 1;
-  padding: 1em;
-  -webkit-transition: background 0.15s ease-out;
-  transition: background 0.15s ease-out;
-  -webkit-transition: color 0.15s ease-out;
-  transition: color 0.15s ease-out;
+  padding: 1em 0.7em;
+  -webkit-transition: background 0.1s ease-out;
+          transition: background 0.1s ease-out;
+  -webkit-transition: color 0.1s ease-out;
+          transition: color 0.1s ease-out;
 }
 .sg-header a:hover, .sg-header a:focus, .sg-header a.active {
-  color: white;
-  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  background: #222;
 }
 .sg-header ol ol ol a {
   padding-left: 2em;
@@ -133,28 +118,22 @@
 /* Navigation */
 .sg-header .sg-nav-toggle {
   display: inline-block;
-  padding: 0.9em 1em;
-  border-bottom: 1px solid transparent;
   position: relative;
   text-transform: uppercase;
   z-index: 2;
 }
-.sg-header .sg-nav-toggle span {
-  display: inline-block;
-  padding-right: 0.2em;
-}
-@media all and (min-width: 48em) {
+@media all and (min-width: 42em) {
   .sg-header .sg-nav-toggle {
     display: none;
   }
 }
 
-@media all and (max-width: 48em) {
+@media all and (max-width: 42em) {
   .sg-nav-container {
     overflow: hidden;
     max-height: 0;
     -webkit-transition: max-height 0.1s ease-out;
-    transition: max-height 0.1s ease-out;
+            transition: max-height 0.1s ease-out;
   }
   .sg-nav-container.active {
     max-height: 50em;
@@ -170,10 +149,9 @@
 .sg-nav > li {
   cursor: pointer;
 }
-@media all and (min-width: 48em) {
+@media all and (min-width: 42em) {
   .sg-nav > li {
     border-bottom: 0;
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
     float: left;
     position: relative;
   }
@@ -186,21 +164,34 @@
 
 /* Accordion */
 .sg-acc-handle:after {
-  content: ' +';
-  float: right;
-  font-size: 70%;
+  content: '▼';
+  color: rgba(255, 255, 255, 0.25);
+  display: inline-block;
+  font-size: 7px;
+  position: relative;
+  top: -1px;
+  right: -2px;
+  -webkit-transition: all 0.1s ease-out;
+          transition: all 0.1s ease-out;
 }
-@media all and (min-width: 48em) {
+@media all and (min-width: 42em) {
   .sg-acc-handle:after {
     float: none;
   }
 }
+.sg-acc-handle:hover:after, .sg-acc-handle:focus:after {
+  color: #808080;
+}
 .sg-acc-handle.active {
-  color: white;
-  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  background: #222;
 }
 .sg-acc-handle.active:after {
-  content: ' -';
+  top: -2px;
+  color: #808080;
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 .sg-acc-handle.sg-icon:after {
   content: "";
@@ -209,7 +200,7 @@
 .sg-header .sg-icon {
   width: auto;
   font-size: 1rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.7rem;
 }
 
 .sg-acc-panel {
@@ -217,10 +208,15 @@
   max-height: 0;
   min-width: 10em;
   -webkit-transition: max-height 0.1s ease-out;
-  transition: max-height 0.1s ease-out;
+          transition: max-height 0.1s ease-out;
 }
 .sg-acc-panel li {
-  background: #222222;
+  background: #222;
+}
+.sg-acc-panel li:last-child {
+  overflow: hidden;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
 }
 .sg-acc-panel.active {
   max-height: 120em;
@@ -249,15 +245,7 @@
   z-index: 2;
 }
 
-.sg-control-trigger {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-@media all and (min-width: 48em) {
-  .sg-control-trigger {
-    border: 0;
-  }
-}
-@media all and (min-width: 72em) {
+@media all and (min-width: 53em) {
   .sg-control-trigger {
     float: left;
     width: 6em;
@@ -267,33 +255,13 @@
 .sg-control > li {
   float: left;
 }
-@media all and (min-width: 48em) {
-  .sg-control > li {
-    border-bottom: 0;
-    border-left: 1px solid rgba(255, 255, 255, 0.05);
-  }
-}
-.sg-control .sg-input {
-  padding: 0.1em;
-  -webkit-transition: all 0.2s ease-out;
-  transition: all 0.2s ease-out;
-}
-.sg-control .sg-input:active, .sg-control .sg-input:focus {
-  outline: 0;
-  background: #999999;
-  color: #000;
-}
 
 .sg-current-size {
   font-size: 70%;
-  color: gray;
+  color: #808080;
   padding: 0.85em 0.7em;
 }
-.sg-current-size:hover .sg-input {
-  background: #999999;
-  color: #000;
-}
-@media all and (min-width: 72em) {
+@media all and (min-width: 53em) {
   .sg-current-size {
     float: left;
   }
@@ -302,32 +270,23 @@
 .sg-size {
   width: 135px;
 }
-@media all and (min-width: 48em) {
+@media all and (min-width: 42em) {
   .sg-size {
     width: auto;
   }
 }
 
-@media all and (min-width: 72em) {
+.sg-size-options {
+  display: none;
+}
+@media all and (min-width: 53em) {
   .sg-size-options {
+    display: block;
     float: left;
     position: static;
-    max-height: none;
-    max-width: none;
   }
   .sg-size-options > li {
     float: left;
-    border: 0;
-    border-left: 1px solid rgba(255, 255, 255, 0.05);
-  }
-}
-
-#sg-size-mq {
-  display: none;
-}
-@media all and (min-width: 72em) {
-  #sg-size-mq {
-    display: block;
   }
 }
 
@@ -339,22 +298,32 @@
 
 .sg-input {
   margin: -2px 0 0 0;
-  padding: 0;
+  padding: 0.1em;
   border: 0;
-  background-color: #222;
-  color: gray;
+  border-radius: 3px;
+  background: #000;
+  color: #808080;
   width: 25px;
   text-align: right;
+  -webkit-transition: all 0.1s ease-out;
+          transition: all 0.1s ease-out;
 }
-@media all and (min-width: 48em) {
+.sg-input:hover {
+  color: #fff;
+  background: #222;
+}
+.sg-input:active, .sg-input:focus {
+  outline: 0;
+  background: #808080;
+  color: #fff;
+}
+@media all and (min-width: 42em) {
   .sg-input {
     width: 35px;
   }
-}
-
-.sg-input-active {
-  background-color: #fff;
-  color: #000;
+  .sg-input.sg-size-px {
+    width: 30px;
+  }
 }
 
 .sg-view {
@@ -406,7 +375,6 @@ span.sg-pattern-state:before {
   margin-left: 4px;
 }
 
-/* pattern states */
 .inprogress:before {
   color: #FF4136 !important;
 }
@@ -422,7 +390,6 @@ span.sg-pattern-state:before {
 /*------------------------------------*\
     $PATTERN LAB VIEWPORT
 \*------------------------------------*/
-/* Viewport */
 #sg-vp-wrap {
   text-align: center;
   width: 100%;
@@ -435,7 +402,7 @@ span.sg-pattern-state:before {
 }
 #sg-vp-wrap.wrap-animate {
   -webkit-transition: left 0.3s ease-out;
-  transition: left 0.3s ease-out;
+          transition: left 0.3s ease-out;
 }
 
 #sg-viewport {
@@ -453,7 +420,7 @@ span.sg-pattern-state:before {
 }
 #sg-viewport.hay-mode {
   -webkit-transition: all 40s linear;
-  transition: all 40s linear;
+          transition: all 40s linear;
 }
 
 .no-resize #sg-cover, .no-resize #sg-rightpull-container {
@@ -483,7 +450,7 @@ span.sg-pattern-state:before {
 }
 #sg-gen-container.hay-mode {
   -webkit-transition: all 40s linear;
-  transition: all 40s linear;
+          transition: all 40s linear;
 }
 
 #sg-rightpull-container {
@@ -499,8 +466,8 @@ span.sg-pattern-state:before {
   width: 100%;
   height: 100%;
   background: #999;
-  -webkit-transition: background 0.2s ease-out;
-  transition: background 0.2s ease-out;
+  -webkit-transition: background 0.1s ease-out;
+          transition: background 0.1s ease-out;
 }
 #sg-rightpull:hover {
   background: #666;
@@ -512,7 +479,7 @@ span.sg-pattern-state:before {
 
 .vp-animate {
   -webkit-transition: width 0.8s ease-out;
-  transition: width 0.8s ease-out;
+          transition: width 0.8s ease-out;
 }
 
 /*------------------------------------*\
@@ -526,21 +493,75 @@ span.sg-pattern-state:before {
 
 /* Section Head */
 .sg-pattern-head {
-  margin: 2em 0;
+  margin: 2em 0 0;
   font-family: "HelveticaNeue", "Helvetica", "Arial", sans-serif;
   font-size: 70%;
   font-weight: normal;
-  padding: 1em 0;
-  border-bottom: 1px solid gray;
+  position: relative;
 }
-.sg-pattern-head a {
-  display: block;
-  color: gray;
+.sg-pattern-head h3 a {
+  display: inline-block;
+  padding: 1em 0 0.3em;
+  color: #808080;
   text-decoration: none;
   cursor: pointer;
 }
-.sg-pattern-head a:hover {
-  color: #222222;
+.sg-pattern-head h3 a:hover {
+  color: #000;
+}
+
+.sg-pattern-extra-toggle {
+  font-size: 9px;
+  position: absolute;
+  bottom: -1px;
+  right: 0;
+  z-index: 1;
+  padding: 0.65em;
+  line-height: 1;
+  font-weight: normal;
+  border: 1px solid #ddd;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  -webkit-transition: background 0.1s ease-out;
+          transition: background 0.1s ease-out;
+}
+.sg-pattern-extra-toggle:hover, .sg-pattern-extra-toggle.active {
+  background: #eee;
+  color: #222;
+}
+.sg-pattern-extra-toggle.active {
+  border-bottom-color: #eee;
+}
+
+.sg-pattern-extra {
+  background: #eee;
+  border-top: 1px solid #ddd;
+  margin-bottom: 1em;
+  overflow: hidden;
+  max-height: 1px;
+  -webkit-transition: all 0.1s ease-out;
+          transition: all 0.1s ease-out;
+}
+.sg-pattern-extra.active {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  border-top-right-radius: 0;
+  padding: 1em;
+  max-height: 40em;
+}
+
+@media all and (min-width: 30em) {
+  .sg-pattern-extra-info {
+    float: left;
+    width: 50%;
+  }
+}
+
+@media all and (min-width: 30em) {
+  .sg-pattern-extra-info {
+    float: left;
+    width: 50%;
+  }
 }
 
 .sg-view-container {
@@ -549,8 +570,8 @@ span.sg-pattern-state:before {
   font-family: "HelveticaNeue", "Helvetica", "Arial", sans-serif;
   line-height: 1.4;
   font-size: 90%;
-  background: #222222;
-  color: gray;
+  background: #000;
+  color: #808080;
   position: fixed;
   top: auto;
   padding: 1em;
@@ -563,15 +584,14 @@ span.sg-pattern-state:before {
   overflow-x: hidden;
 }
 .sg-view-container a {
-  color: #999999;
+  color: #999;
 }
 .sg-view-container pre {
   padding: 0 1em;
 }
 .sg-view-container.anim-ready {
   -webkit-transition: bottom 0.3s ease-out;
-  -webkit-transition: bottom 0.3s ease-out;
-  transition: bottom 0.3s ease-out;
+          transition: bottom 0.3s ease-out;
 }
 
 .sg-view-close {
@@ -589,19 +609,19 @@ span.sg-pattern-state:before {
 
 .has-annotation {
   cursor: help !important;
-  -webkit-box-shadow: 0 0 10px gray;
-          box-shadow: 0 0 10px gray;
+  -webkit-box-shadow: 0 0 10px #808080;
+          box-shadow: 0 0 10px #808080;
 }
 .has-annotation a, .has-annotation input {
   cursor: help !important;
 }
 .has-annotation:hover {
-  -webkit-box-shadow: 0 0 10px #222222;
-          box-shadow: 0 0 10px #222222;
+  -webkit-box-shadow: 0 0 10px #000;
+          box-shadow: 0 0 10px #000;
 }
 .has-annotation.active {
-  -webkit-box-shadow: inset 0 0 20px gray;
-          box-shadow: inset 0 0 20px gray;
+  -webkit-box-shadow: inset 0 0 20px #808080;
+          box-shadow: inset 0 0 20px #808080;
 }
 
 .annotation-tip {
@@ -639,8 +659,8 @@ span.sg-pattern-state:before {
 
 .sg-code, .sg-annotations {
   clear: both;
-  background: #dddddd;
-  color: #222222;
+  background: #ddd;
+  color: #000;
   padding: 1em 0.5em;
   margin: 1em 0;
 }
@@ -661,18 +681,18 @@ span.sg-pattern-state:before {
 .sg-code-contains {
   margin-bottom: 1rem;
   font-size: 85%;
-  color: gray;
+  color: #808080;
 }
 .sg-code-contains code {
   padding: 0.2em;
   background: rgba(0, 0, 0, 0.3);
-  color: #999999;
+  color: #999;
   position: relative;
   top: -2px;
 }
 
 .sg-code-head {
-  color: gray;
+  color: #808080;
   font-size: 1em;
 }
 
@@ -735,7 +755,76 @@ div.clear {
   opacity: .7;
 }
 
-/* Pattern Lab icon fonts */
+#sg-find {
+  color: #000;
+  text-transform: lowercase;
+}
+
+.show-overflow {
+  overflow: visible;
+}
+
+/*------------------------------------*\
+    $TYPEAHEAD
+\*------------------------------------*/
+.typeahead,
+.tt-query,
+.tt-hint {
+  width: 220px;
+  height: 30px;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 16px;
+  border: 2px solid #ccc;
+  outline: none;
+}
+
+.typeahead {
+  background-color: #fff;
+}
+
+.typeahead:focus {
+  border: 2px solid #999;
+}
+
+.tt-query {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+  color: #999;
+}
+
+.tt-dropdown-menu {
+  width: 422px;
+  padding: 8px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  text-align: left;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.tt-suggestion {
+  padding: 3px 13px;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.tt-suggestion.tt-cursor {
+  color: #fff;
+  background-color: #0097cf;
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+
+/*------------------------------------*\
+    $PATTERN LAB ICON FONTS 
+\*------------------------------------*/
 @font-face {
   font-family: 'icomoon';
   src: url("../fonts/icomoon.eot?srsv7g");
@@ -795,10 +884,6 @@ div.clear {
 
 .sg-icon-keyboard:before {
   content: "\e609";
-}
-
-.sg-icon-qrcode:before {
-  content: "\e60a";
 }
 
 .sg-icon-eye:before {

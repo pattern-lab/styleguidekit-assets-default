@@ -271,6 +271,8 @@ var codeViewer = {
 		var templateRendered = templateCompiled.render(patternData);
 		document.getElementById("sg-code-container").innerHTML = templateRendered;
 		
+		Dispatcher.trigger("codePanelRenderDone", [ patternData ] );
+		
 		// when clicking on a lineage item change the iframe source
 		$('#sg-code-lineage-fill a, #sg-code-lineager-fill a').on("click", function(e){
 			e.preventDefault();
@@ -291,7 +293,7 @@ var codeViewer = {
 		// request the mustache markup version of the pattern
 		var m = new XMLHttpRequest();
 		m.onload = this.saveMustache;
-		m.open("GET", fileName.replace(/\.html/,".mustache") + "?" + (new Date()).getTime(), true);
+		m.open("GET", fileName.replace(/\.html/,"."+patternData.patternExtension) + "?" + (new Date()).getTime(), true);
 		m.send();
 		
 		// if css is enabled request the css for the pattern
