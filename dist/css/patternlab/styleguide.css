@@ -714,6 +714,15 @@ span.sg-pattern-state:before {
   cursor: pointer;
 }
 
+#sg-fill {
+  background-color: #272822;
+  color: white;
+}
+
+#sg-info-fill {
+  margin: 10px;
+}
+
 .sg-code-title-active {
   color: #bbb;
   background-color: #272822 !important;

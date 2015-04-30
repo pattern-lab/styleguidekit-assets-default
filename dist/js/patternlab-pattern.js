@@ -178,7 +178,6 @@ var annotationsPattern = {
 					}
 				}
 				
-				
 			}
 			
 		} else {

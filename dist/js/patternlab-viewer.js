@@ -454,13 +454,9 @@ var codeViewer = {
 	
 	// set up some defaults
 	codeActive:   false,
-	tabActive:    "e",
-	encoded:      "",
-	mustache:     "",
-	css:          "",
-	ids:          { "e": "#sg-code-title-html", "m": "#sg-code-title-mustache", "c": "#sg-code-title-css" },
 	targetOrigin: (window.location.protocol === "file:") ? "*" : window.location.protocol+"//"+window.location.host,
 	copyOnInit:   false,
+	tabActive:   "sg-code-tab-info",
 	
 	/**
 	* add the onclick handler to the code link in the main nav
@@ -564,11 +560,40 @@ var codeViewer = {
 			setTimeout(function(){ $('#sg-code-container').addClass('anim-ready'); },50); //Add animation class once container is positioned out of frame
 		}
 		
-		// make sure the close button handles the click
-		$('body').delegate('#sg-code-close-btn','click',function() {
-			codeViewer.closeCode();
-			return false;
-		});
+	},
+	
+	/**
+	* insert the code related tabs
+	*/
+	insertCode: function(tab) {
+		
+		// create insert elements
+		var pre = $("<pre></pre>");
+		pre.addClass = "language-markup";
+		var code = $("<code></code>");
+		code.attr("id","sg-code-fill");
+		pre.append(code);
+		$("#sg-fill").append(pre);
+		
+		// original code for modifying the fill
+		$("#sg-code-fill").html(tab.content).text();
+		$("#sg-code-fill").removeClass().addClass("language-"+tab.language);
+		Prism.highlightElement(document.getElementById("sg-code-fill"));
+		
+	},
+	
+	/**
+	* insert the info related tab
+	*/
+	insertInfo: function(tab) {
+		
+		// create insert elements
+		var div = $("<div></div>");
+		div.attr("id","sg-info-fill");
+		$("#sg-fill").append(div);
+		
+		// original code for modifying the fill
+		$("#sg-info-fill").html(tab.content).text();
 		
 	},
 	
@@ -577,22 +602,37 @@ var codeViewer = {
 	*/
 	swapCode: function(type) {
 		
-		codeViewer.clearSelection();
-		var fill      = "";
-		var className = (type == "c") ? "css" : "markup";
-		$("#sg-code-fill").removeClass().addClass("language-"+className);
-		if (type == "m") {
-			fill = codeViewer.mustache;
-		} else if (type == "e") {
-			fill = codeViewer.encoded;
-		} else if (type == "c") {
-			fill = codeViewer.css;
+		$("#sg-fill").empty();
+		
+		for (i = 0; i < tabs.length; ++i) {
+			
+			var tab = tabs[i];
+			
+			if (tab.id == type) {
+				
+				// when clicking on a lineage item change the iframe source
+				$('#sg-code-lineage-fill a, #sg-code-lineager-fill a').on("click", function(e){
+					e.preventDefault();
+					$("#sg-code-loader").css("display","block");
+					var obj = JSON.stringify({ "event": "patternLab.pathUpdate", "path": urlHandler.getFileName($(this).attr("data-patternpartial")) });
+					document.getElementById("sg-viewport").contentWindow.postMessage(obj,codeViewer.targetOrigin);
+				});
+				
+				$('.sg-code-title-active').removeClass('sg-code-title-active');
+				$('#'+tab.id).addClass('sg-code-title-active');
+				
+				if ((tab.prismHighlight !== undefined) && (tab.language !== undefined) && (tab.prismHighlight)) {
+					this.insertCode(tab);
+				} else {
+					this.insertInfo(tab);
+				}
+				
+				codeViewer.tabActive = type;
+				
+			}
+			
 		}
-		$("#sg-code-fill").html(fill).text();
-		codeViewer.tabActive = type;
-		Prism.highlightElement(document.getElementById("sg-code-fill"));
-		$('.sg-code-title-active').removeClass('sg-code-title-active');
-		$(codeViewer.ids[type]).toggleClass("sg-code-title-active");
+		
 	},
 	
 	/**
@@ -629,61 +669,24 @@ var codeViewer = {
 	},
 	
 	/**
-	* once the AJAX request for the encoded mark-up is finished this runs.
-	* if the encoded tab is the current active tab it adds the content to the default code container
-	*/
-	saveEncoded: function() {
-		codeViewer.encoded = this.responseText;
-		if (codeViewer.tabActive == "e") {
-			codeViewer.activateDefaultTab("e",this.responseText);
-		}
-	},
-	
-	/**
-	* once the AJAX request for the mustache mark-up is finished this runs.
-	* if the mustache tab is the current active tab it adds the content to the default code container
-	*/
-	saveMustache: function() {
-		codeViewer.mustache = this.responseText;
-		if (codeViewer.tabActive == "m") {
-			codeViewer.activateDefaultTab("m",this.responseText);
-		}
-	},
-	
-	/**
-	* once the AJAX request for the css mark-up is finished this runs. if this function is running then css has been enabled
-	* if the css tab is the current active tab it adds the content to the default code container
-	*/
-	saveCSS: function() {
-		$('#sg-code-title-css').css("display","block");
-		codeViewer.css = this.responseText;
-		if (codeViewer.tabActive == "c") {
-			codeViewer.activateDefaultTab("c",this.responseText);
-		}
-	},
-	
-	/**
 	* when loading the code view make sure the active tab is highlighted and filled in appropriately
 	*/
-	activateDefaultTab: function(type,code) {
-		var typeName  = "";
-		var className = (type == "c") ? "css" : "markup";
-		if (type == "m") {
-			typeName = "mustache";
-		} else if (type == "e") {
-			typeName = "html";
-		} else if (type == "c") {
-			typeName = "css";
-		}
+	activateDefaultTab: function(type,fill,i) {
+		
 		$('.sg-code-title-active').removeClass('sg-code-title-active');
-		$('#sg-code-title-'+typeName).addClass('sg-code-title-active');
-		$("#sg-code-fill").removeClass().addClass("language-"+className);
-		$("#sg-code-fill").html(code).text();
-		Prism.highlightElement(document.getElementById("sg-code-fill"));
+		$('#'+type).addClass('sg-code-title-active');
+		
+		if ((tabs[i].prismHighlight !== undefined) && (tabs[i].language !== undefined) && (tabs[i].prismHighlight)) {
+			this.insertCode(tabs[i]);
+		} else {
+			this.insertInfo(tabs[i]);
+		}
+		
 		if (codeViewer.copyOnInit) {
 			codeViewer.selectCode();
 			codeViewer.copyOnInit = false;
 		}
+		
 	},
 	
 	/**
@@ -691,6 +694,21 @@ var codeViewer = {
 	* the code from from the pattern via post message
 	*/
 	updateCode: function(patternData) {
+		
+		// gather tabs from plugins
+		Dispatcher.trigger("setupTabs");
+		
+		// render the code container
+		var template         = document.getElementById("pl-code-template");
+		var templateCompiled = Hogan.compile(template.innerHTML);
+		var templateRendered = templateCompiled.render({ "tabs": tabs });
+		$('#sg-code-container').html(templateRendered);
+		
+		// make sure the close button handles the click
+		$('body').delegate('#sg-code-close-btn','click',function() {
+			codeViewer.closeCode();
+			return false;
+		});
 		
 		// clear any selections that might have been made
 		codeViewer.clearSelection();
@@ -707,59 +725,43 @@ var codeViewer = {
 			patternData.lineageRExists = true;
 		}
 		
-		/* load code view */
-		var template         = document.getElementById("pl-code-template");
-		var templateCompiled = Hogan.compile(template.innerHTML);
-		var templateRendered = templateCompiled.render(patternData);
-		document.getElementById("sg-code-container").innerHTML = templateRendered;
-		
-		Dispatcher.trigger("codePanelRenderDone", [ patternData ] );
-		
-		// when clicking on a lineage item change the iframe source
-		$('#sg-code-lineage-fill a, #sg-code-lineager-fill a').on("click", function(e){
-			e.preventDefault();
-			$("#sg-code-loader").css("display","block");
-			var obj = JSON.stringify({ "event": "patternLab.pathUpdate", "path": urlHandler.getFileName($(this).attr("data-patternpartial")) });
-			document.getElementById("sg-viewport").contentWindow.postMessage(obj,codeViewer.targetOrigin);
-		});
-		
-		// get the file name of the pattern so we can get the various editions of the code that can show in code view
-		var fileName = urlHandler.getFileName(patternData.patternPartial);
-		
-		// request the encoded markup version of the pattern
-		var e = new XMLHttpRequest();
-		e.onload = this.saveEncoded;
-		e.open("GET", fileName.replace(/\.html/,".escaped.html") + "?" + (new Date()).getTime(), true);
-		e.send();
-		
-		// request the mustache markup version of the pattern
-		var m = new XMLHttpRequest();
-		m.onload = this.saveMustache;
-		m.open("GET", fileName.replace(/\.html/,"."+patternData.patternExtension) + "?" + (new Date()).getTime(), true);
-		m.send();
-		
-		// if css is enabled request the css for the pattern
-		if (patternData.cssEnabled) {
-			var c = new XMLHttpRequest();
-			c.onload = this.saveCSS;
-			c.open("GET", fileName.replace(/\.html/,".css") + "?" + (new Date()).getTime(), true);
-			c.send();
+		// evaluate tabs array and create content
+		for (i = 0; i < tabs.length; ++i) {
+			
+			var tab = tabs[i];
+			
+			if ((tab.template !== undefined) && (tab.template)) {
+				
+				var template         = document.getElementById(tab.templateID);
+				var templateCompiled = Hogan.compile(template.innerHTML);
+				var templateRendered = templateCompiled.render(patternData);
+				
+				tabs[i].content = templateRendered;
+				
+			} else if ((tab.httpRequest !== undefined) && (tab.httpRequest)) {
+				
+				var fileName = urlHandler.getFileName(patternData.patternPartial);
+				var e        = new XMLHttpRequest();
+				e.i          = i;
+				e.onload     = function () { tabs[this.i].content = this.responseText; if (codeViewer.tabActive == tabs[this.i].id) { codeViewer.activateDefaultTab(tabs[this.i].id,tabs[this.i].content,this.i); } };
+				e.open("GET", fileName.replace(/\.html/,tab.httpRequestReplace) + "?" + (new Date()).getTime(), true);
+				e.send();
+				
+			}
+			
+			// make sure the click events are handled
+			$('#'+tab.id).click( (function(tab) {
+				return function() {
+					codeViewer.swapCode(tab.id);
+				};
+			})(tab));
+			
+			// activate the default tab assuming it's not relying on an HTTP request
+			if ((this.tabActive == tab.id) && ((tab.httpRequest !== undefined) && (!tab.httpRequest))) {
+				this.activateDefaultTab(tab.id,tab.content,i);
+			}
+			
 		}
-		
-		// make sure the click events are handled on the HTML tab
-		$(codeViewer.ids["e"]).click(function() {
-			codeViewer.swapCode("e");
-		});
-		
-		// make sure the click events are handled on the Mustache tab
-		$(codeViewer.ids["m"]).click(function() {
-			codeViewer.swapCode("m");
-		});
-		
-		// make sure the click events are handled on the CSS tab
-		$(codeViewer.ids["c"]).click(function() {
-			codeViewer.swapCode("c");
-		});
 		
 		// move the code into view
 		codeViewer.slideCode(0);
@@ -2008,3 +2010,47 @@ var pluginLoader = {
 };
 
 pluginLoader.init();
+
+/*!
+ * Tab Support for the Viewer
+ *
+ * Copyright (c) 2013 Brad Frost, http://bradfrostweb.com & Dave Olsen, http://dmolsen.com
+ * Licensed under the MIT license
+ *
+ * @requires code-viewer.js
+ *
+ */
+
+var tabs = [
+	
+	/**
+	* describe the default tabs
+	*/
+	{ "id": "sg-code-tab-info", "name": "INFO", "default": true, "httpRequest": false, "prismHighlight": false, "template": true, "templateID": "pl-code-template-info-tab" },
+	{ "id": "sg-code-tab-html", "name": "HTML", "default": false, "httpRequest": true, "httpRequestReplace": ".escaped.html", "httpRequestCompleted": false, "prismHighlight": true, "language": "markup", "template": false },
+	{ "id": "sg-code-tab-pattern", "name": config.patternExtension.toUpperCase(), "default": false, "httpRequest": true, "httpRequestReplace": "."+config.patternExtension, "httpRequestCompleted": false, "prismHighlight": true, "language": "markup", "template": false }
+	
+];
+
+
+var tabUtil = {
+	
+	/**
+	* add a tab to the list of default tabs
+	* @param  {Object}       the properties of the tab to tab that will be added
+	*/
+	add: function(tab) {
+		
+		// evaluate tabs array and create content
+		for (i = 0; i < tabs.length; ++i) {
+			if (tab.id == tabs[i].id) {
+				return;
+			}
+		}
+		
+		// it wasn't found so push the tab onto the tabs
+		tabs.push(tab);
+		
+	}
+	
+}
