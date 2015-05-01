@@ -1059,6 +1059,7 @@ document.getElementById("sg-controls").innerHTML = templateRendered;
  *
  */
 
+/*
 var patternFinder = {
 	
 	data:   [],
@@ -1129,7 +1130,6 @@ var patternFinder = {
 	closeFinder: function() {
 		patternFinder.active = false;
 		$("#sg-find").removeClass('show-overflow');
-		$('.sg-acc-handle, .sg-acc-panel').removeClass('active');
 		$('#sg-find .typeahead').val("");
 	},
 	
@@ -1168,14 +1168,7 @@ $('#sg-find .typeahead').focus(function() {
 $('#sg-find .typeahead').blur(function() {
 	patternFinder.closeFinder();
 });
-
-// jwerty stuff
-// toggle the annotations panel
-jwerty.key('ctrl+shift+f', function (e) {
-	$('.sg-find .sg-acc-handle, .sg-find .sg-acc-panel').addClass('active');
-	patternFinder.toggleFinder();
-	return false;
-});
+*/
 /*!
  * Basic postMessage Support
  *
@@ -1937,15 +1930,6 @@ window.addEventListener("message", receiveIframeMessage, false);
 		}
 	}
 	window.addEventListener("message", receiveIframeMessage, false);
-	
-	/*if (qrCodeGeneratorOn) {
-		$('.sg-tools').click(function() {
-			if ((qrCodeGenerator.lastGenerated == "") || (qrCodeGenerator.lastGenerated != window.location.search)) {
-				qrCodeGenerator.getQRCode();
-				qrCodeGenerator.lastGenerated = window.location.search;
-			}
-		});
-	}*/
 	
 })(this);
 /*!

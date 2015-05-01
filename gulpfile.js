@@ -9,7 +9,6 @@ var gulpLoadPlugins    = require('gulp-load-plugins');
 var plugins            = gulpLoadPlugins({ scope: ['devDependencies'] });
 plugins.del            = require("del");
 plugins.mainBowerFiles = require("main-bower-files");
-plugins.pngcrush       = require('imagemin-pngcrush');
 
 /* clean tasks */
 gulp.task('clean:bower', function (cb) {
@@ -22,10 +21,6 @@ gulp.task('clean:css-patternlab', function (cb) {
 
 gulp.task('clean:css-custom', function (cb) {
 	return plugins.del(['dist/css/custom/*'],cb);
-});
-
-gulp.task('clean:fonts', function (cb) {
-	return plugins.del(['dist/fonts/*'],cb);
 });
 
 gulp.task('clean:html', function (cb) {
@@ -74,12 +69,6 @@ gulp.task('build:css-custom', ['clean:css-custom'], function() {
 		.pipe(gulp.dest('../../../source/styleguide/css'));
 });
 
-gulp.task('build:fonts', ['clean:fonts'], function() {
-	return gulp.src('src/fonts/*')
-		.pipe(gulp.dest('dist/fonts'))
-		.pipe(gulp.dest('../../../public/styleguide/fonts'));
-});
-
 gulp.task('build:html', ['clean:html'], function() {
 	return gulp.src('src/html/*')
 		.pipe(gulp.dest('dist/html'))
@@ -114,14 +103,13 @@ gulp.task('build:js-pattern', ['build:js-viewer'], function() {
 		.pipe(gulp.dest('../../../public/styleguide/js'));
 });
 
-gulp.task('default', ['build:bower', 'build:css-custom', 'build:css-patternlab', 'build:fonts', 'build:html', 'build:js-pattern'], function () {
+gulp.task('default', ['build:bower', 'build:css-custom', 'build:css-patternlab', 'build:html', 'build:js-pattern'], function () {
 	
 	if (args.watch !== undefined) {
 		gulp.watch(['src/bower_components/**/*'], ['build:bower']);
 		gulp.watch(['src/css/prism-okaidia.css'],['build:css-general']);
 		gulp.watch(['src/sass/styleguide.scss'], ['build:css-patternlab']);
 		gulp.watch(['src/sass/styleguide-specific.scss'], ['build:css-custom']);
-		gulp.watch(['src/fonts/*'], ['build:fonts'])
 		gulp.watch(['src/html/*'], ['build:html']);
 		gulp.watch(['src/js/*'], ['build:js-pattern']);
 	}
