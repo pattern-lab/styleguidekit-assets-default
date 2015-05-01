@@ -42,11 +42,13 @@
 $sg-font : "HelveticaNeue", "Helvetica", "Arial", sans-serif;
 
 // Style Guide Interface Colors
-$sg-primary : #000;
-$sg-secondary : #808080;
-$sg-tertiary : #ddd;
-$sg-quaternary : #fff;
-$sg-quinary : #999;
+$sg-black : #000;
+$sg-white : #fff;
+$sg-gray-light : #eee;
+$sg-gray-light-2 : #ddd;
+$sg-gray-light-3 : #999;
+$sg-gray : #808080;
+$sg-gray-dark : #222;
 $sg-tint : rgba(255,255,255,0.05);
 $sg-tint-2 : rgba(255,255,255,0.25);
 $sg-tone : rgba(0,0,0,0.1);
@@ -69,11 +71,14 @@ $offset-top: 2em;
 // Breakpoints
 $sg-bp-small : 24em;
 $sg-bp-med : 42em;
-$sg-bp-large : 56em;
+$sg-bp-large : 53em;
 
-//Animations
+// Animations
 $animate-quick: 0.1s;
 
+// Border
+$border-radius: 3px;
+$border-radius-med: 6px;
 
 
 
@@ -85,13 +90,13 @@ $animate-quick: 0.1s;
 #patternlab-html, #patternlab-body {
 	margin: 0;
 	padding: 0;
-	background: $sg-tertiary;
+	background: $sg-gray-light-2;
 	-webkit-text-size-adjust: 100%;
 }
 
 .sg-nav-wrapper {
 	overflow: hidden;
-	background: $sg-tertiary;
+	background: $sg-gray-light-2;
 }
 
 .is-vishidden {
@@ -126,8 +131,8 @@ $animate-quick: 0.1s;
 \*------------------------------------*/
 /* Header */
 .sg-header {
-	background: $sg-primary;
-	color: $sg-quaternary;
+	background: $sg-black;
+	color: $sg-white;
 	font-family: $sg-font;
 	text-transform: uppercase;
 	position: fixed;
@@ -149,12 +154,11 @@ $animate-quick: 0.1s;
 
 	li {
 		list-style: none;
-		border-bottom: 1px solid $sg-tint;
 	}
 
 	a {
 		font-size: $sg-font-size-sm;
-		color: $sg-secondary;
+		color: $sg-gray;
 		text-decoration: none;
 		display: block;
 		line-height: 1;
@@ -163,8 +167,8 @@ $animate-quick: 0.1s;
 		transition: color $animate-quick ease-out;
 		
 		&:hover, &:focus, &.active {
-			color: $sg-quaternary;
-			background: $sg-tint;
+			color: $sg-white;
+			background: $sg-gray-dark;
 		}
 	}
 
@@ -179,16 +183,9 @@ $animate-quick: 0.1s;
 /* Navigation */
 .sg-header .sg-nav-toggle {
 	display: inline-block;
-	padding: 0.9em $sg-pad;
-	border-bottom: 1px solid rgba(0,0,0,0);
 	position: relative;
 	text-transform: uppercase;
 	z-index: 2;
-	
-	span {
-		display: inline-block;
-		padding-right: 0.2em;
-	}
 
 	@media all and (min-width: $sg-bp-med) {
 		display: none;
@@ -218,7 +215,6 @@ $animate-quick: 0.1s;
 
 		@media all and (min-width: $sg-bp-med) {
 			border-bottom: 0;
-			border-right: 1px solid $sg-tint;
 			float: left;
 			position: relative;
 			
@@ -252,16 +248,17 @@ $animate-quick: 0.1s;
 	
 	&:hover, &:focus {
 		&:after {
-			color: $sg-secondary;
+			color: $sg-gray;
 		}
 	}
 	
 	&.active {
-		color: $sg-quaternary;
-		background: $sg-tint;
+		color: $sg-white;
+		background: $sg-gray-dark;
 		
 		&:after {
-			color: $sg-secondary;
+			top: -2px;
+			color: $sg-gray;
 			-webkit-transform: rotate(180deg);  
 			-ms-transform: rotate(180deg);
 			transform: rotate(180deg);
@@ -286,7 +283,13 @@ $animate-quick: 0.1s;
 	transition: max-height $animate-quick ease-out;
 
 	li {
-		background: $sg-primary;
+		background: $sg-gray-dark;
+	}
+	
+	li:last-child {
+		overflow: hidden;
+		border-bottom-left-radius: $border-radius-med;
+		border-bottom-right-radius: $border-radius-med;
 	}
 
 	&.active {
@@ -323,12 +326,6 @@ $animate-quick: 0.1s;
 }
 
 .sg-control-trigger {
-	border-bottom: 1px solid $sg-tint;
-	
-	@media all and (min-width: $sg-bp-med) {
-		border: 0;
-	}
-	
 	@media all and (min-width: $sg-bp-large) {
 		float: left;
 		width: 6em;
@@ -338,37 +335,13 @@ $animate-quick: 0.1s;
 .sg-control {
 	> li {
 		float: left;
-
-		@media all and (min-width: $sg-bp-med) {
-			border-bottom: 0;
-			border-left: 1px solid $sg-tint;
-		}
-	}
-	
-	.sg-input {
-		padding: 0.1em;
-		border-radius: 3px;
-	    transition: all $animate-quick ease-out;
-
-		&:active, &:focus {
-			outline: 0;
-			background: $sg-quinary;
-			color: #000;
-		}
 	}
 }
 
 .sg-current-size {
 	font-size: 70%;
-	color: $sg-secondary;
+	color: $sg-gray;
 	padding: 0.85em 0.7em;
-
-	&:hover {
-		.sg-input {
-			background: $sg-quinary;
-			color: #000;
-		}
-	}
 
 	@media all and (min-width: $sg-bp-large) {
 		float: left;
@@ -384,27 +357,16 @@ $animate-quick: 0.1s;
 }
 
 .sg-size-options {
-
-	@media all and (min-width: $sg-bp-large) {
-		float: left;
-		position: static;
-		max-height: none;
-		max-width: none;
-
-		> li {
-			float: left;
-			border: 0;
-			border-left: 1px solid $sg-tint;
-		}
-	}
-}
-
-//Media Queries Dropdown
-#sg-size-mq {
 	display: none;
 
 	@media all and (min-width: $sg-bp-large) {
 		display: block;
+		float: left;
+		position: static;
+
+		> li {
+			float: left;
+		}
 	}
 }
 
@@ -416,12 +378,25 @@ $animate-quick: 0.1s;
 
 .sg-input {
 	margin: -2px 0 0 0;
-	padding: 0;
+	padding: 0.1em;
 	border: 0;
-	background-color: #222;
-	color: gray;
+	border-radius: $border-radius;
+	background: $sg-black; 
+	color: $sg-gray;
 	width: 25px;
 	text-align: right;
+	transition: all $animate-quick ease-out;
+	    
+    &:hover {
+	    color: $sg-white;
+	    background: $sg-gray-dark;
+    }
+
+	&:active, &:focus {
+		outline: 0;
+		background: $sg-gray;
+		color: $sg-white;
+	}
 
 	@media all and (min-width: $sg-bp-med) {
 		width: 35px;
@@ -430,11 +405,6 @@ $animate-quick: 0.1s;
 			width: 30px;
 		}
 	}
-}
-
-.sg-input-active {
-	background-color: #fff;
-	color: #000;
 }
 
 .sg-view {
@@ -490,7 +460,7 @@ $animate-quick: 0.1s;
 
 /* call out for pattern's pattern state */
 span.sg-pattern-state {
-	color: $sg-quinary;
+	color: $sg-gray-light-3;
 }
 
 span.sg-pattern-state:before {
@@ -597,7 +567,7 @@ span.sg-pattern-state:before {
 	margin: 0; 
 	width: 100%; 
 	height: 100%; 
-	background: $sg-quinary;
+	background: $sg-gray-light-3;
     transition: background $animate-quick ease-out;
 
 	&:hover {
@@ -635,40 +605,81 @@ span.sg-pattern-state:before {
 	font-family: $sg-font;
 	font-size: $sg-font-size-sm;
 	font-weight: normal;
-	padding: $sg-pad 0 $sg-pad-half;
-	border-bottom: 1px solid $sg-secondary;
 	position: relative;
 
-	a {
-		display: block;
-		color: $sg-secondary;
+	h3 a {
+		display: inline-block;
+		padding: $sg-pad 0 0.3em;
+		color: $sg-gray;
 		text-decoration: none;
 		cursor: pointer;
 		
 		&:hover {
-			color: $sg-primary;
+			color: $sg-black;
 		}
 	}
 }
 
-.sg-pattern-extra-trigger {
+// Toggle for pattern info
+.sg-pattern-extra-toggle {
 	font-size: 9px;
 	position: absolute;
-	top: 10px;
+	bottom: -1px;
 	right: 0;
-	padding: 1px;
+	z-index: 1;
+	padding: 0.65em;
 	line-height: 1;
 	font-weight: normal;
-	border: 1px solid $sg-secondary;
-	border-radius: 10px;
+	border: 1px solid $sg-gray-light-2;
+	border-top-left-radius: $border-radius-med;
+	border-top-right-radius: $border-radius-med;
+	transition: background $animate-quick ease-out;
+	
+	&:hover, &.active {
+		background: $sg-gray-light;
+		color: $sg-gray-dark;
+	}
+	
+	&.active {
+		border-bottom-color: $sg-gray-light;
+	}
 }
 
-/* Section Body */
-.sg-pattern-example {
-	padding-top: $sg-doublespace;
+
+// Pattern Info Panel
+.sg-pattern-extra {
+	background: $sg-gray-light;
+	border-top: 1px solid $sg-gray-light-2;
+	margin-bottom: $sg-space;
+	overflow: hidden;
+	max-height: 1px;
+	transition: all $animate-quick ease-out;
+	
+	&.active {
+		border: 1px solid $sg-gray-light-2;
+		border-radius: $border-radius-med;
+		border-top-right-radius: 0;
+		padding: $sg-pad;
+		max-height: 40em;
+	}
 }
 
-//Annotations and code view container
+// Pattern Extra Info and Code
+.sg-pattern-extra-info {
+	@media all and (min-width: 30em) {
+		float: left;
+		width: 50%;
+	}
+}
+
+.sg-pattern-extra-info {
+	@media all and (min-width: 30em) {
+		float: left;
+		width: 50%;
+	}
+}
+
+// Annotations and code view container
 .sg-view-container {
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
@@ -676,8 +687,8 @@ span.sg-pattern-state:before {
 	font-family: $sg-font;
 	line-height: 1.4;
 	font-size: 90%;
-	background: $sg-primary;
-	color: $sg-secondary;
+	background: $sg-black;
+	color: $sg-gray;
 	position: fixed;
 	top: auto;
 	padding: $sg-pad;
@@ -690,7 +701,7 @@ span.sg-pattern-state:before {
 	overflow-x: hidden;
 
   	a {
-    	color: $sg-quinary;
+    	color: $sg-gray-light-3;
     }
 
      pre {
@@ -719,18 +730,18 @@ span.sg-pattern-state:before {
 //Annotated elements Styles
 .has-annotation {
 	cursor: help !important;
-	box-shadow: 0 0 10px $sg-secondary;
+	box-shadow: 0 0 10px $sg-gray;
 
 	a, input {
 		cursor: help !important;
 	}
 
 	&:hover {
-		box-shadow: 0 0 10px $sg-primary;
+		box-shadow: 0 0 10px $sg-black;
 	}
 
 	&.active {
-		box-shadow: inset 0 0 20px $sg-secondary;
+		box-shadow: inset 0 0 20px $sg-gray;
 	}
 	
 }
@@ -772,8 +783,8 @@ span.sg-pattern-state:before {
 
 .sg-code, .sg-annotations {
 	clear: both;
-	background: $sg-tertiary;
-	color: $sg-primary;
+	background: $sg-gray-light-2;
+	color: $sg-black;
 	padding: $sg-pad $sg-pad-half;
 	margin: $sg-space 0;
 
@@ -797,19 +808,19 @@ span.sg-pattern-state:before {
 .sg-code-contains {
 	margin-bottom: 1rem;
 	font-size: 85%;
-	color: $sg-secondary;
+	color: $sg-gray;
 
 	code {
 		padding: 0.2em;
 		background: $sg-tone-2;
-		color: $sg-quinary;
+		color: $sg-gray-light-3;
 		position: relative;
 		top: -2px;
 	}
 }
 
 .sg-code-head {
-	color: $sg-secondary;
+	color: $sg-gray;
 	font-size: 1em;
 }
 
@@ -880,7 +891,92 @@ div.clear {
 	opacity: .7;
 }
 
-/* Pattern Lab icon fonts */
+
+
+
+
+#sg-find {
+	color: #000;
+	text-transform: lowercase;
+}
+
+.show-overflow {
+	overflow: visible;
+}
+
+
+
+
+
+/*------------------------------------*\
+    $TYPEAHEAD
+\*------------------------------------*/
+
+.typeahead,
+.tt-query,
+.tt-hint {
+  width: 220px;
+  height: 30px;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 16px;
+  border: 2px solid #ccc;
+  outline: none;
+}
+
+.typeahead {
+  background-color: #fff;
+}
+
+.typeahead:focus {
+  border: 2px solid #999;
+}
+
+.tt-query {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+  color: #999
+}
+
+.tt-dropdown-menu {
+  width: 422px;
+  padding: 8px 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  text-align: left;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+  padding: 3px 13px;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.tt-suggestion.tt-cursor {
+  color: #fff;
+  background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+
+
+
+
+/*------------------------------------*\
+    $PATTERN LAB ICON FONTS 
+\*------------------------------------*/
+
 @font-face {
 	font-family: 'icomoon';
 	src:url('../fonts/icomoon.eot?srsv7g');
@@ -936,9 +1032,6 @@ div.clear {
 }
 .sg-icon-keyboard:before {
 	content: "\e609";
-}
-.sg-icon-qrcode:before {
-	content: "\e60a";
 }
 .sg-icon-eye:before {
 	content: "\e60b";

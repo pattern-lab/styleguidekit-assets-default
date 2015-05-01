@@ -1332,7 +1332,7 @@ window.addEventListener("message", receiveIframeMessage, false);
 		
 		if(fullMode === true) {
 			sizeiframe(sw, false);
-		};
+		}
 	});
 
 	// Accordion dropdown
