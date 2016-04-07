@@ -11,6 +11,14 @@ plugins.del            = require("del");
 plugins.mainBowerFiles = require("main-bower-files");
 plugins.pngcrush       = require('imagemin-pngcrush');
 
+function copyPublic(suffix) {
+	if (args['copy-dist'] !== undefined) {
+		return gulp.dest(args['copy-dist'] + "/" + suffix);
+	} else {
+		return plugins.util.noop();
+	}
+}
+
 /* clean tasks */
 gulp.task('clean:bower', function (cb) {
 	return plugins.del(['dist/styleguide/bower_components/*'],cb);
@@ -45,7 +53,8 @@ gulp.task('build:bower', ['clean:bower'], function(){
 	return gulp.src(plugins.mainBowerFiles())
 		.pipe(plugins.rename({suffix: '.min'}))
 		.pipe(plugins.uglify())
-		.pipe(gulp.dest("dist/styleguide/bower_components"));
+		.pipe(gulp.dest("dist/styleguide/bower_components"))
+		.pipe(copyPublic("styleguide/bower_components"));
 });
 
 gulp.task('build:css-general', function() {
@@ -54,7 +63,8 @@ gulp.task('build:css-general', function() {
 		.pipe(gulp.dest('dist/styleguide/css'))
 		.pipe(plugins.rename({suffix: '.min'}))
 		.pipe(plugins.minifyCss())
-		.pipe(gulp.dest('dist/styleguide/css'));
+		.pipe(gulp.dest('dist/styleguide/css'))
+		.pipe(copyPublic("styleguide/css"));
 });
 
 gulp.task('build:css-patternlab', ['clean:css-patternlab', 'build:css-general'], function() {
@@ -63,7 +73,8 @@ gulp.task('build:css-patternlab', ['clean:css-patternlab', 'build:css-general'],
 		.pipe(gulp.dest('dist/styleguide/css'))
 		.pipe(plugins.rename({suffix: '.min'}))
 		.pipe(plugins.minifyCss())
-		.pipe(gulp.dest('dist/styleguide/css'));
+		.pipe(gulp.dest('dist/styleguide/css'))
+		.pipe(copyPublic("styleguide/css"));
 });
 
 gulp.task('build:css-custom', ['clean:css-custom'], function() {
@@ -72,17 +83,20 @@ gulp.task('build:css-custom', ['clean:css-custom'], function() {
 		.pipe(gulp.dest('dist/styleguide/css/custom'))
 		.pipe(plugins.rename({suffix: '.min'}))
 		.pipe(plugins.minifyCss())
-		.pipe(gulp.dest('dist/styleguide/css/custom'));
+		.pipe(gulp.dest('dist/styleguide/css/custom'))
+		.pipe(copyPublic("styleguide/css/custom"));
 });
 
 gulp.task('build:fonts', ['clean:fonts'], function() {
 	return gulp.src('src/fonts/*')
-		.pipe(gulp.dest('dist/styleguide/fonts'));
+		.pipe(gulp.dest('dist/styleguide/fonts'))
+		.pipe(copyPublic("styleguide/fonts"));
 });
 
 gulp.task('build:html', ['clean:html'], function() {
 	return gulp.src('src/html/*')
-		.pipe(gulp.dest('dist'));
+		.pipe(gulp.dest('dist'))
+		.pipe(copyPublic(""));
 });
 
 gulp.task('build:images', ['clean:images'], function() {
@@ -92,7 +106,8 @@ gulp.task('build:images', ['clean:images'], function() {
 		          svgoPlugins: [{removeViewBox: false}],
 		          use: [plugins.pngcrush()]
 		 }))
-		.pipe(gulp.dest('dist/styleguide/images'));
+		.pipe(gulp.dest('dist/styleguide/images'))
+		.pipe(copyPublic("styleguide/images"));
 });
 
 gulp.task('build:js-viewer', ['clean:js'], function() {
@@ -105,7 +120,8 @@ gulp.task('build:js-viewer', ['clean:js'], function() {
 		.pipe(gulp.dest('dist/styleguide/js'))
 		.pipe(plugins.rename({suffix: '.min'}))
 		.pipe(plugins.uglify())
-		.pipe(gulp.dest('dist/styleguide/js'));
+		.pipe(gulp.dest('dist/styleguide/js'))
+		.pipe(copyPublic("styleguide/js"));
 });
 
 gulp.task('build:js-pattern', ['build:js-viewer'], function() {
@@ -118,7 +134,8 @@ gulp.task('build:js-pattern', ['build:js-viewer'], function() {
 		.pipe(gulp.dest('dist/styleguide/js'))
 		.pipe(plugins.rename({suffix: '.min'}))
 		.pipe(plugins.uglify())
-		.pipe(gulp.dest('dist/styleguide/js'));
+		.pipe(gulp.dest('dist/styleguide/js'))
+		.pipe(copyPublic("styleguide/js"));
 });
 
 gulp.task('default', ['build:bower', 'build:css-custom', 'build:css-patternlab', 'build:fonts', 'build:html', 'build:images', 'build:js-pattern'], function () {
