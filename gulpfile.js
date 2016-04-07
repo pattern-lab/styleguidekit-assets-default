@@ -45,8 +45,7 @@ gulp.task('build:bower', ['clean:bower'], function(){
 	return gulp.src(plugins.mainBowerFiles())
 		.pipe(plugins.rename({suffix: '.min'}))
 		.pipe(plugins.uglify())
-		.pipe(gulp.dest("dist/bower_components"))
-		.pipe(gulp.dest("../../../public/styleguide/bower_components"));
+		.pipe(gulp.dest("dist/bower_components"));
 });
 
 gulp.task('build:css-general', function() {
@@ -55,8 +54,7 @@ gulp.task('build:css-general', function() {
 		.pipe(gulp.dest('dist/css/patternlab'))
 		.pipe(plugins.rename({suffix: '.min'}))
 		.pipe(plugins.minifyCss())
-		.pipe(gulp.dest('dist/css/patternlab'))
-		.pipe(gulp.dest('../../../public/styleguide/css'));
+		.pipe(gulp.dest('dist/css/patternlab'));
 });
 
 gulp.task('build:css-patternlab', ['clean:css-patternlab', 'build:css-general'], function() {
@@ -65,8 +63,7 @@ gulp.task('build:css-patternlab', ['clean:css-patternlab', 'build:css-general'],
 		.pipe(gulp.dest('dist/css/patternlab'))
 		.pipe(plugins.rename({suffix: '.min'}))
 		.pipe(plugins.minifyCss())
-		.pipe(gulp.dest('dist/css/patternlab'))
-		.pipe(gulp.dest('../../../public/styleguide/css'));
+		.pipe(gulp.dest('dist/css/patternlab'));
 });
 
 gulp.task('build:css-custom', ['clean:css-custom'], function() {
@@ -75,20 +72,17 @@ gulp.task('build:css-custom', ['clean:css-custom'], function() {
 		.pipe(gulp.dest('dist/css/custom'))
 		.pipe(plugins.rename({suffix: '.min'}))
 		.pipe(plugins.minifyCss())
-		.pipe(gulp.dest('dist/css/custom'))
-		.pipe(gulp.dest('../../../source/styleguide/css'));
+		.pipe(gulp.dest('dist/css/custom'));
 });
 
 gulp.task('build:fonts', ['clean:fonts'], function() {
 	return gulp.src('src/fonts/*')
-		.pipe(gulp.dest('dist/fonts'))
-		.pipe(gulp.dest('../../../public/styleguide/fonts'));
+		.pipe(gulp.dest('dist/fonts'));
 });
 
 gulp.task('build:html', ['clean:html'], function() {
 	return gulp.src('src/html/*')
-		.pipe(gulp.dest('dist/html'))
-		.pipe(gulp.dest('../../../public'));
+		.pipe(gulp.dest('dist/html'));
 });
 
 gulp.task('build:images', ['clean:images'], function() {
@@ -98,8 +92,7 @@ gulp.task('build:images', ['clean:images'], function() {
 		          svgoPlugins: [{removeViewBox: false}],
 		          use: [plugins.pngcrush()]
 		 }))
-		.pipe(gulp.dest('dist/images'))
-		.pipe(gulp.dest('../../../public/styleguide/images'));
+		.pipe(gulp.dest('dist/images'));
 });
 
 gulp.task('build:js-viewer', ['clean:js'], function() {
@@ -112,8 +105,7 @@ gulp.task('build:js-viewer', ['clean:js'], function() {
 		.pipe(gulp.dest('dist/js'))
 		.pipe(plugins.rename({suffix: '.min'}))
 		.pipe(plugins.uglify())
-		.pipe(gulp.dest('dist/js'))
-		.pipe(gulp.dest('../../../public/styleguide/js'));
+		.pipe(gulp.dest('dist/js'));
 });
 
 gulp.task('build:js-pattern', ['build:js-viewer'], function() {
@@ -126,8 +118,7 @@ gulp.task('build:js-pattern', ['build:js-viewer'], function() {
 		.pipe(gulp.dest('dist/js'))
 		.pipe(plugins.rename({suffix: '.min'}))
 		.pipe(plugins.uglify())
-		.pipe(gulp.dest('dist/js'))
-		.pipe(gulp.dest('../../../public/styleguide/js'));
+		.pipe(gulp.dest('dist/js'));
 });
 
 gulp.task('default', ['build:bower', 'build:css-custom', 'build:css-patternlab', 'build:fonts', 'build:html', 'build:images', 'build:js-pattern'], function () {
