@@ -40,7 +40,7 @@ gulp.task('build:bower', ['clean:bower'], function(){
 		.pipe(gulp.dest("../../../public/styleguide/bower_components"));
 });
 
-gulp.task('build:css-general', function() {
+gulp.task('build:css-general', ['clean:css-patternlab'], function() {
 	return gulp.src(['src/css/prism-okaidia.css'])
 		.pipe(gulp.dest('dist/css/patternlab'))
 		.pipe(plugins.rename({suffix: '.min'}))
@@ -49,7 +49,7 @@ gulp.task('build:css-general', function() {
 		.pipe(gulp.dest('../../../public/styleguide/css'));
 });
 
-gulp.task('build:css-patternlab', ['clean:css-patternlab', 'build:css-general'], function() {
+gulp.task('build:css-patternlab', ['build:css-general'], function() {
 	return plugins.rubySass('src/sass/styleguide.scss', { style: 'expanded', "sourcemap=none": true })
 		.pipe(plugins.autoprefixer({browsers: ['last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'android 4']}, {map: false }))
 		.pipe(gulp.dest('dist/css/patternlab'))
@@ -76,7 +76,7 @@ gulp.task('build:html', ['clean:html'], function() {
 });
 
 gulp.task('build:js-viewer', ['clean:js'], function() {
-	return gulp.src(['src/js/*.js','!src/js/annotations-pattern.js','!src/js/code-pattern.js','!src/js/info-panel.js']) 
+	return gulp.src(['src/js/*.js','!src/js/modal-styleguide.js'])
 		.pipe(plugins.jshint('.jshintrc'))
 		.pipe(plugins.jshint.reporter('default'))
 		.pipe(plugins.resolveDependencies( { pattern: /\* @requires [\s-]*(.*?\.js)/g } ))
@@ -84,13 +84,13 @@ gulp.task('build:js-viewer', ['clean:js'], function() {
 		.pipe(plugins.concat('patternlab-viewer.js'))
 		.pipe(gulp.dest('dist/js'))
 		.pipe(plugins.rename({suffix: '.min'}))
-		.pipe(plugins.uglify())
 		.pipe(gulp.dest('dist/js'))
 		.pipe(gulp.dest('../../../public/styleguide/js'));
 });
 
 gulp.task('build:js-pattern', ['build:js-viewer'], function() {
-	return gulp.src(['src/js/postmessage.js','src/js/annotations-pattern.js','src/js/code-pattern.js','src/js/info-panel.js'])
+	// 'src/js/annotations-pattern.js','src/js/code-pattern.js','src/js/info-panel.js'
+	return gulp.src(['src/js/postmessage.js', 'src/js/panels-shared.js', 'src/js/modal-styleguide.js'])
 		.pipe(plugins.jshint('.jshintrc'))
 		.pipe(plugins.jshint.reporter('default'))
 		.pipe(plugins.resolveDependencies( { pattern: /\* @requires [\s-]*(.*?\.js)/g } ))
@@ -104,7 +104,6 @@ gulp.task('build:js-pattern', ['build:js-viewer'], function() {
 });
 
 gulp.task('default', ['build:bower', 'build:css-custom', 'build:css-patternlab', 'build:html', 'build:js-pattern'], function () {
-	
 	if (args.watch !== undefined) {
 		gulp.watch(['src/bower_components/**/*'], ['build:bower']);
 		gulp.watch(['src/css/prism-okaidia.css'],['build:css-general']);
