@@ -46,12 +46,8 @@ $sg-black : #000;
 $sg-white : #fff;
 $sg-gray-light : #eee;
 $sg-gray-light-2 : #ddd;
-<<<<<<< HEAD
-$sg-gray-light-3 : #999;
-=======
 $sg-gray-light-3 : #ccc;
 $sg-gray-light-4 : #999;
->>>>>>> origin/dev
 $sg-gray : #808080;
 $sg-gray-dark : #222;
 $sg-tint : rgba(255,255,255,0.05);
@@ -79,19 +75,11 @@ $sg-bp-med : 42em;
 $sg-bp-large : 53em;
 
 // Animations
-<<<<<<< HEAD
-$animate-quick: 0.1s;
-
-// Border
-$border-radius: 3px;
-$border-radius-med: 6px;
-=======
 $sg-animate-quick : 0.1s;
 
 // Border
 $sg-border-radius : 3px;
 $sg-border-radius-med : 6px;
->>>>>>> origin/dev
 
 
 
@@ -301,13 +289,8 @@ $sg-border-radius-med : 6px;
 	
 	li:last-child {
 		overflow: hidden;
-<<<<<<< HEAD
-		border-bottom-left-radius: $border-radius-med;
-		border-bottom-right-radius: $border-radius-med;
-=======
 		border-bottom-left-radius: $sg-border-radius-med;
 		border-bottom-right-radius: $sg-border-radius-med;
->>>>>>> origin/dev
 	}
 
 	&.active {
@@ -398,20 +381,12 @@ $sg-border-radius-med : 6px;
 	margin: -2px 0 0 0;
 	padding: 0.1em;
 	border: 0;
-<<<<<<< HEAD
-	border-radius: $border-radius;
-=======
 	border-radius: $sg-border-radius;
->>>>>>> origin/dev
 	background: $sg-black; 
 	color: $sg-gray;
 	width: 25px;
 	text-align: right;
-<<<<<<< HEAD
-	transition: all $animate-quick ease-out;
-=======
 	transition: all $sg-animate-quick ease-out;
->>>>>>> origin/dev
 	    
     &:hover {
 	    color: $sg-white;
@@ -486,11 +461,7 @@ $sg-border-radius-med : 6px;
 
 /* call out for pattern's pattern state */
 span.sg-pattern-state {
-<<<<<<< HEAD
-	color: $sg-gray-light-3;
-=======
 	color: $sg-gray-light-4;
->>>>>>> origin/dev
 }
 
 span.sg-pattern-state:before {
@@ -599,7 +570,6 @@ span.sg-pattern-state:before {
 	height: 100%; 
 	background: #c2c2c2;
     transition: background $sg-animate-quick ease-out;
->>>>>>> origin/dev
 
 	&:hover {
 		background: $sg-gray;
@@ -677,6 +647,7 @@ span.sg-pattern-state:before {
 	
 	&.active {
 		border-bottom-color: $sg-gray-light;
+		
 		span {
 			-webkit-transform: rotate(180deg);  
 			-ms-transform: rotate(180deg);
@@ -960,15 +931,6 @@ span.sg-pattern-state:before {
 	cursor: pointer;
 }
 
-#sg-fill {
-	background-color: #272822;
-	color: white;
-}
-
-#sg-info-fill {
-	margin: 10px;
-}
-
 .sg-code-title-active {
 	color: #bbb;
 	background-color: #272822 !important;
@@ -1035,6 +997,7 @@ div.clear {
 
 .tt-suggestion {
   padding: 3px 13px;
+
 }
 
 .tt-suggestion.tt-cursor {
