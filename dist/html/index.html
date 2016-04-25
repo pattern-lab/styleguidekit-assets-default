@@ -47,6 +47,16 @@
 	</div>
 	<!--end iFrame-->
 	
+	<!-- modal window -->
+	<div id="sg-modal-container" class="sg-view-container anim-ready" style="bottom: -2000px">
+		<div id="sg-modal-close" class="sg-view-close">
+			<a href="#" id="sg-modal-close-btn" class="sg-view-close-btn">Close</a>
+		</div>
+		<div id="sg-modal-container-content"></div>
+	</div>
+	<!-- end modal window -->
+	
+
 	<!-- mustache templates -->
 	<script type="text/mustache" id="pl-pattern-nav-template">
 		{{# patternTypes }}
@@ -72,7 +82,7 @@
 				<li class="sg-size">
 					<div class="sg-current-size">
 						<form id="sg-form">
-							Size <input type="text" class="sg-input sg-size-px" value="---">px / 
+							Size <input type="text" class="sg-input sg-size-px" value="---">px /
 							<input type="text" class="sg-input sg-size-em" value="---">em
 						</form><!--end #sg-form-->
 					</div><!--end #sg-current-size-->
@@ -94,19 +104,16 @@
 						<li><a href="#" id="sg-t-annotations"><span class="sg-checkbox"></span>Annotations</a></li>
 						{{/ ishControlsHide.views-annotations }}
 						{{^ ishControlsHide.views-code }}
-						<li><a href="#" id="sg-t-code"><span class="sg-checkbox"></span>Code</a></li>
+						<li><a href="#" id="sg-t-info"><span class="sg-checkbox"></span>Code</a></li>
 						{{/ ishControlsHide.views-code }}
 						{{^ ishControlsHide.views-new }}
-						<li><a href="#" target="_blank" id="sg-raw"><span class="sg-icon-link"></span>Open in new window</a></li>
+						<li><a href="#" target="_blank" id="sg-raw">Open in new window</a></li>
 						{{/ ishControlsHide.views-new }}
-						{{^ ishControlsHide.tools-shortcuts }}
-						<li><a href="http://pattern-lab.info/docs/advanced-keyboard-shortcuts.html" target="_blank"><span class="sg-icon-keyboard"></span>Keyboard Shortcuts</a></li>
-						{{/ ishControlsHide.tools-shortcuts }}
 						{{^ ishControlsHide.tools-docs }}
-						<li><a href="http://pattern-lab.info/docs/" target="_blank"><span class="sg-icon-file"></span>Pattern Lab Docs</a></li>
+						<li><a href="http://pattern-lab.info/docs/" target="_blank">Pattern Lab Docs</a></li>
 						{{/ ishControlsHide.tools-docs }}
 						{{^ ishControlsHide.find }}
-						<li class="sg-find"><input class="typeahead" id="typeahead" type="text" placeholder="Find pattern" /></li>
+						<li id="sg-find"><input class="typeahead" id="typeahead" type="text" placeholder="Find pattern" /></li>
 						{{/ ishControlsHide.find }}
 					</ul>
 				</li>
@@ -116,28 +123,27 @@
 	</script>
 	
 	<!-- the template for the code view slider -->
-	<script type="text/mustache" id="pl-code-template">
-		<div id="sg-code-close" class="sg-view-close">
-			<a href="#" id="sg-code-close-btn" class="sg-view-close-btn">Close</a>
-		</div>
-		<div id="sg-code-loader">
-			<div class="spinner"></div>
-			Loading pattern...
-		</div>
-		<div id="sg-code-extra-output"></div>
-		<div id="sg-code-markup">
-			<ul id="sg-code-tabs">
-				{{# tabs }}
-					<li id="{{ id }}">{{ name }}</li>
-				{{/ tabs }}
-			</ul>
-			<div class="clear" id="sg-fill">
+	<script type="text/mustache" id="pl-panel-template-base">
+		<div id="sg-{{ patternPartial }}-panels-tabs-container">
+			<div id="sg-{{ patternPartial }}-tabs">
+				<ul>
+					{{# panels }}
+						<li id="sg-{{ patternPartial }}-{{ id }}-tab" data-patternpartial="{{ patternPartial }}" data-panelid="{{ id }}">{{ name }}</li>
+					{{/ panels }}
+				</ul>
+			</div>
+			<div id="sg-{{ patternPartial }}-panels" class="clear">
+				{{# panels }}
+					<div id="sg-{{ patternPartial }}-{{ id }}-panel" style="display: none">
+						{{{ content }}}
+					</div>
+				{{/ panels }}
 			</div>
 		</div>
 	</script>
 	
 	<!-- the tempalte for the info tab in the code view slider -->
-	<script type="text/mustache" id="pl-code-template-info-tab">
+	<script type="text/mustache" id="pl-panel-template-info">
 		<div class="sg-code-breadcrumb">{{ patternBreadcrumb }}</div>
 		<div class="sg-code-desc">
 			<h2>{{ patternName }}</h2>
@@ -147,38 +153,45 @@
 					{{{ . }}}
 				{{/ patternDescAdditions }}
 			</p>
-		{{# patternStateExists }}
-		<div id="sg-code-patternstate">
-			<p>
-				The state of the <span class="sg-code-patternname">{{ patternName }}</span> pattern is: <span id="sg-code-patternstate-fill"></span>
-			</p>
 		</div>
+		{{# patternStateExists }}
+			<div id="sg-code-patternstate">
+				<p>
+					The state of the <span class="sg-code-patternname">{{ patternName }}</span> pattern is: <span id="sg-code-patternstate-fill"></span>
+				</p>
+			</div>
 		{{/ patternStateExists }}
 		{{# lineageExists }}
-		<div id="sg-code-lineage">
-			<p>
-				The <span class="sg-code-patternname">{{ patternName }}</span> pattern contains the following patterns:
-				<span id="sg-code-lineage-fill">
-				{{# lineage }}
-					<a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ . }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>
-				{{/ lineage }}
-				</span>
-			</p>
-		</div>
+			<div id="sg-code-lineage">
+				<p>
+					The <span class="sg-code-patternname">{{ patternName }}</span> pattern contains the following patterns:
+					<span id="sg-code-lineage-fill">
+					{{# lineage }}
+						<a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ . }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>
+					{{/ lineage }}
+					</span>
+				</p>
+			</div>
 		{{/ lineageExists }}
 		{{# lineageRExists }}
-		<div id="sg-code-lineager">
-			<p>
-				The <span class="sg-code-patternname">{{ patternName }}</span> pattern is included in the following patterns:
-				<span id="sg-code-lineager-fill">
-				{{# lineageR }}
-					<a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ . }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>
-				{{/ lineageR }}
-				</span>
-			</p>
-		</div>
+			<div id="sg-code-lineager">
+				<p>
+					The <span class="sg-code-patternname">{{ patternName }}</span> pattern is included in the following patterns:
+					<span id="sg-code-lineager-fill">
+					{{# lineageR }}
+						<a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ . }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>
+					{{/ lineageR }}
+					</span>
+				</p>
+			</div>
 		{{/ lineageRExists }}
-
+	</script>
+	
+	<!-- the tempalte for code-related tabs in the code view slider -->
+	<script type="text/mustache" id="pl-panel-template-code">
+		<pre class="language-markup">
+			<code id="sg-code-fill-{{ language }}" class="language-{{ language }}">{{{ code }}}</code>
+		</pre>
 	</script>
 	
 	<!-- the template for the annotations viewer slider -->

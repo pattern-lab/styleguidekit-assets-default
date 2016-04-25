@@ -1,4 +1,179 @@
 /*!
+ * jQuery Cookie Plugin v1.3
+ * https://github.com/carhartl/jquery-cookie
+ *
+ * Copyright 2011, Klaus Hartl
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://www.opensource.org/licenses/mit-license.php
+ * http://www.opensource.org/licenses/GPL-2.0
+ */
+(function ($, document, undefined) {
+
+	var pluses = /\+/g;
+	
+	function raw(s) {
+		return s;
+	}
+	
+	function decoded(s) {
+		return decodeURIComponent(s.replace(pluses, ' '));
+	}
+	
+	var config = $.cookie = function (key, value, options) {
+		
+		// write
+		if (value !== undefined) {
+			options = $.extend({}, config.defaults, options);
+			
+			if (value === null) {
+				options.expires = -1;
+			}
+			
+			if (typeof options.expires === 'number') {
+				var days = options.expires, t = options.expires = new Date();
+				t.setDate(t.getDate() + days);
+			}
+			
+			value = config.json ? JSON.stringify(value) : String(value);
+			
+			return (document.cookie = [
+				encodeURIComponent(key), '=', config.raw ? value : encodeURIComponent(value),
+				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+				options.path    ? '; path=' + options.path : '',
+				options.domain  ? '; domain=' + options.domain : '',
+				options.secure  ? '; secure' : ''
+			].join(''));
+		}
+		
+		// read
+		var decode = config.raw ? raw : decoded;
+		var cookies = document.cookie.split('; ');
+		for (var i = 0, l = cookies.length; i < l; i++) {
+			var parts = cookies[i].split('=');
+			if (decode(parts.shift()) === key) {
+				var cookie = decode(parts.join('='));
+				return config.json ? JSON.parse(cookie) : cookie;
+			}
+		}
+		
+		return null;
+	};
+	
+	config.defaults = {};
+	
+	$.removeCookie = function (key, options) {
+		if ($.cookie(key) !== null) {
+			$.cookie(key, null, options);
+			return true;
+		}
+		return false;
+	};
+
+})(jQuery, document);
+
+/*!
+ * Data Saver
+ *
+ * Copyright (c) 2013-2014 Dave Olsen, http://dmolsen.com
+ * Licensed under the MIT license
+ */
+
+var DataSaver = {
+	
+	// the name of the cookie to store the data in
+	cookieName: "patternlab",
+	
+	/**
+	* Add a given value to the cookie
+	* @param  {String}       the name of the key
+	* @param  {String}       the value
+	*/
+	addValue: function (name,val) {
+		var cookieVal = $.cookie(this.cookieName);
+		cookieVal = ((cookieVal === null) || (cookieVal === "")) ? name+"~"+val : cookieVal+"|"+name+"~"+val;
+		$.cookie(this.cookieName,cookieVal);
+	},
+	
+	/**
+	* Update a value found in the cookie. If the key doesn't exist add the value
+	* @param  {String}       the name of the key
+	* @param  {String}       the value
+	*/
+	updateValue: function (name,val) {
+		if (this.findValue(name)) {
+			var updateCookieVals = "";
+			var cookieVals = $.cookie(this.cookieName).split("|");
+			for (var i = 0; i < cookieVals.length; i++) {
+				var fieldVals = cookieVals[i].split("~");
+				if (fieldVals[0] == name) {
+					fieldVals[1] = val;
+				}
+				updateCookieVals += (i > 0) ? "|"+fieldVals[0]+"~"+fieldVals[1] : fieldVals[0]+"~"+fieldVals[1];
+			}
+			$.cookie(this.cookieName,updateCookieVals);
+		} else {
+			this.addValue(name,val);
+		}
+	},
+	
+	/**
+	* Remove the given key
+	* @param  {String}       the name of the key
+	*/
+	removeValue: function (name) {
+		var updateCookieVals = "";
+		var cookieVals = $.cookie(this.cookieName).split("|");
+		var k = 0;
+		for (var i = 0; i < cookieVals.length; i++) {
+			var fieldVals = cookieVals[i].split("~");
+			if (fieldVals[0] != name) {
+				updateCookieVals += (k === 0) ? fieldVals[0]+"~"+fieldVals[1] : "|"+fieldVals[0]+"~"+fieldVals[1];
+				k++;
+			}
+		}
+		$.cookie(this.cookieName,updateCookieVals);
+	},
+	
+	/**
+	* Find the value using the given key
+	* @param  {String}       the name of the key
+	*
+	* @return {String}       the value of the key or false if the value isn't found
+	*/
+	findValue: function (name) {
+		if ($.cookie(this.cookieName)) {
+			var cookieVals = $.cookie(this.cookieName).split("|");
+			for (var i = 0; i < cookieVals.length; i++) {
+				var fieldVals = cookieVals[i].split("~");
+				if (fieldVals[0] == name) {
+					return fieldVals[1];
+				}
+			}
+		} 
+		return false;
+	}
+	
+};
+
+/*!
+ * Simple Layout Rendering for Pattern Lab
+ *
+ * Copyright (c) 2014 Dave Olsen, http://dmolsen.com
+ * Licensed under the MIT license
+ */
+
+/* load pattern nav */
+var template         = document.getElementById("pl-pattern-nav-template");
+var templateCompiled = Hogan.compile(template.innerHTML);
+var templateRendered = templateCompiled.render(navItems);
+document.getElementById("pl-pattern-nav-target").innerHTML = templateRendered;
+
+/* load ish controls */
+var template         = document.getElementById("pl-ish-controls-template");
+var templateCompiled = Hogan.compile(template.innerHTML);
+var templateRendered = templateCompiled.render(ishControls);
+document.getElementById("sg-controls").innerHTML = templateRendered;
+/*!
  * URL Handler
  *
  * Copyright (c) 2013-2014 Dave Olsen, http://dmolsen.com
@@ -194,861 +369,564 @@ window.onpopstate = function (event) {
 	urlHandler.popPattern(event);
 };
 /*!
- * Annotations Support for the Viewer
+ * Modal for the Viewer Layer
+ * For both annotations and code/info
  *
- * Copyright (c) 2013 Brad Frost, http://bradfrostweb.com & Dave Olsen, http://dmolsen.com
+ * Copyright (c) 2016 Dave Olsen, http://dmolsen.com
  * Licensed under the MIT license
  *
  * @requires url-handler.js
  *
  */
 
-var annotationsViewer = {
-	
-	// set-up default sections
-	commentsActive:          false,
-	commentsViewAllActive:   false,
-	targetOrigin:            (window.location.protocol === "file:") ? "*" : window.location.protocol+"//"+window.location.host,
-	moveToOnInit:            0,
-	
-	/**
-	* add the onclick handler to the annotations link in the main nav
-	*/
-	onReady: function() {
-		
-		// not sure this is used anymore...
-		$('body').addClass('comments-ready');
-
-		$(window).resize(function() {
-			if(!annotationsViewer.commentsActive) {
-				annotationsViewer.slideComment($('#sg-annotation-container').outerHeight());
-			}
-		});
-
-		$('#sg-t-annotations').click(function(e) {
-			
-			e.preventDefault();
-			
-			// remove the class from the "eye" nav item
-			$('#sg-t-toggle').removeClass('active');
-			
-			// turn the annotations section on and off
-			annotationsViewer.toggleComments();
-			
-		});
-		
-		// initialize the annotations viewer
-		annotationsViewer.commentContainerInit();
-		
-		// load the query strings in case code view has to show by default
-		var queryStringVars = urlHandler.getRequestVars();
-		if ((queryStringVars.view !== undefined) && ((queryStringVars.view === "annotations") || (queryStringVars.view === "a"))) {
-			annotationsViewer.openComments();
-			if (queryStringVars.number !== undefined) {
-				annotationsViewer.moveToOnInit = queryStringVars.number;
-			}
-		}
-		
-	},
-	
-	/**
-	* decide on if the annotations panel should be open or closed
-	*/
-	toggleComments: function() {
-		
-		if (!annotationsViewer.commentsActive) {
-			annotationsViewer.openComments();
-		} else {
-			annotationsViewer.closeComments();
-		}
-		
-	},
-	
-	/**
-	* open the annotations panel
-	*/
-	openComments: function() {
-		
-		var obj;
-		
-		// make sure the code view overlay is off before showing the annotations view
-		$('#sg-t-code').removeClass('active');
-		codeViewer.codeActive = false;
-		obj = JSON.stringify({ "event": "patternLab.codePanel", "codeToggle": "off" });
-		document.getElementById('sg-viewport').contentWindow.postMessage(obj,annotationsViewer.targetOrigin);
-		codeViewer.slideCode(999);
-		
-		// tell the iframe annotation view has been turned on
-		obj = JSON.stringify({ "event": "patternLab.annotationPanel", "commentToggle": "on" });
-		document.getElementById('sg-viewport').contentWindow.postMessage(obj,annotationsViewer.targetOrigin);
-		
-		// note that it's turned on in the viewer
-		annotationsViewer.commentsActive = true;
-		$('#sg-t-annotations').addClass('active');
-	},
-	
-	/**
-	* close the annotations panel
-	*/
-	closeComments: function() {
-		annotationsViewer.commentsActive = false;
-		var obj = JSON.stringify({"event": "patternLab.annotationPanel", "commentToggle": "off" });
-		document.getElementById('sg-viewport').contentWindow.postMessage(obj,annotationsViewer.targetOrigin);
-		annotationsViewer.slideComment($('#sg-annotation-container').outerHeight());
-		$('#sg-t-annotations').removeClass('active');
-	},
-	
-	/**
-	* add the basic mark-up and events for the annotations container
-	*/
-	commentContainerInit: function() {
-		
-		// the bulk of this template is in core/templates/index.mustache
-		if (document.getElementById("sg-annotation-container") === null) {
-			$('<div id="sg-annotation-container" class="sg-view-container"></div>').html("").appendTo('body').css('bottom',-$(document).outerHeight());
-			setTimeout(function(){ $('#sg-annotation-container').addClass('anim-ready'); },50); //Add animation class once container is positioned out of frame
-		}
-		
-		// make sure the close button handles the click
-		$('body').delegate('#sg-annotation-close-btn','click',function() {
-			annotationsViewer.commentsActive = false;
-			$('#sg-t-annotations').removeClass('active');
-			annotationsViewer.slideComment($('#sg-annotation-container').outerHeight());
-			var obj = JSON.stringify({"event": "patternLab.annotationPanel", "commentToggle": "off" });
-			document.getElementById('sg-viewport').contentWindow.postMessage(obj,annotationsViewer.targetOrigin);
-			return false;
-		});
-		
-	},
-	
-	/**
-	* slides the panel
-	*/
-	slideComment: function(pos) {
-		$('#sg-annotation-container').css('bottom',-pos);
-	},
-	
-	/**
-	* moves to a particular item in the viewer
-	*/
-	moveTo: function(number) {
-		if (document.getElementById("annotation-"+number) !== undefined) {
-			var top = document.getElementById("annotation-"+number).offsetTop;
-			$('#sg-annotation-container').animate({scrollTop: top - 10}, 600);
-		}
-	},
-	
-	/**
-	* when turning on or switching between patterns with annotations view on make sure we get
-	* the annotations from from the pattern via post message
-	*/
-	updateComments: function(data) {
-		
-		/* load annotation view */
-		var template         = document.getElementById("pl-annotations-template");
-		var templateCompiled = Hogan.compile(template.innerHTML);
-		var templateRendered = templateCompiled.render(data);
-		document.getElementById("sg-annotation-container").innerHTML = templateRendered;
-		
-		// slide the comment section into view
-		annotationsViewer.slideComment(0);
-		
-		if (annotationsViewer.moveToOnInit != "0") {
-			annotationsViewer.moveTo(annotationsViewer.moveToOnInit);
-			annotationsViewer.moveToOnInit = "0";
-		}
-		
-	},
-	
-	/**
-	* toggle the comment pop-up based on a user clicking on the pattern
-	* based on the great MDN docs at https://developer.mozilla.org/en-US/docs/Web/API/window.postMessage
-	* @param  {Object}      event info
-	*/
-	receiveIframeMessage: function(event) {
-		
-		// does the origin sending the message match the current host? if not dev/null the request
-		if ((window.location.protocol !== "file:") && (event.origin !== window.location.protocol+"//"+window.location.host)) {
-			return;
-		}
-		
-		var data = (typeof event.data !== "string") ? event.data : JSON.parse(event.data);
-		
-		if (data.event !== undefined) {
-			
-			if (data.event == "patternLab.annotationPanel") {
-				if (data.commentOverlay === "on") {
-					annotationsViewer.updateComments(data);
-				} else {
-					annotationsViewer.slideComment($('#sg-annotation-container').outerHeight());
-				}
-			} else if (data.event == "patternLab.annotationUpdateState") {
-				document.getElementById("annotation-state-"+data.displayNumber).innerHTML = (data.annotationState === true) ? "" : " hidden";
-			} else if (data.event == "patternLab.annotationNumberClicked") {
-				annotationsViewer.moveTo(data.displaynumber);
-			} else if (data.event == "patternLab.keyPress") {
-				if (data.keyPress == 'ctrl+shift+a') {
-					annotationsViewer.toggleComments();
-					return false;
-				} else if (data.keyPress == 'esc') {
-					if (annotationsViewer.commentsActive) {
-						annotationsViewer.closeComments();
-						return false;
-					}
-				}
-			} else if (data.event == "patternLab.pageLoad") {
-				if (annotationsViewer.commentsViewAllActive && (data.patternpartial.indexOf("viewall-") != -1)) {
-					var obj = JSON.stringify({ "commentToggle": "on" });
-					document.getElementById('sg-viewport').contentWindow.postMessage(obj,annotationsViewer.targetOrigin);
-				}
-			}
-			
-		}
-		
-	}
-	
+var modalViewer = {
+  
+  // set up some defaults
+  active:        false,
+  template:      'info',
+  patternData:   {},
+  targetOrigin:  (window.location.protocol === 'file:') ? '*' : window.location.protocol+'//'+window.location.host,
+  
+  /**
+  * initialize the modal window
+  */
+  onReady: function() {
+    
+    // watch for resizes and hide the modal container as appropriate when the modal is already hidden
+    $(window).on('resize', function() {
+      if (modalViewer.active === false) {
+        modalViewer.slide($('#sg-modal-container').outerHeight());
+      }
+    });
+    
+    // make sure the listener for checkpanels is set-up
+    Dispatcher.addListener('insertPanels', modalViewer.insert);
+    
+    // add the info/code panel onclick handler
+    $('#sg-t-info').click(function(e) {
+      e.preventDefault();
+      modalViewer.toggle('info');
+    });
+    
+    // add the annotations panel onclick handler
+    $('#sg-t-annotations').click(function(e) {
+      e.preventDefault();
+      modalViewer.toggle('annotations');
+    });
+    
+    // if the iframe loads a new page query the pattern for its info if the modal is active
+    $('#sg-viewport').on('load', function() {
+      if (modalViewer.active) {
+        modalViewer.queryPattern();
+      }
+    });
+    
+    // make sure the modal viewer is not viewable
+    modalViewer.hide();
+    
+    // make sure the close button handles the click
+    $('#sg-modal-close-btn').on('click', function(e) {
+      e.preventDefault();
+      modalViewer.close();
+    });
+    
+    // review the query strings in case there is something the modal viewer is supposed to handle by default
+    var queryStringVars = urlHandler.getRequestVars();
+    
+    // code panel related query string info
+    if ((queryStringVars.view !== undefined) && ((queryStringVars.view === 'code') || (queryStringVars.view === 'c'))) {
+      panelsViewer.initCopy = ((queryStringVars.copy !== undefined) && (queryStringVars.copy === 'true')) ? true : false;
+      modalViewer.template = 'info';
+      modalViewer.queryPattern();
+    }
+    
+    // annotation panel related query string info
+    if ((queryStringVars.view !== undefined) && ((queryStringVars.view === 'annotations') || (queryStringVars.view === 'a'))) {
+      if (queryStringVars.number !== undefined) {
+        panelsViewer.initMoveTo = queryStringVars.number;
+      }
+      modalViewer.template = 'comments';
+      modalViewer.queryPattern();
+    }
+    
+  },
+  
+  /**
+  * toggle the modal window open and closed
+  */
+  toggle: function() {
+    
+    if (!modalViewer.active) {
+      modalViewer.active = true;
+      modalViewer.queryPattern();
+    } else {
+      modalViewer.close();
+    }
+    
+  },
+  
+  /**
+  * open the modal window
+  */
+  open: function() {
+    
+    // make sure the modal viewer and other options are off just in case
+    modalViewer.close();
+    
+    // note it's turned on in the viewer
+    modalViewer.active = true;
+    
+    // add an active class to the button that matches this template
+    $('#sg-t-'+modalViewer.template+' .sg-checkbox').addClass('active');
+    
+    // show the modal
+    modalViewer.show();
+    
+  },
+  
+  /**
+  * close the modal window
+  */
+  close: function() {
+    
+    // not that the modal viewer is no longer active
+    modalViewer.active = false;
+    
+    // remove the active class from all of the checkbox items
+    $('.sg-checkbox').removeClass('active');
+    
+    // hide the modal
+    modalViewer.hide();
+    
+  },
+  
+  hide: function() {
+    modalViewer.slide($('#sg-modal-container').outerHeight());
+  },
+  
+  insert: function(templateRendered, patternPartial, iframePassback) {
+    
+    if (iframePassback) {
+      
+      // send a message to the pattern
+      var obj = JSON.stringify({ 'event': 'patternLab.patternModalInsert', 'patternPartial': patternPartial, 'modalContent': templateRendered.outerHTML });
+      document.getElementById('sg-viewport').contentWindow.postMessage(obj, modalViewer.targetOrigin);
+      
+    } else {
+      
+      // insert the panels
+      $('#sg-modal-container-content').html(templateRendered);
+      
+      // with the content inserted open the modal
+      modalViewer.open();
+      
+    }
+    
+    
+  },
+  
+  /**
+  * refresh the modal if a new pattern is loaded and the modal is active
+  */
+  refresh: function(patternData, iframePassback) {
+    
+    // if this is a styleguide view close the modal
+    if (iframePassback) {
+      modalViewer.hide();
+    }
+    
+    // clear any selections that might have been made
+    panelsViewer.clear();
+    
+    // gather the data that will fill the modal window
+    panelsViewer.gatherPanels(patternData, iframePassback);
+    
+  },
+  
+  /**
+  * slides the modal window into or out of view
+  */
+  slide: function(pos) {
+    pos = (pos === 0) ? 0 : -pos;
+    $('#sg-modal-container').css('bottom',pos);
+  },
+  
+  show: function() {
+    modalViewer.slide(0);
+  },
+  
+  /**
+  * ask the pattern for info so we can open the modal window and populate it
+  */
+  queryPattern: function() {
+    
+    // send a message to the pattern
+    var obj = JSON.stringify({ 'event': 'patternLab.patternQuery' });
+    document.getElementById('sg-viewport').contentWindow.postMessage(obj, modalViewer.targetOrigin);
+    
+  },
+  
+  /**
+  * toggle the comment pop-up based on a user clicking on the pattern
+  * based on the great MDN docs at https://developer.mozilla.org/en-US/docs/Web/API/window.postMessage
+  * @param  {Object}      event info
+  */
+  receiveIframeMessage: function(event) {
+    
+    // does the origin sending the message match the current host? if not dev/null the request
+    if ((window.location.protocol !== 'file:') && (event.origin !== window.location.protocol+'//'+window.location.host)) {
+      return;
+    }
+    
+    var data = (typeof event.data !== 'string') ? event.data : JSON.parse(event.data);
+    
+    // refresh the modal if a new pattern is loaded and the modal is active
+    if ((data.event !== undefined) && (data.event == 'patternLab.patternQueryInfo')) {
+      modalViewer.refresh(data.patternData, data.iframePassback);
+    }
+    
+  }
+  
 };
 
-$(document).ready(function() { annotationsViewer.onReady(); });
-window.addEventListener("message", annotationsViewer.receiveIframeMessage, false);
-
-// make sure if a new pattern or view-all is loaded that comments are turned on as appropriate
-$('#sg-viewport').load(function() {
-	if (annotationsViewer.commentsActive) {
-		var obj = JSON.stringify({ "commentToggle": "on" });
-		document.getElementById('sg-viewport').contentWindow.postMessage(obj,annotationsViewer.targetOrigin);
-	}
-});
-
-// no idea why this has to be outside. there's something funky going on with the JS pattern
-$('#sg-view li a').click(function() {
-	$(this).parent().parent().removeClass('active');
-	$(this).parent().parent().parent().parent().removeClass('active');
-});
-
-// toggle the annotations panel
-jwerty.key('ctrl+shift+a', function (e) {
-	annotationsViewer.toggleComments();
-	return false;
-});
-
-// close the annotations panel if using escape
-jwerty.key('esc', function (e) {
-	if (annotationsViewer.commentsActive) {
-		annotationsViewer.closeComments();
-		return false;
-	}
-});
+// when the document is ready make sure the modal is ready
+$(document).ready(function() { modalViewer.onReady(); });
+window.addEventListener("message", modalViewer.receiveIframeMessage, false);
 
 /*!
- * Code View Support for the Viewer
+ * Panels Util
+ * For both styleguide and viewer
  *
- * Copyright (c) 2013 Brad Frost, http://bradfrostweb.com & Dave Olsen, http://dmolsen.com
+ * Copyright (c) 2013-16 Brad Frost, http://bradfrostweb.com & Dave Olsen, http://dmolsen.com
  * Licensed under the MIT license
  *
  * @requires url-handler.js
  *
  */
 
-var codeViewer = {
-	
-	// set up some defaults
-	codeActive:   false,
-	targetOrigin: (window.location.protocol === "file:") ? "*" : window.location.protocol+"//"+window.location.host,
-	copyOnInit:   false,
-	tabActive:   "sg-code-tab-info",
-	
-	/**
-	* add the onclick handler to the code link in the main nav
-	*/
-	onReady: function() {
-		
-		// not sure this is needed anymore...
-		$('body').addClass('code-ready');
-
-		$(window).resize(function() {
-			if(!codeViewer.codeActive) {
-				codeViewer.slideCode($('#sg-code-container').outerHeight());
-			}
-		});
-		
-		// add the onclick handler
-		$('#sg-t-code').click(function(e) {
-			
-			e.preventDefault();
-			
-			// remove the class from the "eye" nav item
-			$('#sg-t-toggle').removeClass('active');
-			
-			// if the code link in the main nav is active close the panel. otherwise open
-			if ($(this).hasClass('active')) {
-				codeViewer.closeCode();
-			} else {
-				codeViewer.openCode();
-			}
-			
-		});
-		
-		// initialize the code viewer
-		codeViewer.codeContainerInit();
-		
-		// load the query strings in case code view has to show by default
-		var queryStringVars = urlHandler.getRequestVars();
-		if ((queryStringVars.view !== undefined) && ((queryStringVars.view === "code") || (queryStringVars.view === "c"))) {
-			codeViewer.copyOnInit = ((queryStringVars.copy !== undefined) && (queryStringVars.copy === "true")) ? true : false;
-			codeViewer.openCode();
-		}
-		
-	},
-	
-	/**
-	* decide on if the code panel should be open or closed
-	*/
-	toggleCode: function() {
-		
-		if (!codeViewer.codeActive) {
-			codeViewer.openCode();
-		} else {
-			codeViewer.closeCode();
-		}
-		
-	},
-	
-	/**
-	* after clicking the code view link open the panel
-	*/
-	openCode: function() {
-		
-		var obj;
-		
-		// make sure the annotations overlay is off before showing code view
-		$('#sg-t-annotations').removeClass('active');
-		annotationsViewer.commentsActive = false;
-		obj = JSON.stringify({ "event": "patternLab.annotationPanel", "commentToggle": "off" });
-		document.getElementById('sg-viewport').contentWindow.postMessage(obj,codeViewer.targetOrigin);
-		annotationsViewer.slideComment(999);
-		
-		// tell the iframe code view has been turned on
-		obj = JSON.stringify({ "event": "patternLab.codePanel", "codeToggle": "on" });
-		document.getElementById('sg-viewport').contentWindow.postMessage(obj,codeViewer.targetOrigin);
-		
-		// note it's turned on in the viewer
-		codeViewer.codeActive = true;
-		$('#sg-t-code').addClass('active');
-		
-	},
-	
-	/**
-	* after clicking the code view link close the panel
-	*/
-	closeCode: function() {
-		var obj = JSON.stringify({ "event": "patternLab.codePanel", "codeToggle": "off" });
-		document.getElementById('sg-viewport').contentWindow.postMessage(obj,codeViewer.targetOrigin);
-		codeViewer.codeActive = false;
-		codeViewer.slideCode($('#sg-code-container').outerHeight());
-		$('#sg-t-code').removeClass('active');
-	},
-	
-	/**
-	* add the basic mark-up and events for the code container
-	*/
-	codeContainerInit: function() {
-		
-		// the bulk of this template is in core/templates/index.mustache
-		if (document.getElementById("sg-code-container") === null) {
-			$('<div id="sg-code-container" class="sg-view-container"></div>').html("").appendTo('body').css('bottom',-$(document).outerHeight());
-			setTimeout(function(){ $('#sg-code-container').addClass('anim-ready'); },50); //Add animation class once container is positioned out of frame
-		}
-		
-	},
-	
-	/**
-	* insert the code related tabs
-	*/
-	insertCode: function(tab) {
-		
-		// create insert elements
-		var pre = $("<pre></pre>");
-		pre.addClass = "language-markup";
-		var code = $("<code></code>");
-		code.attr("id","sg-code-fill");
-		pre.append(code);
-		$("#sg-fill").append(pre);
-		
-		// original code for modifying the fill
-		$("#sg-code-fill").html(tab.content).text();
-		$("#sg-code-fill").removeClass().addClass("language-"+tab.language);
-		Prism.highlightElement(document.getElementById("sg-code-fill"));
-		
-	},
-	
-	/**
-	* insert the info related tab
-	*/
-	insertInfo: function(tab) {
-		
-		// create insert elements
-		var div = $("<div></div>");
-		div.attr("id","sg-info-fill");
-		$("#sg-fill").append(div);
-		
-		// original code for modifying the fill
-		$("#sg-info-fill").html(tab.content).text();
-		
-	},
-	
-	/**
-	* depending on what tab is clicked this swaps out the code container. makes sure prism highlight is added.
-	*/
-	swapCode: function(type) {
-		
-		$("#sg-fill").empty();
-		
-		for (i = 0; i < tabs.length; ++i) {
-			
-			var tab = tabs[i];
-			
-			if (tab.id == type) {
-				
-				// when clicking on a lineage item change the iframe source
-				$('#sg-code-lineage-fill a, #sg-code-lineager-fill a').on("click", function(e){
-					e.preventDefault();
-					$("#sg-code-loader").css("display","block");
-					var obj = JSON.stringify({ "event": "patternLab.pathUpdate", "path": urlHandler.getFileName($(this).attr("data-patternpartial")) });
-					document.getElementById("sg-viewport").contentWindow.postMessage(obj,codeViewer.targetOrigin);
-				});
-				
-				$('.sg-code-title-active').removeClass('sg-code-title-active');
-				$('#'+tab.id).addClass('sg-code-title-active');
-				
-				if ((tab.prismHighlight !== undefined) && (tab.language !== undefined) && (tab.prismHighlight)) {
-					this.insertCode(tab);
-				} else {
-					this.insertInfo(tab);
-				}
-				
-				codeViewer.tabActive = type;
-				
-			}
-			
-		}
-		
-	},
-	
-	/**
-	* select the code where using cmd+a/ctrl+a
-	*/
-	selectCode: function() {
-		if (codeViewer.codeActive) {
-			selection = window.getSelection();
-			range = document.createRange();
-			range.selectNodeContents(document.getElementById("sg-code-fill"));
-			selection.removeAllRanges();
-			selection.addRange(range);
-		}
-	},
-	
-	/**
-	* clear any selection of code when swapping tabs or opening a new pattern
-	*/
-	clearSelection: function() {
-		if (codeViewer.codeActive) {
-			if (window.getSelection().empty) {
-				window.getSelection().empty();
-			} else if (window.getSelection().removeAllRanges) {
-				window.getSelection().removeAllRanges();
-			}
-		}
-	},
-	
-	/**
-	* slides the panel
-	*/
-	slideCode: function(pos) {
-		$('#sg-code-container').css('bottom',-pos);
-	},
-	
-	/**
-	* when loading the code view make sure the active tab is highlighted and filled in appropriately
-	*/
-	activateDefaultTab: function(type,fill,i) {
-		
-		$('.sg-code-title-active').removeClass('sg-code-title-active');
-		$('#'+type).addClass('sg-code-title-active');
-		
-		if ((tabs[i].prismHighlight !== undefined) && (tabs[i].language !== undefined) && (tabs[i].prismHighlight)) {
-			this.insertCode(tabs[i]);
-		} else {
-			this.insertInfo(tabs[i]);
-		}
-		
-		if (codeViewer.copyOnInit) {
-			codeViewer.selectCode();
-			codeViewer.copyOnInit = false;
-		}
-		
-	},
-	
-	/**
-	* when turning on or switching between patterns with code view on make sure we get
-	* the code from from the pattern via post message
-	*/
-	updateCode: function(patternData) {
-		
-		// gather tabs from plugins
-		Dispatcher.trigger("setupTabs");
-		
-		// render the code container
-		var template         = document.getElementById("pl-code-template");
-		var templateCompiled = Hogan.compile(template.innerHTML);
-		var templateRendered = templateCompiled.render({ "tabs": tabs });
-		$('#sg-code-container').html(templateRendered);
-		
-		// make sure the close button handles the click
-		$('body').delegate('#sg-code-close-btn','click',function() {
-			codeViewer.closeCode();
-			return false;
-		});
-		
-		// clear any selections that might have been made
-		codeViewer.clearSelection();
-		
-		// figure out if lineage should be drawn
-		patternData.lineageExists = false;
-		if (patternData.lineage.length !== 0) {
-			patternData.lineageExists = true;
-		}
-		
-		// figure out if reverse lineage should be drawn
-		patternData.lineageRExists = false;
-		if (patternData.lineageR.length !== 0) {
-			patternData.lineageRExists = true;
-		}
-		
-		// evaluate tabs array and create content
-		for (i = 0; i < tabs.length; ++i) {
-			
-			var tab = tabs[i];
-			
-			if ((tab.template !== undefined) && (tab.template)) {
-				
-				var template         = document.getElementById(tab.templateID);
-				var templateCompiled = Hogan.compile(template.innerHTML);
-				var templateRendered = templateCompiled.render(patternData);
-				
-				tabs[i].content = templateRendered;
-				
-			} else if ((tab.httpRequest !== undefined) && (tab.httpRequest)) {
-				
-				var fileName = urlHandler.getFileName(patternData.patternPartial);
-				var e        = new XMLHttpRequest();
-				e.i          = i;
-				e.onload     = function () { tabs[this.i].content = this.responseText; if (codeViewer.tabActive == tabs[this.i].id) { codeViewer.activateDefaultTab(tabs[this.i].id,tabs[this.i].content,this.i); } };
-				e.open("GET", fileName.replace(/\.html/,tab.httpRequestReplace) + "?" + (new Date()).getTime(), true);
-				e.send();
-				
-			}
-			
-			// make sure the click events are handled
-			$('#'+tab.id).click( (function(tab) {
-				return function() {
-					codeViewer.swapCode(tab.id);
-				};
-			})(tab));
-			
-			// activate the default tab assuming it's not relying on an HTTP request
-			if ((this.tabActive == tab.id) && ((tab.httpRequest !== undefined) && (!tab.httpRequest))) {
-				this.activateDefaultTab(tab.id,tab.content,i);
-			}
-			
-		}
-		
-		// move the code into view
-		codeViewer.slideCode(0);
-		
-		$("#sg-code-loader").css("display","none");
-		
-	},
-	
-	/**
-	* toggle the comment pop-up based on a user clicking on the pattern
-	* based on the great MDN docs at https://developer.mozilla.org/en-US/docs/Web/API/window.postMessage
-	* @param  {Object}      event info
-	*/
-	receiveIframeMessage: function(event) {
-		
-		// does the origin sending the message match the current host? if not dev/null the request
-		if ((window.location.protocol !== "file:") && (event.origin !== window.location.protocol+"//"+window.location.host)) {
-			return;
-		}
-		
-		var data = (typeof event.data !== "string") ? event.data : JSON.parse(event.data);
-		
-		// switch based on stuff related to the postmessage
-		if ((data.event !== undefined) && (data.event == "patternLab.codePanel")) {
-			if (data.codeOverlay === "on") {
-				codeViewer.updateCode(data.patternData);
-			} else {
-				codeViewer.slideCode($('#sg-code-container').outerHeight());
-			}
-		}
-		
-		if ((data.event !== undefined) && (data.event == "patternLab.keyPress")) {
-			
-			if (data.keyPress == 'ctrl+shift+c') {
-				codeViewer.toggleCode();
-				return false;
-			} else if (data.keyPress == 'cmd+a') {
-				codeViewer.selectCode();
-				return false;
-			} else if (data.keyPress == 'ctrl+shift+u') {
-				if (codeViewer.codeActive) {
-					codeViewer.swapCode("m");
-					return false;
-				}
-			} else if (data.keyPress == 'ctrl+shift+y') {
-				if (codeViewer.codeActive) {
-					codeViewer.swapCode("e");
-					return false;
-				}
-			} else if (data.keyPress == 'esc') {
-				if (codeViewer.codeActive) {
-					codeViewer.closeCode();
-					return false;
-				}
-			}
-			
-		}
-		
-	}
-	
-};
-
-// when the document is ready make the codeViewer ready
-$(document).ready(function() { codeViewer.onReady(); });
-window.addEventListener("message", codeViewer.receiveIframeMessage, false);
-
-// make sure if a new pattern or view-all is loaded that comments are turned on as appropriate
-$('#sg-viewport').load(function() {
-	if (codeViewer.codeActive) {
-		var obj = JSON.stringify({ "event": "patternLab.codePanel", "codeToggle": "on" });
-		document.getElementById('sg-viewport').contentWindow.postMessage(obj,codeViewer.targetOrigin);
-	}
-});
-
-// toggle the code panel
-jwerty.key('ctrl+shift+c', function (e) {
-	codeViewer.toggleCode();
-	return false;
-});
-
-// when the code panel is open hijack cmd+a so that it only selects the code view
-jwerty.key('cmd+a/ctrl+a', function (e) {
-	if (codeViewer.codeActive) {
-		codeViewer.selectCode();
-		return false;
-	}
-});
-
-// open the mustache panel
-jwerty.key('ctrl+shift+u', function (e) {
-	if (codeViewer.codeActive) {
-		codeViewer.swapCode("m");
-		return false;
-	}
-});
-
-// open the html panel
-jwerty.key('ctrl+shift+y', function (e) {
-	if (codeViewer.codeActive) {
-		codeViewer.swapCode("e");
-		return false;
-	}
-});
-
-// close the code panel if using escape
-jwerty.key('esc', function (e) {
-	if (codeViewer.codeActive) {
-		codeViewer.closeCode();
-		return false;
-	}
-});
-
-/*!
- * jQuery Cookie Plugin v1.3
- * https://github.com/carhartl/jquery-cookie
- *
- * Copyright 2011, Klaus Hartl
- * Dual licensed under the MIT or GPL Version 2 licenses.
- * http://www.opensource.org/licenses/mit-license.php
- * http://www.opensource.org/licenses/GPL-2.0
- */
-(function ($, document, undefined) {
-
-	var pluses = /\+/g;
-	
-	function raw(s) {
-		return s;
-	}
-	
-	function decoded(s) {
-		return decodeURIComponent(s.replace(pluses, ' '));
-	}
-	
-	var config = $.cookie = function (key, value, options) {
-		
-		// write
-		if (value !== undefined) {
-			options = $.extend({}, config.defaults, options);
-			
-			if (value === null) {
-				options.expires = -1;
-			}
-			
-			if (typeof options.expires === 'number') {
-				var days = options.expires, t = options.expires = new Date();
-				t.setDate(t.getDate() + days);
-			}
-			
-			value = config.json ? JSON.stringify(value) : String(value);
-			
-			return (document.cookie = [
-				encodeURIComponent(key), '=', config.raw ? value : encodeURIComponent(value),
-				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-				options.path    ? '; path=' + options.path : '',
-				options.domain  ? '; domain=' + options.domain : '',
-				options.secure  ? '; secure' : ''
-			].join(''));
-		}
-		
-		// read
-		var decode = config.raw ? raw : decoded;
-		var cookies = document.cookie.split('; ');
-		for (var i = 0, l = cookies.length; i < l; i++) {
-			var parts = cookies[i].split('=');
-			if (decode(parts.shift()) === key) {
-				var cookie = decode(parts.join('='));
-				return config.json ? JSON.parse(cookie) : cookie;
-			}
-		}
-		
-		return null;
-	};
-	
-	config.defaults = {};
-	
-	$.removeCookie = function (key, options) {
-		if ($.cookie(key) !== null) {
-			$.cookie(key, null, options);
-			return true;
-		}
-		return false;
-	};
-
-})(jQuery, document);
-
-/*!
- * Data Saver
- *
- * Copyright (c) 2013-2014 Dave Olsen, http://dmolsen.com
- * Licensed under the MIT license
- */
-
-var DataSaver = {
-	
-	// the name of the cookie to store the data in
-	cookieName: "patternlab",
-	
-	/**
-	* Add a given value to the cookie
-	* @param  {String}       the name of the key
-	* @param  {String}       the value
-	*/
-	addValue: function (name,val) {
-		var cookieVal = $.cookie(this.cookieName);
-		cookieVal = ((cookieVal === null) || (cookieVal === "")) ? name+"~"+val : cookieVal+"|"+name+"~"+val;
-		$.cookie(this.cookieName,cookieVal);
-	},
-	
-	/**
-	* Update a value found in the cookie. If the key doesn't exist add the value
-	* @param  {String}       the name of the key
-	* @param  {String}       the value
-	*/
-	updateValue: function (name,val) {
-		if (this.findValue(name)) {
-			var updateCookieVals = "";
-			var cookieVals = $.cookie(this.cookieName).split("|");
-			for (var i = 0; i < cookieVals.length; i++) {
-				var fieldVals = cookieVals[i].split("~");
-				if (fieldVals[0] == name) {
-					fieldVals[1] = val;
-				}
-				updateCookieVals += (i > 0) ? "|"+fieldVals[0]+"~"+fieldVals[1] : fieldVals[0]+"~"+fieldVals[1];
-			}
-			$.cookie(this.cookieName,updateCookieVals);
-		} else {
-			this.addValue(name,val);
-		}
-	},
-	
-	/**
-	* Remove the given key
-	* @param  {String}       the name of the key
-	*/
-	removeValue: function (name) {
-		var updateCookieVals = "";
-		var cookieVals = $.cookie(this.cookieName).split("|");
-		var k = 0;
-		for (var i = 0; i < cookieVals.length; i++) {
-			var fieldVals = cookieVals[i].split("~");
-			if (fieldVals[0] != name) {
-				updateCookieVals += (k === 0) ? fieldVals[0]+"~"+fieldVals[1] : "|"+fieldVals[0]+"~"+fieldVals[1];
-				k++;
-			}
-		}
-		$.cookie(this.cookieName,updateCookieVals);
-	},
-	
-	/**
-	* Find the value using the given key
-	* @param  {String}       the name of the key
-	*
-	* @return {String}       the value of the key or false if the value isn't found
-	*/
-	findValue: function (name) {
-		if ($.cookie(this.cookieName)) {
-			var cookieVals = $.cookie(this.cookieName).split("|");
-			for (var i = 0; i < cookieVals.length; i++) {
-				var fieldVals = cookieVals[i].split("~");
-				if (fieldVals[0] == name) {
-					return fieldVals[1];
-				}
-			}
-		} 
-		return false;
-	}
-	
+var panelsUtil = {
+  
+  addClickEvents: function(templateRendered, patternPartial) {
+    
+    var els = templateRendered.querySelectorAll('#sg-'+patternPartial+'-tabs li');
+    for (var i = 0; i < els.length; ++i) {
+      els[i].onclick = (function() {
+        var patternPartial = this.getAttribute('data-patternpartial');
+        var panelID = this.getAttribute('data-panelid');
+        panelsUtil.show(patternPartial, panelID);
+      });
+    }
+    
+    return templateRendered;
+    
+  },
+  
+  show: function(patternPartial, panelID) {
+    
+    var els;
+    
+    // turn off all of the active tabs
+    els = document.querySelectorAll('sg-'+patternPartial+'-tabs li');
+    for (i = 0; i < els.length; ++i) {
+      els[i].classList.remove('sg-code-title-active');
+    }
+    
+    // hide all of the panels
+    els = document.querySelectorAll('sg-'+patternPartial+'-tabs li');
+    for (i = 0; i < els.length; ++i) {
+      els[i].style.display = 'none';
+    }
+    
+    // add active tab class
+    document.getElementById('sg-'+patternPartial+'-'+panelID+'-tab').classList.add('sg-tab-title-active');
+    
+    // show the panel
+    document.getElementById('sg-'+patternPartial+'-'+panelID+'-panel').style.display = 'block';
+    
+    /*
+    if (codeViewer.copyOnInit) {
+      codeViewer.selectCode();
+      codeViewer.copyOnInit = false;
+    }
+    */
+    
+  }
+    
 };
 
 /*!
- * Simple Layout Rendering for Pattern Lab
+ * Default languages for Prism to match rendering capability
  *
- * Copyright (c) 2014 Dave Olsen, http://dmolsen.com
+ * Copyright (c) 2016 Dave Olsen, http://dmolsen.com
  * Licensed under the MIT license
+ *
+ */
+var PrismLanguages = {
+  
+  languages: [],
+  
+  get: function(key) {
+    
+    var language;
+    
+    for (i = 0; i < this.languages.length; ++i) {
+      language = this.languages[i];
+      if (language[key] !== undefined) {
+        return language[key];
+      }
+    }
+    
+    return 'markup';
+    
+  },
+
+  add: function(language) {
+    
+    // see if the language already exists, overwrite if it does
+    for (var key in language) {
+      if (language.hasOwnProperty(key)) {
+        for (i = 0; i < this.languages.length; ++i) {
+          if (this.languages[i][key] !== undefined) {
+            this.languages[i][key] = language[key];
+            return;
+          }
+        }
+      }
+    }
+    
+    this.languages.push(language);
+    
+  }
+  
+};
+
+// this shouldn't get hardcoded, also need to think about including Prism's real lang libraries (e.g. handlebars & twig)
+PrismLanguages.add({'twig': 'markup'});
+PrismLanguages.add({'mustache': 'markup'});
+
+/*!
+ * Default Panels for Pattern Lab plus Panel related events
+ *
+ * Copyright (c) 2016 Dave Olsen, http://dmolsen.com
+ * Licensed under the MIT license
+ *
+ * config is coming from the default viewer and is passed through from PL's config
+ *
+ * @requires prism-languages.js
  */
 
-/* load pattern nav */
-var template         = document.getElementById("pl-pattern-nav-template");
-var templateCompiled = Hogan.compile(template.innerHTML);
-var templateRendered = templateCompiled.render(navItems);
-document.getElementById("pl-pattern-nav-target").innerHTML = templateRendered;
+var Panels = {
+  
+  panels: [],
+  
+  count: function() {
+    return this.panels.length;
+  },
+  
+  get: function() {
+    return JSON.parse(JSON.stringify(this.panels));
+  },
+  
+  add: function(panel) {
+    
+    // if ID already exists in panels array ignore the add()
+    for (i = 0; i < this.panels.length; ++i) {
+      if (panel.id === this.panels[i].id) {
+        return;
+      }
+    }
+    
+    // it wasn't found so push the tab onto the tabs
+    this.panels.push(panel);
+    
+  }
+  
+};
 
-/* load ish controls */
-var template         = document.getElementById("pl-ish-controls-template");
-var templateCompiled = Hogan.compile(template.innerHTML);
-var templateRendered = templateCompiled.render(ishControls);
-document.getElementById("sg-controls").innerHTML = templateRendered;
+// add the default panels
+Panels.add({ 'id': 'sg-panel-info', 'name': 'info', 'default': true, 'templateID': 'pl-panel-template-info', 'httpRequest': false, 'prismHighlight': false, 'keyCombo': '' });
+Panels.add({ 'id': 'sg-panel-pattern', 'name': config.patternExtension, 'default': false, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': '.'+config.patternExtension, 'httpRequestCompleted': false, 'prismHighlight': true, 'language': PrismLanguages.get(config.patternExtension), 'keyCombo': 'ctrl+shift+u' });
+Panels.add({ 'id': 'sg-panel-html', 'name': 'html', 'default': false, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': '.escaped.html', 'httpRequestCompleted': false, 'prismHighlight': true, 'language': 'markup', 'keyCombo': 'ctrl+shift+y' });
+
+// gather panels from plugins
+Dispatcher.trigger('setupPanels');
+
+/*!
+ * Panel Builder. Supports building the panels to be included in the modal or styleguide
+ *
+ * Copyright (c) 2013-16 Brad Frost, http://bradfrostweb.com & Dave Olsen, http://dmolsen.com
+ * Licensed under the MIT license
+ *
+ * @requires panels.js
+ * @requires url-handler.js
+ */
+
+var panelsViewer = {
+  
+  // set up some defaults
+  targetOrigin: (window.location.protocol === 'file:') ? '*' : window.location.protocol+'//'+window.location.host,
+  initCopy:     false,
+  initMoveTo:   0,
+  
+  checkPanels: function(panels, patternData, iframePassback) {
+    
+    // count how many panels have rendered content
+    var panelContentCount = 0;
+    for (var i = 0; i < panels.length; ++i) {
+      if (panels[i].content !== undefined) {
+        panelContentCount++;
+      }
+    }
+    
+    // see if the count of panels with content matches number of panels
+    if (panelContentCount === Panels.count()) {
+      panelsViewer.renderPanels(panels, patternData, iframePassback);
+    }
+    
+  },
+  
+  gatherPanels: function(patternData, iframePassback) {
+    
+    Dispatcher.addListener('checkPanels', panelsViewer.checkPanels);
+        
+    // set-up defaults
+    var template, templateCompiled, templateRendered, panel;
+    
+    // get the base panels
+    var panels = Panels.get();
+    
+    // figure out if lineage should be drawn
+    patternData.lineageExists = (patternData.lineage.length !== 0);
+    
+    // figure out if reverse lineage should be drawn
+    patternData.lineageRExists = (patternData.lineageR.length !== 0);
+    
+    // evaluate panels array and create content
+    for (var i = 0; i < panels.length; ++i) {
+      
+      panel = panels[i];
+      
+      if ((panel.templateID !== undefined) && (panel.templateID)) {
+        
+        if ((panel.httpRequest !== undefined) && (panel.httpRequest)) {
+          
+          // need a file and then render
+          var fileName = urlHandler.getFileName(patternData.patternPartial);
+          var e        = new XMLHttpRequest();
+          e.onload     = (function(i, panels, patternData, iframeRequest) {
+            return function() {
+              prismedContent    = Prism.highlight(this.responseText, Prism.languages[panels[i].language]);
+              template          = document.getElementById(panels[i].templateID);
+              templateCompiled  = Hogan.compile(template.innerHTML);
+              templateRendered  = templateCompiled.render({ 'language': panels[i].language, 'code': prismedContent });
+              panels[i].content = templateRendered;
+              Dispatcher.trigger('checkPanels', [panels, patternData, iframePassback]);
+            };
+          })(i, panels, patternData, iframePassback);
+          e.open('GET', fileName.replace(/\.html/,panel.httpRequestReplace)+'?'+(new Date()).getTime(), true);
+          e.send();
+          
+        } else {
+          
+          // vanilla render of pattern data
+          template          = document.getElementById(panel.templateID);
+          templateCompiled  = Hogan.compile(template.innerHTML);
+          templateRendered  = templateCompiled.render(patternData);
+          panels[i].content = templateRendered;
+          Dispatcher.trigger('checkPanels', [panels, patternData, iframePassback]);
+          
+        }
+        
+      }
+      
+    }
+    
+  },
+  
+  renderPanels: function(panels, patternData, iframePassback) {
+    
+    // set-up defaults
+    var template, templateCompiled, templateRendered;
+    var patternPartial = patternData.patternPartial;
+    
+    // render all of the panels in the base panel template
+    template         = document.getElementById('pl-panel-template-base');
+    templateCompiled = Hogan.compile(template.innerHTML);
+    templateRendered = templateCompiled.render({ 'patternPartial': patternPartial, 'panels': panels });
+    
+    // make sure templateRendered is modified to be an HTML element
+    var temp         = document.createElement('div');
+    temp.innerHTML   = templateRendered;
+    templateRendered = temp.querySelector('div');
+    
+    // add click events
+    templateRendered = panelsUtil.addClickEvents(templateRendered, patternPartial);
+    
+    // add onclick events to the tabs in the rendered content
+    for (var i = 0; i < panels.length; ++i) {
+      
+      panel = panels[i];
+      
+      // default IDs
+      panelTab   = '#sg-'+patternPartial+'-'+panel.id+'-tab';
+      panelBlock = '#sg-'+patternPartial+'-'+panel.id+'-panel';
+      
+      // show default options
+      if ((templateRendered.querySelector(panelTab) !== null) && (panel.default)) {
+        
+        templateRendered.querySelector(panelTab).classList.add('sg-tab-title-active');
+        templateRendered.querySelector(panelBlock).style.display = 'block';
+        
+      }
+      
+    }
+    
+    // find lineage links in the rendered content and add postmessage handlers in case it's in the modal
+    $('#sg-code-lineage-fill a, #sg-code-lineager-fill a', templateRendered).on('click', function(e){
+      e.preventDefault();
+      if (modalViewer !== undefined) {
+        var obj = JSON.stringify({ 'event': 'patternLab.pathUpdate', 'path': urlHandler.getFileName($(this).attr('data-patternpartial')) });
+        document.getElementById('sg-viewport').contentWindow.postMessage(obj, modalViewer.targetOrigin);
+      }
+    });
+    
+    // gather panels from plugins
+    Dispatcher.trigger('insertPanels', [templateRendered, patternPartial, iframePassback]);
+    
+  },
+  
+  /**
+  * select the some range to copy
+  */
+  select: function(id) {
+    
+    if (modalViewer.active) {
+      selection = window.getSelection();
+      range = document.createRange();
+      range.selectNodeContents(document.getElementById(id));
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+    
+  },
+  
+  /**
+  * clear any selection of code when swapping tabs or opening a new pattern
+  */
+  clear: function() {
+    
+    if (modalViewer.active) {
+      if (window.getSelection().empty) {
+        window.getSelection().empty();
+      } else if (window.getSelection().removeAllRanges) {
+        window.getSelection().removeAllRanges();
+      }
+    }
+    
+  }
+  
+};
+
 /*!
  * Pattern Finder
  *
@@ -1059,7 +937,6 @@ document.getElementById("sg-controls").innerHTML = templateRendered;
  *
  */
 
-/*
 var patternFinder = {
 	
 	data:   [],
@@ -1092,8 +969,7 @@ var patternFinder = {
 		$('#sg-find .typeahead').typeahead({ highlight: true }, {
 			displayKey: 'patternPartial',
 			source: patterns.ttAdapter()
-		});
-		//.on('typeahead:selected', patternFinder.onAutocompleted).on('typeahead:autocompleted', patternFinder.onSelected);
+		}).on('typeahead:selected', patternFinder.onSelected).on('typeahead:autocompleted', patternFinder.onAutocompleted);
 		
 	},
 	
@@ -1124,11 +1000,11 @@ var patternFinder = {
 		patternFinder.active = true;
 		$('#sg-find .typeahead').val("");
 		$("#sg-find").addClass('show-overflow');
-		$('#sg-find .typeahead').focus();
 	},
 	
 	closeFinder: function() {
 		patternFinder.active = false;
+		document.activeElement.blur();
 		$("#sg-find").removeClass('show-overflow');
 		$('#sg-find .typeahead').val("");
 	},
@@ -1168,11 +1044,11 @@ $('#sg-find .typeahead').focus(function() {
 $('#sg-find .typeahead').blur(function() {
 	patternFinder.closeFinder();
 });
-*/
+
 /*!
  * Basic postMessage Support
  *
- * Copyright (c) 2013-2014 Dave Olsen, http://dmolsen.com
+ * Copyright (c) 2013-2016 Dave Olsen, http://dmolsen.com
  * Licensed under the MIT license
  *
  * Handles the postMessage stuff in the pattern, view-all, and style guide templates.
@@ -1216,32 +1092,6 @@ if (self != top) {
 		};
 	}
 	
-	// bind the keyboard shortcuts for various viewport resizings + pattern search
-	var keys = [ "s", "m", "l", "d", "h", "f" ];
-	for (var i = 0; i < keys.length; i++) {
-		jwerty.key('ctrl+shift+'+keys[i],  function (k,t) {
-			return function(e) {
-				var obj = JSON.stringify({ "event": "patternLab.keyPress", "keyPress": "ctrl+shift+"+k });
-				parent.postMessage(obj,t);
-				return false;
-			};
-		}(keys[i],targetOrigin));
-	}
-	
-	// bind the keyboard shortcuts for mqs
-	var i = 0;
-	while (i < 10) {
-		jwerty.key('ctrl+shift+'+i, function (k,t) {
-			return function(e) {
-				var targetOrigin = (window.location.protocol == "file:") ? "*" : window.location.protocol+"//"+window.location.host;
-				var obj = JSON.stringify({ "event": "patternLab.keyPress", "keyPress": "ctrl+shift+"+k });
-				parent.postMessage(obj,t);
-				return false;
-			};
-		}(i,targetOrigin));
-		i++;
-	}
-	
 }
 
 // if there are clicks on the iframe make sure the nav in the iframe parent closes
@@ -1263,7 +1113,6 @@ function receiveIframeMessage(event) {
 	var path;
 	var data = (typeof event.data !== "string") ? event.data : JSON.parse(event.data);
 	
-	// see if it got a path to replace
 	if (data.event == "patternLab.updatePath") {
 		
 		if (patternData.patternPartial !== undefined) {
@@ -1348,7 +1197,7 @@ window.addEventListener("message", receiveIframeMessage, false);
 		setAccordionHeight();
 	});
 
-	//Accordion Height 
+	//Accordion Height
 	function setAccordionHeight() {
 		var $activeAccordion = $('.sg-acc-panel.active').first(),
 			accordionHeight = $activeAccordion.height(),
@@ -1448,7 +1297,7 @@ window.addEventListener("message", receiveIframeMessage, false);
 	});
 
 	//Click Full Width Button
-	$('#sg-size-full').on("click", function(e){ //Resets 
+	$('#sg-size-full').on("click", function(e){ //Resets
 		e.preventDefault();
 		killDisco();
 		killHay();
@@ -1932,6 +1781,7 @@ window.addEventListener("message", receiveIframeMessage, false);
 	window.addEventListener("message", receiveIframeMessage, false);
 	
 })(this);
+
 /*!
  * Plugin Loader
  *
@@ -1994,47 +1844,3 @@ var pluginLoader = {
 };
 
 pluginLoader.init();
-
-/*!
- * Tab Support for the Viewer
- *
- * Copyright (c) 2013 Brad Frost, http://bradfrostweb.com & Dave Olsen, http://dmolsen.com
- * Licensed under the MIT license
- *
- * @requires code-viewer.js
- *
- */
-
-var tabs = [
-	
-	/**
-	* describe the default tabs
-	*/
-	{ "id": "sg-code-tab-info", "name": "INFO", "default": true, "httpRequest": false, "prismHighlight": false, "template": true, "templateID": "pl-code-template-info-tab" },
-	{ "id": "sg-code-tab-html", "name": "HTML", "default": false, "httpRequest": true, "httpRequestReplace": ".escaped.html", "httpRequestCompleted": false, "prismHighlight": true, "language": "markup", "template": false },
-	{ "id": "sg-code-tab-pattern", "name": config.patternExtension.toUpperCase(), "default": false, "httpRequest": true, "httpRequestReplace": "."+config.patternExtension, "httpRequestCompleted": false, "prismHighlight": true, "language": "markup", "template": false }
-	
-];
-
-
-var tabUtil = {
-	
-	/**
-	* add a tab to the list of default tabs
-	* @param  {Object}       the properties of the tab to tab that will be added
-	*/
-	add: function(tab) {
-		
-		// evaluate tabs array and create content
-		for (i = 0; i < tabs.length; ++i) {
-			if (tab.id == tabs[i].id) {
-				return;
-			}
-		}
-		
-		// it wasn't found so push the tab onto the tabs
-		tabs.push(tab);
-		
-	}
-	
-}
