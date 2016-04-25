@@ -55,7 +55,7 @@
 		setAccordionHeight();
 	});
 
-	//Accordion Height 
+	//Accordion Height
 	function setAccordionHeight() {
 		var $activeAccordion = $('.sg-acc-panel.active').first(),
 			accordionHeight = $activeAccordion.height(),
@@ -155,7 +155,7 @@
 	});
 
 	//Click Full Width Button
-	$('#sg-size-full').on("click", function(e){ //Resets 
+	$('#sg-size-full').on("click", function(e){ //Resets
 		e.preventDefault();
 		killDisco();
 		killHay();

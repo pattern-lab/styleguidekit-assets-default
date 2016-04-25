@@ -40,8 +40,7 @@ var patternFinder = {
 		$('#sg-find .typeahead').typeahead({ highlight: true }, {
 			displayKey: 'patternPartial',
 			source: patterns.ttAdapter()
-		});
-		//.on('typeahead:selected', patternFinder.onAutocompleted).on('typeahead:autocompleted', patternFinder.onSelected);
+		}).on('typeahead:selected', patternFinder.onSelected).on('typeahead:autocompleted', patternFinder.onAutocompleted);
 		
 	},
 	
@@ -72,11 +71,11 @@ var patternFinder = {
 		patternFinder.active = true;
 		$('#sg-find .typeahead').val("");
 		$("#sg-find").addClass('show-overflow');
-		$('#sg-find .typeahead').focus();
 	},
 	
 	closeFinder: function() {
 		patternFinder.active = false;
+		document.activeElement.blur();
 		$("#sg-find").removeClass('show-overflow');
 		$('#sg-find .typeahead').val("");
 	},
