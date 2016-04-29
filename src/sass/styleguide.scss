@@ -591,22 +591,27 @@ span.sg-pattern-state:before {
 	margin: $sg-doublespace 0 0;
 	font-family: $sg-font;
 	font-weight: normal;
-	position: relative;
+    position: relative;
+}
 
-	h3 {
-		font-size: 1.2rem !important;
-		font-weight: bold !important;
-		margin: 0 !important;
-	}
+// Pattern Title
+.sg-pattern-title {
+    font-family: $sg-font !important;
+    font-size: 0.85rem !important;
+    line-height: 1 !important;
+    font-weight: bold !important;
+    margin: 0 !important;
+    padding: 0 !important;
 
-	h3 a {
+    a {
 		display: inline-block;
 		padding: $sg-pad 0 0.5rem;
 		color: $sg-gray !important;
 		text-decoration: none;
 		cursor: pointer;
+        font-weight: bold;
 
-		&:hover {
+		&:hover, &:focus {
 			color: $sg-black  !important;
 		}
 	}
@@ -632,7 +637,7 @@ span.sg-pattern-state:before {
 		display: inline-block;
 	}
 
-	&:hover, &.active {
+	&:hover, &:focus, &.active {
 		background: $sg-gray-light;
 		color: $sg-black;
 	}
@@ -651,6 +656,7 @@ span.sg-pattern-state:before {
 
 // Pattern Info Panel
 .sg-pattern-extra {
+    box-sizing: border-box;
 	background: $sg-gray-light;
 	border-top: 1px solid $sg-gray-light-2;
 	margin-bottom: $sg-space;
@@ -681,7 +687,7 @@ span.sg-pattern-state:before {
         border: 0;
     }
 
-    .sg-tab-list a {
+    .sg-tabs-list a {
         border-color: $sg-gray;
         color: $sg-gray-light;
 
@@ -695,7 +701,7 @@ span.sg-pattern-state:before {
         }
     }
 
-    .sg-tab-content {
+    .sg-tabs-content {
         border-color: $sg-gray;
     }
 }
@@ -707,6 +713,10 @@ span.sg-pattern-state:before {
 	line-height: 1.3;
 	font-size: 90%;
     flex: 1;
+
+    @media all and (min-width: 42em) {
+        width: 50%;
+    }
 }
 
 .sg-pattern-desc {
@@ -726,11 +736,11 @@ span.sg-pattern-state:before {
 }
 
 .sg-pattern-extra-code {
-	padding: $sg-pad;
-	box-sizing: border-box;
-	font-size: 90%;
-    flex: 1;
+    box-sizing: border-box;
     display: flex;
+    font-size: 90%;
+    padding: $sg-pad;
+    flex: 1;
 
 	pre {
 		margin: 0;
@@ -740,16 +750,26 @@ span.sg-pattern-state:before {
 		border-radius: $sg-border-radius-med;
         overflow: scroll;
 	}
+
+    @media all and (min-width: 42em) {
+        width: 50%;
+    }
 }
 
 // Tabs
-.sg-tab {
+.sg-tabs-container {
+    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.sg-tabs {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
 
-.sg-tab-list {
+.sg-tabs-list {
 	overflow: hidden;
 	position: relative;
 	bottom: -1px;
@@ -774,6 +794,7 @@ span.sg-pattern-state:before {
 		border-top-left-radius: $sg-border-radius-med;
 		transition: color $sg-animate-quick ease-out;
 		text-decoration: none;
+        text-transform: capitalize;
 
 		&:hover {
 			color: $sg-gray-dark;
@@ -786,7 +807,7 @@ span.sg-pattern-state:before {
 	}
 }
 
-.sg-tab-content {
+.sg-tabs-content {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -800,7 +821,7 @@ span.sg-pattern-state:before {
     }
 }
 
-.sg-tab-panel {
+.sg-tabs-panel {
 	display: none;
 
 	&.active {
@@ -808,6 +829,13 @@ span.sg-pattern-state:before {
         flex-direction: column;
         flex: 1;
 	}
+
+    pre {
+        box-sizing: border-box;
+        width: 100%;
+        overflow: scroll !important;
+        max-height: 15em;
+    }
 }
 
 // Annotations and code view container
