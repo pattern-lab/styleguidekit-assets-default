@@ -130,67 +130,70 @@
 
 	<!-- the template for the code view slider -->
 	<script type="text/mustache" id="pl-panel-template-base">
-		<div id="sg-{{ patternPartial }}-panels-tabs-container" class="sg-tabs-container">
-			<div id="sg-{{ patternPartial }}-tabs" class="sg-tabs">
-				<ul class="sg-tabs-list">
-					{{# panels }}
-						<li id="sg-{{ patternPartial }}-{{ id }}-tab" data-patternpartial="{{ patternPartial }}" data-panelid="{{ id }}"><a href="#sg-{{ patternPartial }}-{{ id }}-panel" class="active">{{ name }}</a></li>
-					{{/ panels }}
-				</ul>
-			</div>
-			<div id="sg-{{ patternPartial }}-panels" class="sg-tabs-content">
-				{{# panels }}
-					<div id="sg-{{ patternPartial }}-{{ id }}-panel"  class="sg-tabs-panel" style="display: none">
-						{{{ content }}}
+		<div>
+			<div class="sg-pattern-extra-info">
+				<div class="sg-code-breadcrumb">{{ patternBreadcrumb }}</div>
+				<div class="sg-code-desc">
+					<h2>{{ patternName }}</h2>
+					<p>
+						{{ patternDesc }}
+						{{# patternDescAdditions }}
+							{{{ . }}}
+						{{/ patternDescAdditions }}
+					</p>
+				</div>
+				{{# patternStateExists }}
+					<div id="sg-code-patternstate">
+						<p>
+							The state of the <span class="sg-code-patternname">{{ patternName }}</span> pattern is: <span id="sg-code-patternstate-fill"></span>
+						</p>
 					</div>
-				{{/ panels }}
+				{{/ patternStateExists }}
+				{{# lineageExists }}
+					<div id="sg-code-lineage">
+						<p>
+							The <span class="sg-code-patternname">{{ patternName }}</span> pattern contains the following patterns:
+							<span id="sg-code-lineage-fill">
+							{{# lineage }}
+								<a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ . }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>
+							{{/ lineage }}
+							</span>
+						</p>
+					</div>
+				{{/ lineageExists }}
+				{{# lineageRExists }}
+					<div id="sg-code-lineager">
+						<p>
+							The <span class="sg-code-patternname">{{ patternName }}</span> pattern is included in the following patterns:
+							<span id="sg-code-lineager-fill">
+							{{# lineageR }}
+								<a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ . }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>
+							{{/ lineageR }}
+							</span>
+						</p>
+					</div>
+				{{/ lineageRExists }}
+			</div>
+			<div>
+			
+			</div>
+			<div id="sg-{{ patternPartial }}-panels-tabs-container" class="sg-tabs-container">
+				<div id="sg-{{ patternPartial }}-tabs" class="sg-tabs">
+					<ul class="sg-tabs-list">
+						{{# panels }}
+							<li id="sg-{{ patternPartial }}-{{ id }}-tab" data-patternpartial="{{ patternPartial }}" data-panelid="{{ id }}"><a href="#sg-{{ patternPartial }}-{{ id }}-panel" class="active">{{ name }}</a></li>
+						{{/ panels }}
+					</ul>
+				</div>
+				<div id="sg-{{ patternPartial }}-panels" class="sg-tabs-content">
+					{{# panels }}
+						<div id="sg-{{ patternPartial }}-{{ id }}-panel"  class="sg-tabs-panel" style="display: none">
+							{{{ content }}}
+						</div>
+					{{/ panels }}
+				</div>
 			</div>
 		</div>
-	</script>
-
-	<!-- the tempalte for the info tab in the code view slider -->
-	<script type="text/mustache" id="pl-panel-template-info">
-		<div class="sg-code-breadcrumb">{{ patternBreadcrumb }}</div>
-		<div class="sg-code-desc">
-			<h2>{{ patternName }}</h2>
-			<p>
-				{{ patternDesc }}
-				{{# patternDescAdditions }}
-					{{{ . }}}
-				{{/ patternDescAdditions }}
-			</p>
-		</div>
-		{{# patternStateExists }}
-			<div id="sg-code-patternstate">
-				<p>
-					The state of the <span class="sg-code-patternname">{{ patternName }}</span> pattern is: <span id="sg-code-patternstate-fill"></span>
-				</p>
-			</div>
-		{{/ patternStateExists }}
-		{{# lineageExists }}
-			<div id="sg-code-lineage">
-				<p>
-					The <span class="sg-code-patternname">{{ patternName }}</span> pattern contains the following patterns:
-					<span id="sg-code-lineage-fill">
-					{{# lineage }}
-						<a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ . }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>
-					{{/ lineage }}
-					</span>
-				</p>
-			</div>
-		{{/ lineageExists }}
-		{{# lineageRExists }}
-			<div id="sg-code-lineager">
-				<p>
-					The <span class="sg-code-patternname">{{ patternName }}</span> pattern is included in the following patterns:
-					<span id="sg-code-lineager-fill">
-					{{# lineageR }}
-						<a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ . }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>
-					{{/ lineageR }}
-					</span>
-				</p>
-			</div>
-		{{/ lineageRExists }}
 	</script>
 
 	<!-- the tempalte for code-related tabs in the code view slider -->

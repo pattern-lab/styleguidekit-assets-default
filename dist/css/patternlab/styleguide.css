@@ -3,10 +3,10 @@
     $PATTERN LAB STYLES
 \*------------------------------------*/
 /**
- * NOTE: These styles are specific to Pattern Lab and should not be modified. 
+ * NOTE: These styles are specific to Pattern Lab and should not be modified.
  * Edit all project styles in /source/css/
- * 
- * Second note: Any important declarations are to prevent brand styles from overriding style guide 
+ *
+ * Second note: Any important declarations are to prevent brand styles from overriding style guide
  */
 /*------------------------------------*\
      $CONTENTS
@@ -27,13 +27,12 @@
  * -----Viewport
  * -----Section Headers
  * -----Code View
- * -----Icon Fonts
  */
 /*------------------------------------*\
-    $PATTERN LAB VARIABLES 
+    $PATTERN LAB VARIABLES
 \*------------------------------------*/
 /*------------------------------------*\
-    $PATTERN LAB INTERFACE 
+    $PATTERN LAB INTERFACE
 \*------------------------------------*/
 #patternlab-html, #patternlab-body {
   margin: 0;
@@ -69,7 +68,7 @@
 }
 
 /*------------------------------------*\
-    $PATTERN LAB HEADER 
+    $PATTERN LAB HEADER
 \*------------------------------------*/
 /* Header */
 .sg-header {
@@ -193,14 +192,12 @@
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
-.sg-acc-handle.sg-icon:after {
-  content: "";
+.sg-acc-handle.sg-tools-toggle {
+  padding: 0.9em 0.7em 0.6em;
 }
-
-.sg-header .sg-icon {
-  width: auto;
-  font-size: 1rem;
-  padding: 0.5rem 0.7rem;
+.sg-acc-handle.sg-tools-toggle:after {
+  display: none;
+  content: "";
 }
 
 .sg-acc-panel {
@@ -214,7 +211,10 @@
   background: #222;
 }
 .sg-acc-panel li:last-child {
-  overflow: hidden;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+.sg-acc-panel li:last-child a {
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
 }
@@ -230,10 +230,6 @@
 .sg-acc-panel.sg-left {
   position: absolute;
   left: auto;
-}
-.sg-acc-panel [class^="sg-icon-"]:before {
-  display: inline-block;
-  margin-right: 0.4em;
 }
 
 /* Controls (sizing, view mode) */
@@ -335,9 +331,8 @@
   left: 0;
 }
 
-.sg-checkbox:before {
-  display: inline-block;
-  margin-right: 0.4em;
+.sg-find {
+  position: relative;
 }
 
 /* basic styling */
@@ -483,31 +478,42 @@ span.sg-pattern-state:before {
 }
 
 /*------------------------------------*\
-    $PATTERN LAB CONTENT 
+    $PATTERN LAB CONTENT
 \*------------------------------------*/
 /* Section Pattern */
 .sg-pattern {
   margin-bottom: 2em;
   position: relative;
+  -webkit-box-sizing: border-box !important;
+          box-sizing: border-box !important;
 }
 
 /* Section Head */
 .sg-pattern-head {
   margin: 2em 0 0;
   font-family: "HelveticaNeue", "Helvetica", "Arial", sans-serif;
-  font-size: 70%;
   font-weight: normal;
   position: relative;
 }
-.sg-pattern-head h3 a {
+
+.sg-pattern-title {
+  font-family: "HelveticaNeue", "Helvetica", "Arial", sans-serif !important;
+  font-size: 0.85rem !important;
+  line-height: 1 !important;
+  font-weight: bold !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.sg-pattern-title a {
   display: inline-block;
-  padding: 1em 0 0.3em;
-  color: #808080;
+  padding: 1em 0 0.5rem;
+  color: #808080 !important;
   text-decoration: none;
   cursor: pointer;
+  font-weight: bold;
 }
-.sg-pattern-head h3 a:hover {
-  color: #000;
+.sg-pattern-title a:hover, .sg-pattern-title a:focus {
+  color: #000 !important;
 }
 
 .sg-pattern-extra-toggle {
@@ -518,6 +524,7 @@ span.sg-pattern-state:before {
   z-index: 1;
   padding: 0.65em;
   line-height: 1;
+  color: #808080;
   font-weight: normal;
   border: 1px solid #ddd;
   border-top-left-radius: 6px;
@@ -528,9 +535,9 @@ span.sg-pattern-state:before {
 .sg-pattern-extra-toggle span {
   display: inline-block;
 }
-.sg-pattern-extra-toggle:hover, .sg-pattern-extra-toggle.active {
+.sg-pattern-extra-toggle:hover, .sg-pattern-extra-toggle:focus, .sg-pattern-extra-toggle.active {
   background: #eee;
-  color: #222;
+  color: #000;
 }
 .sg-pattern-extra-toggle.active {
   border-bottom-color: #eee;
@@ -542,6 +549,8 @@ span.sg-pattern-state:before {
 }
 
 .sg-pattern-extra {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   background: #eee;
   border-top: 1px solid #ddd;
   margin-bottom: 1em;
@@ -556,6 +565,42 @@ span.sg-pattern-state:before {
   border-top-right-radius: 0;
   max-height: 30em;
 }
+@media all and (min-width: 42em) {
+  .sg-pattern-extra {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: stretch;
+    -webkit-align-items: stretch;
+        -ms-flex-align: stretch;
+            align-items: stretch;
+    width: 100%;
+  }
+}
+
+.sg-pattern-extra--dark {
+  background: #000;
+  color: #eee;
+  border: 0;
+}
+.sg-pattern-extra--dark.active {
+  border: 0;
+}
+.sg-pattern-extra--dark .sg-tabs-list a {
+  border-color: #808080;
+  color: #eee;
+}
+.sg-pattern-extra--dark .sg-tabs-list a:hover, .sg-pattern-extra--dark .sg-tabs-list a:focus {
+  color: #fff;
+}
+.sg-pattern-extra--dark .sg-tabs-list a.active {
+  color: #fff;
+  border-bottom-color: #000;
+}
+.sg-pattern-extra--dark .sg-tabs-content {
+  border-color: #808080;
+}
 
 .sg-pattern-extra-info {
   padding: 1em;
@@ -563,10 +608,13 @@ span.sg-pattern-state:before {
           box-sizing: border-box;
   line-height: 1.3;
   font-size: 90%;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
 }
 @media all and (min-width: 42em) {
   .sg-pattern-extra-info {
-    float: left;
     width: 50%;
   }
 }
@@ -587,10 +635,18 @@ span.sg-pattern-state:before {
 }
 
 .sg-pattern-extra-code {
-  padding: 1em;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
   font-size: 90%;
+  padding: 1em;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
 }
 .sg-pattern-extra-code pre {
   margin: 0;
@@ -598,49 +654,122 @@ span.sg-pattern-state:before {
   color: #fff;
   padding: 0.5em;
   border-radius: 6px;
+  overflow: scroll;
 }
 @media all and (min-width: 42em) {
   .sg-pattern-extra-code {
-    float: left;
     width: 50%;
   }
 }
 
-.sg-tab-list li {
-  display: inline-block;
+.sg-tabs-container {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
-.sg-tab-list a {
+
+.sg-tabs {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+}
+
+.sg-tabs-list {
+  overflow: hidden;
+  position: relative;
+  bottom: -1px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.sg-tabs-list li {
+  float: left;
+  margin-right: 3px;
+}
+.sg-tabs-list a {
   display: block;
   font-size: 90%;
   font-weight: bold;
-  padding: 0.3em 1em;
+  line-height: 1;
+  padding: 0.5em 1em;
   border: 1px solid #ccc;
   color: #808080;
   border-top-right-radius: 6px;
   border-top-left-radius: 6px;
   -webkit-transition: color 0.1s ease-out;
           transition: color 0.1s ease-out;
+  text-decoration: none;
+  text-transform: capitalize;
 }
-.sg-tab-list a:hover {
+.sg-tabs-list a:hover {
   color: #222;
 }
-.sg-tab-list a.active {
+.sg-tabs-list a.active {
   border-bottom-color: #eee;
   color: #222;
 }
 
-.sg-tab-content {
+.sg-tabs-content {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
   border: 1px solid #ccc;
   border-radius: 6px;
   border-top-left-radius: 0;
   padding: 0.7em;
 }
+.sg-tabs-content pre {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
 
-.sg-tab-panel {
+.sg-tabs-panel {
   display: none;
 }
-.sg-tab-panel.active {
-  display: block;
+.sg-tabs-panel.active {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+.sg-tabs-panel pre {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 100%;
+  overflow: scroll !important;
+  max-height: 15em;
 }
 
 .sg-view-container {
@@ -653,7 +782,7 @@ span.sg-pattern-state:before {
   color: #808080;
   position: fixed;
   top: auto;
-  padding: 1em;
+  padding: 4em 1em 1em;
   bottom: 0;
   left: 0;
   z-index: 2;
@@ -661,29 +790,52 @@ span.sg-pattern-state:before {
   height: 50%;
   overflow-y: auto;
   overflow-x: hidden;
-}
-.sg-view-container a {
-  color: #999;
-}
-.sg-view-container pre {
-  padding: 0 1em;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 .sg-view-container.anim-ready {
   -webkit-transition: bottom 0.3s ease-out;
           transition: bottom 0.3s ease-out;
 }
-
-.sg-view-close {
-  width: 100%;
-  margin-bottom: -10px;
+.sg-view-container .sg-pattern-extra {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  max-height: none;
+  padding: 0;
+}
+.sg-view-container .sg-pattern-extra.active {
+  max-height: none;
 }
 
 .sg-view-close-btn {
-  color: #fff;
+  font-size: 0.7em;
+  background: #000;
+  color: #808080;
+  border: 1px solid #808080;
+  border-radius: 6px;
+  display: inline-block;
+  padding: 0.5em;
   text-transform: uppercase;
   text-decoration: none;
-  text-align: right;
-  display: block;
+  cursor: pointer;
+  position: absolute;
+  right: 1em;
+  top: 1em;
+  -webkit-transition: all 0.1s ease-out;
+          transition: all 0.1s ease-out;
+}
+.sg-view-close-btn:hover, .sg-view-close-btn:focus {
+  color: #eee;
+  border-color: #eee;
 }
 
 .has-annotation {
@@ -775,36 +927,6 @@ span.sg-pattern-state:before {
   font-size: 1em;
 }
 
-#sg-code-markup {
-  padding-top: 10px;
-}
-
-#sg-code-tabs {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-#sg-code-tabs li {
-  float: left;
-  background-color: #333;
-  font-size: 1.3em;
-  font-weight: bold;
-  padding: 5px 15px;
-  border-top: 2px solid #666;
-  margin-right: 2px;
-  cursor: pointer;
-}
-
-.sg-code-title-active {
-  color: #bbb;
-  background-color: #272822 !important;
-}
-
-div.clear {
-  clear: both;
-}
-
 .sg-code-patternname {
   color: #aaa;
 }
@@ -838,73 +960,51 @@ div.clear {
   background: #222;
   color: #808080;
   width: 100%;
-  padding: 1em 0.7em;
   right: 0;
+  padding: 0.8em;
+  text-transform: lowercase;
 }
 .typeahead:focus {
   background: #808080;
   color: #fff;
 }
 
+.tt-input {
+  background: #808080;
+  color: #fff;
+  text-transform: uppercase;
+}
+.tt-input:focus {
+  text-transform: lowercase;
+}
+
+.tt-hint {
+  text-transform: lowercase;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
 .tt-dropdown-menu {
-  padding: 8px 0;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  text-align: left;
+  text-transform: lowercase;
+  background-color: #808080;
+  width: 100%;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
 }
 
 .tt-suggestion {
-  padding: 3px 13px;
+  color: #eee;
+  font-size: 75%;
+  padding: 0.8em;
 }
 
 .tt-suggestion.tt-cursor {
   color: #fff;
-  background-color: #0097cf;
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .tt-suggestion p {
   margin: 0;
-}
-
-/*------------------------------------*\
-    $PATTERN LAB ICON FONTS 
-\*------------------------------------*/
-@font-face {
-  font-family: 'icomoon';
-  src: url("../fonts/icomoon.eot?srsv7g");
-  src: url("../fonts/icomoon.eot?#iefixsrsv7g") format("embedded-opentype"), url("../fonts/icomoon.woff?srsv7g") format("woff"), url("../fonts/icomoon.ttf?srsv7g") format("truetype"), url("../fonts/icomoon.svg?srsv7g#icomoon") format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
-.sg-icon-search, .sg-icon-cog, .sg-icon-minus, .sg-icon-plus, .sg-icon-menu, .sg-icon-radio-checked, .sg-checkbox.active, .sg-icon-radio-unchecked, .sg-checkbox, .sg-icon-file, .sg-icon-link, .sg-icon-keyboard, .sg-icon-qrcode, .sg-icon-eye, .sg-checkbox {
-  font-family: 'icomoon';
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.sg-icon-search:before {
-  content: "\e600";
-  font-size: 85%;
-}
-
-.sg-icon-cog:before {
-  content: "\e601";
-}
-
-.sg-icon-radio-checked:before, .sg-checkbox.active:before, .sg-checkbox.active:before {
-  content: "\e605";
-}
-
-.sg-icon-radio-unchecked:before, .sg-checkbox:before, .sg-checkbox:before {
-  content: "\e606";
 }
 
 /******************************************************************/

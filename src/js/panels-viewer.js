@@ -95,11 +95,12 @@ var panelsViewer = {
     // set-up defaults
     var template, templateCompiled, templateRendered;
     var patternPartial = patternData.patternPartial;
+    patternData.panels = panels;
     
     // render all of the panels in the base panel template
     template         = document.getElementById('pl-panel-template-base');
     templateCompiled = Hogan.compile(template.innerHTML);
-    templateRendered = templateCompiled.render({ 'patternPartial': patternPartial, 'panels': panels });
+    templateRendered = templateCompiled.render(patternData);
     
     // make sure templateRendered is modified to be an HTML element
     var temp         = document.createElement('div');
