@@ -32,7 +32,6 @@
 					{ "css/patternlab/*": "styleguide/css/*" },
 					{ "fonts/*": "styleguide/fonts/*" },
 					{ "html/index.html": "index.html" },
-					{ "images/*": "styleguide/images/*" },
 					{ "js/*": "styleguide/js/*" }
 				],
 				"sourceDir": [
