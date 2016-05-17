@@ -36,7 +36,7 @@ gulp.task('clean:fonts', function (cb) {
 });
 
 gulp.task('clean:html', function (cb) {
-	return plugins.del(['dist/*'],cb);
+	return plugins.del(['dist/*.html'],cb);
 });
 
 gulp.task('clean:images', function (cb) {
@@ -78,36 +78,26 @@ gulp.task('build:css-patternlab', ['build:css-general'], function() {
 
 gulp.task('build:css-custom', ['clean:css-custom'], function() {
 	return plugins.rubySass('src/sass/styleguide-specific.scss', { style: 'expanded', "sourcemap=none": true })
-<<<<<<< HEAD
-		.pipe(plugins.autoprefixer({browsers: ['last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'android 4']}, {map: false }))
-		.pipe(gulp.dest('dist/css/custom'))
-=======
 		.pipe(plugins.autoprefixer({browsers: ['last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'android 4']}, {map: false }))
 		.pipe(gulp.dest('dist/styleguide/css/custom'))
->>>>>>> 70817ad4223c80ae969b9ba162a4a96f48f875f4
 		.pipe(plugins.rename({suffix: '.min'}))
 		.pipe(plugins.minifyCss())
 		.pipe(gulp.dest('dist/styleguide/css/custom'))
 		.pipe(copyPublic("styleguide/css/custom"));
 });
 
-<<<<<<< HEAD
-=======
 gulp.task('build:fonts', ['clean:fonts'], function() {
 	return gulp.src('src/fonts/*')
 		.pipe(gulp.dest('dist/styleguide/fonts'))
 		.pipe(copyPublic("styleguide/fonts"));
 });
 
->>>>>>> 70817ad4223c80ae969b9ba162a4a96f48f875f4
 gulp.task('build:html', ['clean:html'], function() {
 	return gulp.src('src/html/*')
 		.pipe(gulp.dest('dist'))
 		.pipe(copyPublic(""));
 });
 
-<<<<<<< HEAD
-=======
 gulp.task('build:images', ['clean:images'], function() {
 	return gulp.src('src/images/*')
 		.pipe(plugins.imagemin({
@@ -119,7 +109,6 @@ gulp.task('build:images', ['clean:images'], function() {
 		.pipe(copyPublic("styleguide/images"));
 });
 
->>>>>>> 70817ad4223c80ae969b9ba162a4a96f48f875f4
 gulp.task('build:js-viewer', ['clean:js'], function() {
 	return gulp.src(['src/js/*.js','!src/js/modal-styleguide.js'])
 		.pipe(plugins.jshint('.jshintrc'))
@@ -129,14 +118,9 @@ gulp.task('build:js-viewer', ['clean:js'], function() {
 		.pipe(plugins.concat('patternlab-viewer.js'))
 		.pipe(gulp.dest('dist/styleguide/js'))
 		.pipe(plugins.rename({suffix: '.min'}))
-<<<<<<< HEAD
-		.pipe(gulp.dest('dist/js'))
-		.pipe(gulp.dest('../../../public/styleguide/js'));
-=======
 		.pipe(plugins.uglify())
 		.pipe(gulp.dest('dist/styleguide/js'))
 		.pipe(copyPublic("styleguide/js"));
->>>>>>> 70817ad4223c80ae969b9ba162a4a96f48f875f4
 });
 
 gulp.task('build:js-pattern', ['build:js-viewer'], function() {
