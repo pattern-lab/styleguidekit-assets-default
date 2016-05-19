@@ -6,7 +6,7 @@ var gulp = require('gulp');
 
 /* load the plugins */
 var gulpLoadPlugins    = require('gulp-load-plugins');
-var plugins            = gulpLoadPlugins({ scope: ['devDependencies'] });
+var plugins            = gulpLoadPlugins({ scope: ['dependencies'] });
 plugins.del            = require("del");
 plugins.mainBowerFiles = require("main-bower-files");
 
@@ -94,6 +94,7 @@ gulp.task('build:fonts', ['clean:fonts'], function() {
 
 gulp.task('build:html', ['clean:html'], function() {
 	return gulp.src('src/html/*')
+		.pipe(plugins.fileInclude({ prefix: '@@', basepath: '@file' }))
 		.pipe(gulp.dest('dist'))
 		.pipe(copyPublic(""));
 });
