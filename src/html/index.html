@@ -58,172 +58,26 @@
 
 	<!-- mustache templates -->
 	<script type="text/mustache" id="pl-pattern-nav-template">
-		{{# patternTypes }}
-			<li class="sg-nav-{{ patternTypeLC }}"><a class="sg-acc-handle">{{ patternTypeUC }}</a><ol class="sg-acc-panel">
-			{{# patternTypeItems }}
-				<li class="sg-nav-{{ patternSubtypeLC }}"><a class="sg-acc-handle">{{ patternSubtypeUC }}</a><ol class="sg-acc-panel sg-sub-nav">
-				{{# patternSubtypeItems }}
-					<li><a href="patterns/{{ patternPath }}" class="sg-pop  {{# patternState }}sg-pattern-state {{ . }}{{/ patternState }}" data-patternpartial="{{ patternPartial }}">{{ patternName }}</a></li>
-				{{/ patternSubtypeItems }}
-				</ol></li>
-			{{/ patternTypeItems }}
-			{{# patternItems }}
-				<li><a href="patterns/{{ patternPath }}" class="sg-pop {{# patternState }}sg-pattern-state {{ . }}{{/ patternState }}" data-patternpartial="{{ patternPartial }}">{{ patternName }}</a></li>
-			{{/ patternItems }}
-			</ol></li>
-		{{/ patternTypes }}
-		<li><a href="styleguide/html/styleguide.html" class="sg-pop" data-patternpartial="all">All</a></li>
+		@@include('./partials/pattern-nav.html')
 	</script>
 
 	<script type="text/mustache" id="pl-ish-controls-template">
-		<div class="sg-control-content">
-			<ul class="sg-control">
-				<li class="sg-size">
-					<div class="sg-current-size">
-						<form id="sg-form">
-							Size <input type="text" class="sg-input sg-size-px" value="---">px /
-							<input type="text" class="sg-input sg-size-em" value="---">em
-						</form><!--end #sg-form-->
-					</div><!--end #sg-current-size-->
-					<ul class="sg-size-options">
-						{{^ ishControlsHide.s }}<li><a href="#" id="sg-size-s">S</a></li>{{/ ishControlsHide.s }}
-						{{^ ishControlsHide.m }}<li><a href="#" id="sg-size-m">M</a></li>{{/ ishControlsHide.m }}
-						{{^ ishControlsHide.l }}<li><a href="#" id="sg-size-l">L</a></li>{{/ ishControlsHide.l }}
-						{{^ ishControlsHide.full }}<li><a href="#" id="sg-size-full">Full</a></li>{{/ ishControlsHide.full }}
-						{{^ ishControlsHide.random }}<li><a href="#" id="sg-size-random">Rand</a></li>{{/ ishControlsHide.random }}
-						{{^ ishControlsHide.disco }}<li><a href="#" class="mode-link" id="sg-size-disco">Disco</a></li>{{/ ishControlsHide.disco }}
-						{{^ ishControlsHide.hay }}<li><a href="#" class="mode-link" id="sg-size-hay">Hay!</a></li>{{/ ishControlsHide.hay }}
-					</ul>
-				</li>
-				{{^ ishControlsHide.tools-all }}
-				<li class="sg-tools">
-                    <a href="#" class="sg-acc-handle sg-tools-toggle" id="sg-tools-toggle" title="Tools">
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14" viewBox="0 0 14 14">
-                            <title>Pattern Lab Tools</title>
-                            <path fill="#808080" d="M12.767 8.343c-0.735-1.272-0.293-2.903 0.986-3.643l-1.376-2.383c-0.393 0.23-0.85 0.363-1.338 0.363-1.47 0-2.662-1.2-2.662-2.68h-2.752c0.004 0.457-0.11 0.92-0.355 1.343-0.735 1.272-2.367 1.705-3.649 0.967l-1.376 2.383c0.396 0.225 0.739 0.555 0.983 0.977 0.733 1.27 0.294 2.897-0.98 3.64l1.376 2.383c0.392-0.228 0.847-0.359 1.332-0.359 1.466 0 2.654 1.192 2.662 2.665h2.752c-0.001-0.452 0.113-0.91 0.355-1.329 0.733-1.27 2.362-1.703 3.642-0.971l1.376-2.383c-0.393-0.225-0.734-0.554-0.977-0.974zM7 9.835c-1.566 0-2.835-1.269-2.835-2.835s1.269-2.835 2.835-2.835c1.566 0 2.835 1.269 2.835 2.835s-1.269 2.835-2.835 2.835z"></path>
-                        </svg>
-                    </a>
-					<ul class="sg-acc-panel sg-right sg-checklist">
-                        <li><a href="#" id="sg-t-annotations">Show Pattern Info</a></li>
-						{{^ ishControlsHide.views-annotations }}
-						<li><a href="#" id="sg-t-annotations">Annotations (Remove)</a></li>
-						{{/ ishControlsHide.views-annotations }}
-						{{^ ishControlsHide.views-code }}
-						<li><a href="#" id="sg-t-info">Code (Remove)</a></li>
-						{{/ ishControlsHide.views-code }}
-						{{^ ishControlsHide.views-new }}
-						<li><a href="#" target="_blank" id="sg-raw">Open in new window</a></li>
-						{{/ ishControlsHide.views-new }}
-						{{^ ishControlsHide.tools-docs }}
-						<li><a href="http://pattern-lab.info/docs/" target="_blank">Pattern Lab Docs</a></li>
-						{{/ ishControlsHide.tools-docs }}
-						{{^ ishControlsHide.find }}
-						<li id="sg-find"><input class="typeahead" id="typeahead" type="text" placeholder="Find pattern" /></li>
-						{{/ ishControlsHide.find }}
-					</ul>
-				</li>
-				{{/ ishControlsHide.tools-all }}
-			</ul>
-		</div>
+		@@include('./partials/ish-controls.html')
 	</script>
 
 	<!-- the template for the code view slider -->
 	<script type="text/mustache" id="pl-panel-template-base">
-		<div>
-			<div class="sg-pattern-extra-info">
-				<div class="sg-code-breadcrumb">{{ patternBreadcrumb }}</div>
-				<div class="sg-code-desc">
-					<h2>{{ patternName }}</h2>
-					<p>
-						{{ patternDesc }}
-						{{# patternDescAdditions }}
-							{{{ . }}}
-						{{/ patternDescAdditions }}
-					</p>
-				</div>
-				{{# patternStateExists }}
-					<div id="sg-code-patternstate">
-						<p>
-							The state of the <span class="sg-code-patternname">{{ patternName }}</span> pattern is: <span id="sg-code-patternstate-fill"></span>
-						</p>
-					</div>
-				{{/ patternStateExists }}
-				{{# lineageExists }}
-					<div id="sg-code-lineage">
-						<p>
-							The <span class="sg-code-patternname">{{ patternName }}</span> pattern contains the following patterns:
-							<span id="sg-code-lineage-fill">
-							{{# lineage }}
-								<a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ . }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>
-							{{/ lineage }}
-							</span>
-						</p>
-					</div>
-				{{/ lineageExists }}
-				{{# lineageRExists }}
-					<div id="sg-code-lineager">
-						<p>
-							The <span class="sg-code-patternname">{{ patternName }}</span> pattern is included in the following patterns:
-							<span id="sg-code-lineager-fill">
-							{{# lineageR }}
-								<a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ . }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>
-							{{/ lineageR }}
-							</span>
-						</p>
-					</div>
-				{{/ lineageRExists }}
-			</div>
-			<div>
-			
-			</div>
-			<div id="sg-{{ patternPartial }}-panels-tabs-container" class="sg-tabs-container">
-				<div id="sg-{{ patternPartial }}-tabs" class="sg-tabs">
-					<ul class="sg-tabs-list">
-						{{# panels }}
-							<li id="sg-{{ patternPartial }}-{{ id }}-tab" data-patternpartial="{{ patternPartial }}" data-panelid="{{ id }}"><a href="#sg-{{ patternPartial }}-{{ id }}-panel" class="active">{{ name }}</a></li>
-						{{/ panels }}
-					</ul>
-				</div>
-				<div id="sg-{{ patternPartial }}-panels" class="sg-tabs-content">
-					{{# panels }}
-						<div id="sg-{{ patternPartial }}-{{ id }}-panel"  class="sg-tabs-panel" style="display: none">
-							{{{ content }}}
-						</div>
-					{{/ panels }}
-				</div>
-			</div>
-		</div>
+		@@include('./partials/template-base.html')
 	</script>
 
 	<!-- the tempalte for code-related tabs in the code view slider -->
 	<script type="text/mustache" id="pl-panel-template-code">
-		<pre class="language-markup">
-			<code id="sg-code-fill-{{ language }}" class="language-{{ language }}">{{{ code }}}</code>
-		</pre>
+		@@include('./partials/panel-template-code.html')
 	</script>
-
+	
 	<!-- the template for the annotations viewer slider -->
 	<script type="text/mustache" id="pl-annotations-template">
-		<div id="sg-annotation-close" class="sg-view-close">
-
-			<a href="#" id="sg-annotation-close-btn" class="sg-view-close-btn">Close</a>
-
-			<div id="sg-comments-container">
-				{{# comments }}
-					<div id="annotation-{{ number }}" class="sg-comment-container">
-						<h2>{{ number }}. {{ title }} <span id="annotation-state-{{ number }}" style="font-size: 0.8em; color: #666;">{{^ state }}hidden{{/ state }}</span></h2>
-						<div>{{{ comment }}}</div>
-					</div>
-				{{/ comments}}
-
-				{{^ comments }}
-					<div class="sg-comment-container">
-						<h2>No Annotations</h2>
-						<div>There are no annotations for this pattern.</div>
-					</div>
-				{{/ comments }}
-			</div>
-		</div>
+		@@include('./partials/annotations-template.html')
 	</script>
 
 	<!-- load the data generated by pattern lab -->
