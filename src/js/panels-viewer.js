@@ -42,12 +42,6 @@ var panelsViewer = {
     // get the base panels
     var panels = Panels.get();
     
-    // figure out if lineage should be drawn
-    patternData.lineageExists = (patternData.lineage.length !== 0);
-    
-    // figure out if reverse lineage should be drawn
-    patternData.lineageRExists = (patternData.lineageR.length !== 0);
-    
     // evaluate panels array and create content
     for (var i = 0; i < panels.length; ++i) {
       
@@ -96,6 +90,12 @@ var panelsViewer = {
     var template, templateCompiled, templateRendered;
     var patternPartial = patternData.patternPartial;
     patternData.panels = panels;
+    
+    // add *Exists attributes for Hogan templates
+    patternData      = this.setExists(patternData);
+    
+    // set isPatternView based on if we have to pass it back to the styleguide level
+    patternData.isPatternView = (iframePassback === false);
     
     // render all of the panels in the base panel template
     template         = document.getElementById('pl-panel-template-base');
@@ -155,6 +155,30 @@ var panelsViewer = {
       selection.removeAllRanges();
       selection.addRange(range);
     }
+    
+  },
+  
+  /**
+  * set the various *Exists needed for the template view
+  */
+  setExists: function(pD) {
+    
+    // figure out if the description exists
+    pD.patternDescExists = ((pD.patternDesc !== '') && ((pD.patternDescAdditions !== undefined) && (pD.patternDescAdditions.length > 0)));
+    
+    // figure out if lineage should be drawn
+    pD.lineageExists = (pD.lineage.length !== 0);
+    
+    // figure out if reverse lineage should be drawn
+    pD.lineageRExists = (pD.lineageR.length !== 0);
+    
+    // figure out if pattern state should be drawn
+    pD.patternStateExists = (pD.patternState !== undefined);
+    
+    // figure if the entire desc block should be drawn
+    pD.descBlockExists = (pD.patternDescExists || pD.lineageExists || pD.lineageRExists || pD.patternStateExists);
+
+    return pD;
     
   },
   
