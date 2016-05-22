@@ -15,11 +15,12 @@ var panelsUtil = {
     
     var els = templateRendered.querySelectorAll('#sg-'+patternPartial+'-tabs li');
     for (var i = 0; i < els.length; ++i) {
-      els[i].onclick = (function() {
+      els[i].onclick = function(e) {
+        e.preventDefault();
         var patternPartial = this.getAttribute('data-patternpartial');
         var panelID = this.getAttribute('data-panelid');
         panelsUtil.show(patternPartial, panelID);
-      });
+      };
     }
     
     return templateRendered;
@@ -31,13 +32,13 @@ var panelsUtil = {
     var els;
     
     // turn off all of the active tabs
-    els = document.querySelectorAll('sg-'+patternPartial+'-tabs li');
+    els = document.querySelectorAll('#sg-'+patternPartial+'-tabs li');
     for (i = 0; i < els.length; ++i) {
-      els[i].classList.remove('sg-code-title-active');
+      els[i].classList.remove('sg-tab-title-active');
     }
     
     // hide all of the panels
-    els = document.querySelectorAll('sg-'+patternPartial+'-tabs li');
+    els = document.querySelectorAll('#sg-'+patternPartial+'-panels div.sg-tabs-panel');
     for (i = 0; i < els.length; ++i) {
       els[i].style.display = 'none';
     }
