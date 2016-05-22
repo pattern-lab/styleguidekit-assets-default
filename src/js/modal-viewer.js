@@ -33,12 +33,15 @@ var modalViewer = {
     Dispatcher.addListener('insertPanels', modalViewer.insert);
     
     // add the info/code panel onclick handler
-    $('#sg-t-info').click(function(e) {
+    $('#sg-t-patterninfo').click(function(e) {
       e.preventDefault();
-      modalViewer.toggle('info');
+      $('#sg-tools-toggle').removeClass('active');
+      $(this).parents('ul').removeClass('active');
+      modalViewer.toggle();
     });
     
     // add the annotations panel onclick handler
+    // there will be no separate modal. need to add a panel for this
     $('#sg-t-annotations').click(function(e) {
       e.preventDefault();
       modalViewer.toggle('annotations');
