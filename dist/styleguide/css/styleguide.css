@@ -163,7 +163,7 @@
 
 /* Accordion */
 .sg-acc-handle:after {
-  content: 'Γû╝';
+  content: '▼';
   color: rgba(255, 255, 255, 0.25);
   display: inline-block;
   font-size: 7px;

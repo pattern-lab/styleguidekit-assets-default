@@ -403,12 +403,15 @@ var modalViewer = {
     Dispatcher.addListener('insertPanels', modalViewer.insert);
     
     // add the info/code panel onclick handler
-    $('#sg-t-info').click(function(e) {
+    $('#sg-t-patterninfo').click(function(e) {
       e.preventDefault();
-      modalViewer.toggle('info');
+      $('#sg-tools-toggle').removeClass('active');
+      $(this).parents('ul').removeClass('active');
+      modalViewer.toggle();
     });
     
     // add the annotations panel onclick handler
+    // there will be no separate modal. need to add a panel for this
     $('#sg-t-annotations').click(function(e) {
       e.preventDefault();
       modalViewer.toggle('annotations');
@@ -610,11 +613,12 @@ var panelsUtil = {
     
     var els = templateRendered.querySelectorAll('#sg-'+patternPartial+'-tabs li');
     for (var i = 0; i < els.length; ++i) {
-      els[i].onclick = (function() {
+      els[i].onclick = function(e) {
+        e.preventDefault();
         var patternPartial = this.getAttribute('data-patternpartial');
         var panelID = this.getAttribute('data-panelid');
         panelsUtil.show(patternPartial, panelID);
-      });
+      };
     }
     
     return templateRendered;
@@ -626,13 +630,13 @@ var panelsUtil = {
     var els;
     
     // turn off all of the active tabs
-    els = document.querySelectorAll('sg-'+patternPartial+'-tabs li');
+    els = document.querySelectorAll('#sg-'+patternPartial+'-tabs li');
     for (i = 0; i < els.length; ++i) {
-      els[i].classList.remove('sg-code-title-active');
+      els[i].classList.remove('sg-tab-title-active');
     }
     
     // hide all of the panels
-    els = document.querySelectorAll('sg-'+patternPartial+'-tabs li');
+    els = document.querySelectorAll('#sg-'+patternPartial+'-panels div.sg-tabs-panel');
     for (i = 0; i < els.length; ++i) {
       els[i].style.display = 'none';
     }
@@ -745,8 +749,8 @@ var Panels = {
 
 // add the default panels
 // Panels.add({ 'id': 'sg-panel-info', 'name': 'info', 'default': true, 'templateID': 'pl-panel-template-info', 'httpRequest': false, 'prismHighlight': false, 'keyCombo': '' });
-Panels.add({ 'id': 'sg-panel-pattern', 'name': config.patternExtension, 'default': false, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': '.'+config.patternExtension, 'httpRequestCompleted': false, 'prismHighlight': true, 'language': PrismLanguages.get(config.patternExtension), 'keyCombo': 'ctrl+shift+u' });
-Panels.add({ 'id': 'sg-panel-html', 'name': 'html', 'default': false, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': '.escaped.html', 'httpRequestCompleted': false, 'prismHighlight': true, 'language': 'markup', 'keyCombo': 'ctrl+shift+y' });
+Panels.add({ 'id': 'sg-panel-pattern', 'name': config.patternExtension, 'default': true, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': '.'+config.patternExtension, 'httpRequestCompleted': false, 'prismHighlight': true, 'language': PrismLanguages.get(config.patternExtension), 'keyCombo': 'ctrl+shift+u' });
+Panels.add({ 'id': 'sg-panel-html', 'name': 'html', 'default': false, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': '.markup-only.html', 'httpRequestCompleted': false, 'prismHighlight': true, 'language': 'markup', 'keyCombo': 'ctrl+shift+y' });
 
 // gather panels from plugins
 Dispatcher.trigger('setupPanels');
@@ -794,12 +798,6 @@ var panelsViewer = {
     
     // get the base panels
     var panels = Panels.get();
-    
-    // figure out if lineage should be drawn
-    patternData.lineageExists = (patternData.lineage.length !== 0);
-    
-    // figure out if reverse lineage should be drawn
-    patternData.lineageRExists = (patternData.lineageR.length !== 0);
     
     // evaluate panels array and create content
     for (var i = 0; i < panels.length; ++i) {
@@ -849,6 +847,12 @@ var panelsViewer = {
     var template, templateCompiled, templateRendered;
     var patternPartial = patternData.patternPartial;
     patternData.panels = panels;
+    
+    // add *Exists attributes for Hogan templates
+    patternData      = this.setExists(patternData);
+    
+    // set isPatternView based on if we have to pass it back to the styleguide level
+    patternData.isPatternView = (iframePassback === false);
     
     // render all of the panels in the base panel template
     template         = document.getElementById('pl-panel-template-base');
@@ -908,6 +912,30 @@ var panelsViewer = {
       selection.removeAllRanges();
       selection.addRange(range);
     }
+    
+  },
+  
+  /**
+  * set the various *Exists needed for the template view
+  */
+  setExists: function(pD) {
+    
+    // figure out if the description exists
+    pD.patternDescExists = ((pD.patternDesc !== '') && ((pD.patternDescAdditions !== undefined) && (pD.patternDescAdditions.length > 0)));
+    
+    // figure out if lineage should be drawn
+    pD.lineageExists = (pD.lineage.length !== 0);
+    
+    // figure out if reverse lineage should be drawn
+    pD.lineageRExists = (pD.lineageR.length !== 0);
+    
+    // figure out if pattern state should be drawn
+    pD.patternStateExists = (pD.patternState !== undefined);
+    
+    // figure if the entire desc block should be drawn
+    pD.descBlockExists = (pD.patternDescExists || pD.lineageExists || pD.lineageRExists || pD.patternStateExists);
+
+    return pD;
     
   },
   
