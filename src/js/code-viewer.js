@@ -277,7 +277,7 @@ var codeViewer = {
 		$('#sg-code-lineage-fill a, #sg-code-lineager-fill a').on("click", function(e){
 			e.preventDefault();
 			$("#sg-code-loader").css("display","block");
-			var obj = JSON.stringify({ "event": "patternLab.pathUpdate", "path": urlHandler.getFileName($(this).attr("data-patternpartial")) });
+			var obj = JSON.stringify({ "event": "patternLab.updatePath", "path": urlHandler.getFileName($(this).attr("data-patternpartial")) });
 			document.getElementById("sg-viewport").contentWindow.postMessage(obj,codeViewer.targetOrigin);
 		});
 		
