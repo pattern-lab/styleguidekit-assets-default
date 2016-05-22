@@ -93,7 +93,7 @@ gulp.task('build:fonts', ['clean:fonts'], function() {
 });
 
 gulp.task('build:html', ['clean:html'], function() {
-	return gulp.src('src/html/*')
+	return gulp.src('src/html/index.html')
 		.pipe(plugins.fileInclude({ prefix: '@@', basepath: '@file' }))
 		.pipe(gulp.dest('dist'))
 		.pipe(copyPublic(""));
