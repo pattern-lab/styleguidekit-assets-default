@@ -121,10 +121,8 @@ var panelsViewer = {
       
       // show default options
       if ((templateRendered.querySelector(panelTab) !== null) && (panel.default)) {
-        
         templateRendered.querySelector(panelTab).classList.add('sg-tab-title-active');
         templateRendered.querySelector(panelBlock).style.display = 'block';
-        
       }
       
     }
@@ -133,7 +131,7 @@ var panelsViewer = {
     $('#sg-code-lineage-fill a, #sg-code-lineager-fill a', templateRendered).on('click', function(e){
       e.preventDefault();
       if (modalViewer !== undefined) {
-        var obj = JSON.stringify({ 'event': 'patternLab.pathUpdate', 'path': urlHandler.getFileName($(this).attr('data-patternpartial')) });
+        var obj = JSON.stringify({ 'event': 'patternLab.updatePath', 'path': urlHandler.getFileName($(this).attr('data-patternpartial')) });
         document.getElementById('sg-viewport').contentWindow.postMessage(obj, modalViewer.targetOrigin);
       }
     });
