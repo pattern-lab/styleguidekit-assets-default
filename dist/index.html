@@ -140,62 +140,6 @@
 
 	<!-- the template for the code view slider -->
 	<script type="text/mustache" id="pl-panel-template-base">
-<<<<<<< HEAD
-		<div>
-    
-  {{# isPatternView }}
-    <div class="sg-pattern-head">
-      <h2>{{ patternName }}</h2>
-      <div class="sg-pattern-breadcrumb">{{ patternBreadcrumb }}</div>
-    </div>
-  {{/ isPatternView }}
-  
-  <div>
-    <!-- description, etc. -->
-    {{# descBlockExists }}
-      <div>
-        {{# patternDescExists }}
-          <div class="sg-code-desc">
-            <p>
-              {{{ patternDesc }}}
-              {{# patternDescAdditions }}
-                {{{ . }}}
-              {{/ patternDescAdditions }}
-            </p>
-          </div>
-        {{/ patternDescExists }}
-        {{# patternStateExists }}
-          <div>
-            <p>
-              The state of the <span class="sg-code-patternname">{{ patternName }}</span> pattern is: <span class="sg-pattern-state {{ patternState }}">{{ patternState }}</span>
-            </p>
-          </div>
-        {{/ patternStateExists }}
-        {{# lineageExists }}
-          <div>
-            <p>
-              The <span class="sg-code-patternname">{{ patternName }}</span> pattern contains the following patterns:
-              <span id="sg-code-lineage-fill">
-              {{# lineage }}
-                <a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ . }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>
-              {{/ lineage }}
-              </span>
-            </p>
-          </div>
-        {{/ lineageExists }}
-        {{# lineageRExists }}
-          <div>
-            <p>
-              The <span class="sg-code-patternname">{{ patternName }}</span> pattern is included in the following patterns:
-              <span id="sg-code-lineager-fill">
-              {{# lineageR }}
-                <a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ . }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>
-              {{/ lineageR }}
-              </span>
-            </p>
-          </div>
-        {{/ lineageRExists }}
-=======
 		
 
 {{# isPatternView }}
@@ -214,7 +158,7 @@
   <div class="sg-pattern-extra-info">
     {{# patternDescExists }}
       <div class="sg-pattern-desc">
-          {{ patternDesc }}
+          {{{ patternDesc }}}
           {{# patternDescAdditions }}
             {{{ . }}}
           {{/ patternDescAdditions }}
@@ -234,7 +178,6 @@
           {{/ lineage }}
           </span>
         </p>
->>>>>>> b5279ae7d491961be26dd15c17a178f1a6bda850
       </div>
     {{/ lineageExists }}
     {{# lineageRExists }}

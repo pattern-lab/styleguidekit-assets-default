@@ -404,9 +404,15 @@ var modalStyleguide = {
   open: function(patternPartial, content) {
     
     // make sure templateRendered is modified to be an HTML element
-    var temp         = document.createElement('div');
-    temp.innerHTML   = content;
-    content = temp.querySelector('div');
+    //var temp         = document.createElement('div');
+    //temp.innerHTML   = content;
+    //temp.innerHTML    = content;
+    //content  = temp.innerHTML;
+    //content = temp.querySelector('div');
+    
+    var div       = document.createElement('div');
+    div.innerHTML = content;
+    content       = document.createElement('div').appendChild(div).querySelector('div');
     
     // add click events
     content = panelsUtil.addClickEvents(content, patternPartial);
