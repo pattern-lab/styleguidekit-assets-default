@@ -162,7 +162,7 @@ var panelsViewer = {
   setExists: function(pD) {
     
     // figure out if the description exists
-    pD.patternDescExists = ((pD.patternDesc !== '') && ((pD.patternDescAdditions !== undefined) && (pD.patternDescAdditions.length > 0)));
+    pD.patternDescExists = ((pD.patternDesc !== '') || ((pD.patternDescAdditions !== undefined) && (pD.patternDescAdditions.length > 0)));
     
     // figure out if lineage should be drawn
     pD.lineageExists = (pD.lineage.length !== 0);

@@ -149,14 +149,13 @@
   {{/ isPatternView }}
   
   <div>
-    
     <!-- description, etc. -->
     {{# descBlockExists }}
       <div>
         {{# patternDescExists }}
           <div class="sg-code-desc">
             <p>
-              {{ patternDesc }}
+              {{{ patternDesc }}}
               {{# patternDescAdditions }}
                 {{{ . }}}
               {{/ patternDescAdditions }}
