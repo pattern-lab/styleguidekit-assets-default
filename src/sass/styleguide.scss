@@ -669,7 +669,6 @@ $sg-border-radius-med : 6px;
 .sg-pattern-state:before {
     content: "\2022";
     display: inline-block;
-    font-size: 18px;
 	margin-right: 4px;
     position: relative;
     top: 2px;
@@ -952,6 +951,15 @@ $sg-border-radius-med : 6px;
 	max-height: 1px;
 	transition: all $sg-animate-quick ease-out;
 
+    a {
+        text-decoration: underline;
+        color: $sg-gray-dark;
+
+        &:hover, &:focus {
+            color: $sg-gray;
+        }
+    }
+
 	&.active {
 		border: 1px solid $sg-gray-light-2;
 		border-radius: $sg-border-radius-med;
@@ -1039,7 +1047,7 @@ $sg-border-radius-med : 6px;
 /**
  * Pattern Lineage info
  */
-.sg-pattern-extra-lineage {
+.sg-pattern-lineage {
 	font-size: 90%;
 	font-style: italic;
 	color: $sg-gray;
@@ -1058,15 +1066,20 @@ $sg-border-radius-med : 6px;
      * Code blocks
      */
 	pre {
+        overflow: scroll !important;
+        word-wrap: break-word;
+		white-space: pre-line;
 		background: $sg-gray-dark;
 		color: $sg-white;
-        width: 100%;
-        max-height: 15em;
 		padding: 0.5em;
+        margin: 0 !important;
         flex: 1;
         border-radius: 0 $sg-border-radius-med $sg-border-radius-med $sg-border-radius-med !important;
-        margin: 0 !important;
-        overflow: scroll !important;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
 	}
 
     @media all and (min-width: 42em) {
@@ -1086,6 +1099,8 @@ $sg-border-radius-med : 6px;
 .sg-tabs-container {
     flex: 1;
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .sg-tabs {
@@ -1127,13 +1142,18 @@ $sg-border-radius-med : 6px;
 	}
 }
 
+/**
+ * Active Tab
+ * 1) Note: the active tab color corresponds with the Prism code block
+ * background color.
+ */
 .sg-tab-title-active {
     a {
-        background: $sg-gray-dark;
-        color: $sg-white;
+        background: #F5F2F5; /* 1 */
+        color: $sg-gray-dark;
 
-        &:hover {
-            color: $sg-white;
+        &:hover, &:focus {
+            color: $sg-gray-dark;
         }
     }
 }
@@ -1149,12 +1169,10 @@ $sg-border-radius-med : 6px;
 
 .sg-tabs-panel {
 	display: none;
-
-	&.active {
-		display: flex;
-        flex-direction: column;
-        flex: 1;
-	}
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    position: relative;
 }
 
 
@@ -1286,18 +1304,6 @@ $sg-border-radius-med : 6px;
 
 	a {
 		text-decoration: underline;
-	}
-}
-
-.sg-code {
-	pre {
-		white-space: -moz-pre-line;
-		white-space: -pre-line;
-		white-space: -o-pre-line;
-		word-wrap: break-word;
-		white-space: pre-line;
-		border: 1px solid $sg-tone;
-		padding: $sg-pad-half;
 	}
 }
 

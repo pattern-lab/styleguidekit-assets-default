@@ -547,7 +547,6 @@
 .sg-pattern-state:before {
   content: "\2022";
   display: inline-block;
-  font-size: 18px;
   margin-right: 4px;
   position: relative;
   top: 2px;
@@ -815,6 +814,13 @@
   -webkit-transition: all 0.1s ease-out;
           transition: all 0.1s ease-out;
 }
+.sg-pattern-extra a {
+  text-decoration: underline;
+  color: #222;
+}
+.sg-pattern-extra a:hover, .sg-pattern-extra a:focus {
+  color: #808080;
+}
 .sg-pattern-extra.active {
   border: 1px solid #ddd;
   border-radius: 6px;
@@ -900,7 +906,7 @@
 /**
  * Pattern Lineage info
  */
-.sg-pattern-extra-lineage {
+.sg-pattern-lineage {
   font-size: 90%;
   font-style: italic;
   color: #808080;
@@ -923,17 +929,22 @@
    */
 }
 .sg-pattern-extra-code pre {
+  overflow: scroll !important;
+  word-wrap: break-word;
+  white-space: pre-line;
   background: #222;
   color: #fff;
-  width: 100%;
-  max-height: 15em;
   padding: 0.5em;
+  margin: 0 !important;
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
   border-radius: 0 6px 6px 6px !important;
-  margin: 0 !important;
-  overflow: scroll !important;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 @media all and (min-width: 42em) {
   .sg-pattern-extra-code {
@@ -950,6 +961,13 @@
       -ms-flex: 1;
           flex: 1;
   width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
 .sg-tabs {
@@ -993,12 +1011,18 @@
   color: #222;
 }
 
+/**
+ * Active Tab
+ * 1) Note: the active tab color corresponds with the Prism code block
+ * background color.
+ */
 .sg-tab-title-active a {
-  background: #222;
-  color: #fff;
+  background: #F5F2F5;
+  /* 1 */
+  color: #222;
 }
-.sg-tab-title-active a:hover {
-  color: #fff;
+.sg-tab-title-active a:hover, .sg-tab-title-active a:focus {
+  color: #222;
 }
 
 .sg-tabs-content {
@@ -1019,8 +1043,6 @@
 
 .sg-tabs-panel {
   display: none;
-}
-.sg-tabs-panel.active {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1031,6 +1053,7 @@
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
+  position: relative;
 }
 
 /*------------------------------------*\
@@ -1156,16 +1179,6 @@
 }
 .sg-code a, .sg-annotations a {
   text-decoration: underline;
-}
-
-.sg-code pre {
-  white-space: -moz-pre-line;
-  white-space: -pre-line;
-  white-space: -o-pre-line;
-  word-wrap: break-word;
-  white-space: pre-line;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 0.5em;
 }
 
 .sg-code-contains {

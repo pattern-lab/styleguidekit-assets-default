@@ -3,10 +3,10 @@
 {{# isPatternView }}
 <div class="sg-pattern-head">
 
-  <h2 class="sg-pattern-title">{{ patternName }}</h2>
+  <h2 class="sg-modal-title">{{ patternName }}</h2>
   <div class="sg-pattern-breadcrumb">{{ patternBreadcrumb }}</div>
 
-</div>
+</div><!--end .sg-pattern-head-->
 {{/ isPatternView }}
 
 <div class="sg-pattern-extra-inner">
@@ -14,41 +14,36 @@
 <!-- description, etc. -->
 {{# descBlockExists }}
   <div class="sg-pattern-extra-info">
+
     {{# patternDescExists }}
       <div class="sg-pattern-desc">
           {{{ patternDesc }}}
           {{# patternDescAdditions }}
             {{{ . }}}
           {{/ patternDescAdditions }}
-      </div>
+      </div><!--end .sg-pattern-desc-->
     {{/ patternDescExists }}
 
-    {{# patternStateExists }}
-      <div><span class="sg-pattern-state {{ patternState }}">{{ patternState }}</span></div>
-    {{/ patternStateExists }}
     {{# lineageExists }}
-      <div>
-        <p>
-          The <span class="sg-code-patternname">{{ patternName }}</span> pattern contains the following patterns:
+      <p class="sg-pattern-lineage">
+          The <strong>{{ patternName }}</strong> pattern contains the following patterns:
           <span id="sg-code-lineage-fill">
           {{# lineage }}
             <a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ . }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>
           {{/ lineage }}
           </span>
-        </p>
-      </div>
+      </p><!--end .sg-pattern-lineage-->
     {{/ lineageExists }}
+
     {{# lineageRExists }}
-      <div>
-        <p>
+      <p class="sg-pattern-lineage">
           The <strong>{{ patternName }}</strong> pattern is included in the following patterns:
           <span id="sg-pattern-extra-lineage">
           {{# lineageR }}
             <a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ . }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>
           {{/ lineageR }}
           </span>
-        </p>
-      </div>
+      </p><!--end .sg-pattern-lineage-->
     {{/ lineageRExists }}
 </div><!--end .sg-pattern-extra-info-->
 {{/ descBlockExists }}
@@ -58,20 +53,22 @@
     <div class="sg-tabs-container">
 
       <div id="sg-{{ patternPartial }}-tabs" class="sg-tabs">
+
         <ul class="sg-tabs-list">
           {{# panels }}
             <li id="sg-{{ patternPartial }}-{{ id }}-tab" data-patternpartial="{{ patternPartial }}" data-panelid="{{ id }}"><a href="#sg-{{ patternPartial }}-{{ id }}-panel" class="active">{{ name }}</a></li>
           {{/ panels }}
-        </ul>
-      </div>
+        </ul><!--end .sg-tabs-list-->
+
+      </div><!--end .sg-tabs-->
 
       <div id="sg-{{ patternPartial }}-panels" class="sg-tabs-content">
         {{# panels }}
           <div id="sg-{{ patternPartial }}-{{ id }}-panel"  class="sg-tabs-panel" style="display: none">
             {{{ content }}}
-          </div>
+          </div><!--end .sg-tabs-panel-->
         {{/ panels }}
-      </div>
+      </div><!--end .sg-tabs-content-->
 
     </div><!--end .sg-tabs-container-->
 
