@@ -17,6 +17,7 @@
 
 	<!-- load the pattern lab css -->
 	<link rel="stylesheet" href="styleguide/css/styleguide.min.css" media="all" />
+	<link rel="stylesheet" href="styleguide/css/prism-typeahead.min.css" media="all" />
 
 	<!-- not sure why jquery is loaded here... -->
 	<script src="styleguide/bower_components/jquery.min.js"></script>
@@ -145,7 +146,13 @@
 {{# isPatternView }}
 <div class="sg-pattern-head">
 
-  <h2 class="sg-modal-title">{{ patternName }}</h2>
+  <h2 class="sg-modal-title">
+    {{ patternName }}
+    {{# patternState }}
+      <span class="sg-pattern-state {{ patternState }}">{{ patternState }}</span>
+    {{/ patternState }}
+  </h2>
+
   <div class="sg-pattern-breadcrumb">{{ patternBreadcrumb }}</div>
 
 </div><!--end .sg-pattern-head-->

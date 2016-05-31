@@ -3,7 +3,13 @@
 {{# isPatternView }}
 <div class="sg-pattern-head">
 
-  <h2 class="sg-modal-title">{{ patternName }}</h2>
+  <h2 class="sg-modal-title">
+    {{ patternName }}
+    {{# patternState }}
+      <span class="sg-pattern-state {{ patternState }}">{{ patternState }}</span>
+    {{/ patternState }}
+  </h2>
+
   <div class="sg-pattern-breadcrumb">{{ patternBreadcrumb }}</div>
 
 </div><!--end .sg-pattern-head-->

@@ -105,7 +105,7 @@ var panelsViewer = {
     // make sure templateRendered is modified to be an HTML element
     var div          = document.createElement('div');
     div.innerHTML    = templateRendered;
-    templateRendered = document.createElement('div').appendChild(div).querySelector('div');
+    templateRendered = div;
     
     // add click events
     templateRendered = panelsUtil.addClickEvents(templateRendered, patternPartial);
