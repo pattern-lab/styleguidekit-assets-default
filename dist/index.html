@@ -145,10 +145,10 @@
 {{# isPatternView }}
 <div class="sg-pattern-head">
 
-  <h2 class="sg-pattern-title">{{ patternName }}</h2>
+  <h2 class="sg-modal-title">{{ patternName }}</h2>
   <div class="sg-pattern-breadcrumb">{{ patternBreadcrumb }}</div>
 
-</div>
+</div><!--end .sg-pattern-head-->
 {{/ isPatternView }}
 
 <div class="sg-pattern-extra-inner">
@@ -156,9 +156,6 @@
 <!-- description, etc. -->
 {{# descBlockExists }}
   <div class="sg-pattern-extra-info">
-    <div class="sg-pattern-desc">
-        This is the pattern description. <a href="#">Can it have links?</a> Lorem ipsum dolor sit amet, <strong>consectetur adipisicing elit.</strong> Possimus molestias repudiandae eaque ex vitae ipsam esse <em>voluptatum ab itaque</em> officia dolores quis, amet ratione aspernatur, recusandae, quod eveniet iusto maiores!
-    </div>
 
     {{# patternDescExists }}
       <div class="sg-pattern-desc">
@@ -166,7 +163,7 @@
           {{# patternDescAdditions }}
             {{{ . }}}
           {{/ patternDescAdditions }}
-      </div>
+      </div><!--end .sg-pattern-desc-->
     {{/ patternDescExists }}
 
     {{# lineageExists }}
@@ -177,7 +174,7 @@
             <a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ . }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>
           {{/ lineage }}
           </span>
-      </p>
+      </p><!--end .sg-pattern-lineage-->
     {{/ lineageExists }}
 
     {{# lineageRExists }}
@@ -188,7 +185,7 @@
             <a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ . }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>
           {{/ lineageR }}
           </span>
-      </p>
+      </p><!--end .sg-pattern-lineage-->
     {{/ lineageRExists }}
 </div><!--end .sg-pattern-extra-info-->
 {{/ descBlockExists }}
@@ -202,8 +199,8 @@
           {{# panels }}
             <li id="sg-{{ patternPartial }}-{{ id }}-tab" data-patternpartial="{{ patternPartial }}" data-panelid="{{ id }}"><a href="#sg-{{ patternPartial }}-{{ id }}-panel" class="active">{{ name }}</a></li>
           {{/ panels }}
-        </ul>
-      </div>
+        </ul><!--end .sg-tabs-list-->
+      </div><!--end .sg-tabs-->
 
       <div id="sg-{{ patternPartial }}-panels" class="sg-tabs-content">
         {{# panels }}
@@ -211,7 +208,7 @@
             {{{ content }}}
           </div>
         {{/ panels }}
-      </div>
+      </div><!--end .sg-tabs-content-->
 
     </div><!--end .sg-tabs-container-->
 

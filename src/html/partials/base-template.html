@@ -53,20 +53,18 @@
     <div class="sg-tabs-container">
 
       <div id="sg-{{ patternPartial }}-tabs" class="sg-tabs">
-
         <ul class="sg-tabs-list">
           {{# panels }}
             <li id="sg-{{ patternPartial }}-{{ id }}-tab" data-patternpartial="{{ patternPartial }}" data-panelid="{{ id }}"><a href="#sg-{{ patternPartial }}-{{ id }}-panel" class="active">{{ name }}</a></li>
           {{/ panels }}
         </ul><!--end .sg-tabs-list-->
-
       </div><!--end .sg-tabs-->
 
       <div id="sg-{{ patternPartial }}-panels" class="sg-tabs-content">
         {{# panels }}
           <div id="sg-{{ patternPartial }}-{{ id }}-panel"  class="sg-tabs-panel" style="display: none">
             {{{ content }}}
-          </div><!--end .sg-tabs-panel-->
+          </div>
         {{/ panels }}
       </div><!--end .sg-tabs-content-->
 
