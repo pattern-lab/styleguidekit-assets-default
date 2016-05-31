@@ -937,12 +937,9 @@
 }
 .sg-pattern-extra-code pre {
   overflow: scroll !important;
-  word-wrap: break-word;
-  white-space: pre-line;
-  background: #222;
-  color: #fff;
-  padding: 0.5em;
+  padding: 0 0.5rem 0.5rem !important;
   margin: 0 !important;
+  line-height: 1 !important;
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
@@ -952,6 +949,12 @@
   bottom: 0;
   left: 0;
   right: 0;
+}
+.sg-pattern-extra-code code {
+  display: block;
+  -moz-tab-size: 2 !important;
+    -o-tab-size: 2 !important;
+       tab-size: 2 !important;
 }
 @media all and (min-width: 42em) {
   .sg-pattern-extra-code {

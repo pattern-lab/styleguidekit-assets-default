@@ -1072,12 +1072,9 @@ $sg-border-radius-med : 6px;
      */
 	pre {
         overflow: scroll !important;
-        word-wrap: break-word;
-		white-space: pre-line;
-		background: $sg-gray-dark;
-		color: $sg-white;
-		padding: 0.5em;
+        padding: 0 0.5rem 0.5rem !important;
         margin: 0 !important;
+        line-height: 1 !important;
         flex: 1;
         border-radius: 0 $sg-border-radius-med $sg-border-radius-med $sg-border-radius-med !important;
         position: absolute;
@@ -1086,6 +1083,11 @@ $sg-border-radius-med : 6px;
         left: 0;
         right: 0;
 	}
+
+    code {
+        display: block;
+        tab-size: 2 !important; //Overrides plugin default tab-size so we can fit more code before the overflow
+    }
 
     @media all and (min-width: 42em) {
         width: 60%;

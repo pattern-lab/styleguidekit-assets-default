@@ -156,6 +156,14 @@
 <!-- description, etc. -->
 {{# descBlockExists }}
   <div class="sg-pattern-extra-info">
+      <div class="sg-pattern-desc">
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam odio debitis aliquid similique sed nesciunt labore nam voluptas, aperiam perspiciatis aut quis quisquam molestias alias inventore deleniti laudantium molestiae qui.</p>
+          <p>Eaque quas, tempore quis soluta nobis natus vitae explicabo earum ab. Facere dolore, distinctio voluptate dolorum. Illo eius inventore quibusdam, cupiditate veritatis optio nemo natus, repellendus odio, excepturi facilis dolorem!</p>
+          <p>Nisi, ex vitae exercitationem illum maxime illo nemo vero architecto voluptatum voluptate, dicta repellendus minima sequi similique animi temporibus velit inventore, atque voluptatibus corporis impedit. Voluptatibus, cupiditate ipsum nemo qui.</p>
+          <p>In blanditiis at hic, ex, culpa ducimus. Doloribus consectetur accusamus ea qui nam, nesciunt culpa quam, quos, omnis minima ab totam sit fugit illo quidem dignissimos soluta numquam reprehenderit eaque.</p>
+          <p>Ipsum cumque earum, libero voluptatem, quos aut impedit voluptates iste est, cum eveniet. Sapiente enim iure eaque dolore neque quaerat velit minus amet quam quos ducimus ad, ullam dolorum quae!</p>
+          <p>Alias, itaque ex. Quo dicta magnam laboriosam quam cum maiores ipsum. Mollitia neque, quis itaque odit, libero, veniam facere animi quia id veritatis ex cum vel earum ullam tempore ad?</p>
+      </div><!--end .sg-pattern-desc-->
 
     {{# patternDescExists }}
       <div class="sg-pattern-desc">
@@ -198,15 +206,16 @@
         <li id="sg-{{ patternPartial }}-{{ id }}-tab" data-patternpartial="{{ patternPartial }}" data-panelid="{{ id }}"><a href="#sg-{{ patternPartial }}-{{ id }}-panel" class="active">{{ name }}</a></li>
       {{/ panels }}
     </ul><!--end .sg-tabs-list-->
-  </div><!--end .sg-tabs-->
 
-  <div id="sg-{{ patternPartial }}-panels" class="sg-tabs-content">
-    {{# panels }}
-      <div id="sg-{{ patternPartial }}-{{ id }}-panel"  class="sg-tabs-panel" style="display: none">
-        {{{ content }}}
-      </div>
-    {{/ panels }}
-  </div><!--end .sg-tabs-content-->
+    <div id="sg-{{ patternPartial }}-panels" class="sg-tabs-content">
+      {{# panels }}
+        <div id="sg-{{ patternPartial }}-{{ id }}-panel"  class="sg-tabs-panel" style="display: none">
+          {{{ content }}}
+        </div>
+      {{/ panels }}
+    </div><!--end .sg-tabs-content-->
+    
+  </div><!--end .sg-tabs-->
 
 </div><!--end .sg-pattern-extra-info-->
 
