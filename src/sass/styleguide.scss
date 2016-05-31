@@ -964,7 +964,7 @@ $sg-border-radius-med : 6px;
 		border: 1px solid $sg-gray-light-2;
 		border-radius: $sg-border-radius-med;
 		border-top-right-radius: 0;
-		max-height: 30em;
+		max-height: 50em;
 	}
 }
 
@@ -1149,7 +1149,7 @@ $sg-border-radius-med : 6px;
  */
 .sg-tab-title-active {
     a {
-        background: #F5F2F5; /* 1 */
+        background: #f5f2f0; /* 1 */
         color: $sg-gray-dark;
 
         &:hover, &:focus {

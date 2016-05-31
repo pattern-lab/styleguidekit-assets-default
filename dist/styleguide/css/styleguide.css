@@ -825,7 +825,7 @@
   border: 1px solid #ddd;
   border-radius: 6px;
   border-top-right-radius: 0;
-  max-height: 30em;
+  max-height: 50em;
 }
 
 /**
@@ -1017,7 +1017,7 @@
  * background color.
  */
 .sg-tab-title-active a {
-  background: #F5F2F5;
+  background: #f5f2f0;
   /* 1 */
   color: #222;
 }
