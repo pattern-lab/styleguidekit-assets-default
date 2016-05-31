@@ -3,14 +3,14 @@
 {{# isPatternView }}
 <div class="sg-pattern-head">
 
-  <h2 class="sg-modal-title">
+  <div class="sg-pattern-breadcrumb">{{ patternBreadcrumb }}</div>
+
+  <h2 class="sg-pattern-title">
     {{ patternName }}
     {{# patternState }}
       <span class="sg-pattern-state {{ patternState }}">{{ patternState }}</span>
     {{/ patternState }}
   </h2>
-
-  <div class="sg-pattern-breadcrumb">{{ patternBreadcrumb }}</div>
 
 </div><!--end .sg-pattern-head-->
 {{/ isPatternView }}

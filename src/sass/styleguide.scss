@@ -1024,6 +1024,7 @@ $sg-border-radius-med : 6px;
     padding: 0.5rem 0.5rem 0;
 	line-height: 1.3;
 	font-size: 90%;
+    color: $sg-gray;
 
     &:empty {
         padding: 0;
@@ -1054,7 +1055,6 @@ $sg-border-radius-med : 6px;
 .sg-pattern-lineage {
 	font-size: 90%;
 	font-style: italic;
-	color: $sg-gray;
 }
 
 /**
@@ -1182,26 +1182,26 @@ $sg-border-radius-med : 6px;
 
 
 /*------------------------------------*\
-    #VIEW CONTAINER
+    #MODAL
 \*------------------------------------*/
+/**
+ * The modal appears when "show pattern info" is selected
+ * on the pattern detail screen.
+ */
 
-// Annotations and code view container
-.sg-view-container {
+.sg-modal {
 	font-family: $sg-font;
 	line-height: 1.4;
 	font-size: 90%;
 	background: $sg-black;
-	color: $sg-gray;
+	color: $sg-gray-light-3;
 	position: fixed;
 	top: auto;
-	padding: 4em 1em 1em;
 	bottom: 0;
 	left: 0;
 	z-index: 2;
 	width: 100%;
 	height: 50%;
-	overflow-y: auto;
-	overflow-x: hidden;
     display: flex;
     flex-direction: column;
 
@@ -1209,6 +1209,16 @@ $sg-border-radius-med : 6px;
 	  	transition:  bottom 0.3s ease-out;
 	}
 
+    /**
+     * Pattern Title
+     */
+    .sg-pattern-title {
+        font-size: 1.4rem !important;
+    }
+
+    /**
+     * Pattern Information
+     */
     .sg-pattern-extra {
         flex: 1;
         max-height: none;
@@ -1218,29 +1228,55 @@ $sg-border-radius-med : 6px;
             max-height: none;
         }
     }
+
+    .sg-pattern-extra-info {
+        a {
+            color: $sg-gray-light-3;
+        }
+    }
 }
 
-//Annotation and code view close button
-.sg-view-close-btn {
-	font-size: 0.7em;
+/**
+ * Modal close button
+ * 1) Closes the modal popup
+ * 2) Reposition to jut out of modal if parent modal has class of active
+ */
+.sg-modal-close-btn {
+	font-size: 70%;
     background: $sg-black;
 	color: $sg-gray;
-	border: 1px solid $sg-gray;
-    border-radius: $sg-border-radius-med;
+    border: 0;
+    border-radius: $sg-border-radius-med $sg-border-radius-med 0 0;
 	display: inline-block;
-	padding: 0.5em;
+	padding: 0.9em 0.7em 0.1em;
 	text-transform: uppercase;
 	text-decoration: none;
 	cursor: pointer;
 	position: absolute;
-	right: 1em;
-	top: 1em;
+	right: 0;
+	top: 0;
     transition: all $sg-animate-quick ease-out;
 
+    /* 2 */
+    .sg-modal.active & {
+        top: -1.5rem;
+    }
+
 	&:hover, &:focus {
+        background: $sg-gray-dark;
 		color: $sg-gray-light;
-		border-color: $sg-gray-light;
 	}
+}
+
+/**
+ * Modal Content
+ */
+.sg-modal-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    overflow-y: auto;
+	overflow-x: hidden;
 }
 
 //Annotated elements Styles

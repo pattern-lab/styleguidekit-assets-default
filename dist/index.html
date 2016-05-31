@@ -48,12 +48,19 @@
 	<!--end iFrame-->
 
 	<!-- modal window -->
-	<div id="sg-modal-container" class="sg-view-container anim-ready" style="bottom: -2000px">
-		<div id="sg-modal-close" class="sg-view-close">
-			<a href="#" id="sg-modal-close-btn" class="sg-view-close-btn">Close</a>
-		</div>
-		<div id="sg-modal-container-content"></div>
-	</div>
+	<div id="sg-modal-container" class="sg-modal anim-ready" style="bottom: -2000px">
+
+        <!-- modal close btn -->
+        <button id="sg-modal-close-btn" class="sg-modal-close-btn">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="12" height="12" viewBox="0 0 12 12">
+              <title>Close</title>
+              <path fill="#808080" d="M11.8905,9.6405 L11.8905,9.6405 L8.25,6 L11.8905,2.3595 L11.8905,2.3595 C11.9295,2.3205 11.958,2.27475 11.976,2.226 C12.0255,2.0925 11.997,1.9365 11.8905,1.82925 L10.17075,0.1095 C10.0635,0.00225 9.9075,-0.02625 9.774,0.024 C9.72525,0.042 9.6795,0.0705 9.6405,0.1095 L9.6405,0.1095 L6,3.75 L2.3595,0.1095 L2.3595,0.1095 C2.3205,0.0705 2.27475,0.042 2.226,0.024 C2.0925,-0.0255 1.9365,0.00225 1.82925,0.1095 L0.1095,1.82925 C0.00225,1.9365 -0.02625,2.0925 0.024,2.226 C0.042,2.27475 0.0705,2.3205 0.1095,2.3595 L0.1095,2.3595 L3.75,6 L0.1095,9.6405 L0.1095,9.6405 C0.0705,9.6795 0.042,9.72525 0.024,9.774 C-0.0255,9.9075 0.00225,10.0635 0.1095,10.17075 L1.82925,11.8905 C1.9365,11.99775 2.0925,12.02625 2.226,11.976 C2.27475,11.958 2.3205,11.9295 2.3595,11.8905 L2.3595,11.8905 L6,8.25 L9.6405,11.8905 L9.6405,11.8905 C9.6795,11.9295 9.72525,11.958 9.774,11.976 C9.9075,12.0255 10.0635,11.99775 10.17075,11.8905 L11.8905,10.17075 C11.99775,10.0635 12.02625,9.9075 11.976,9.774 C11.958,9.72525 11.9295,9.6795 11.8905,9.6405 L11.8905,9.6405 Z"></path>
+            </svg>
+        </button><!--end .sg-modal-close-btn-->
+
+		<div id="sg-modal-content" class="sg-modal-content"></div><!--end .sg-modal-content-->
+
+	</div><!--end .sg-modal-->
 	<!-- end modal window -->
 
 
@@ -146,14 +153,14 @@
 {{# isPatternView }}
 <div class="sg-pattern-head">
 
-  <h2 class="sg-modal-title">
+  <div class="sg-pattern-breadcrumb">{{ patternBreadcrumb }}</div>
+
+  <h2 class="sg-pattern-title">
     {{ patternName }}
     {{# patternState }}
       <span class="sg-pattern-state {{ patternState }}">{{ patternState }}</span>
     {{/ patternState }}
   </h2>
-
-  <div class="sg-pattern-breadcrumb">{{ patternBreadcrumb }}</div>
 
 </div><!--end .sg-pattern-head-->
 {{/ isPatternView }}
@@ -163,14 +170,6 @@
 <!-- description, etc. -->
 {{# descBlockExists }}
   <div class="sg-pattern-extra-info">
-      <div class="sg-pattern-desc">
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam odio debitis aliquid similique sed nesciunt labore nam voluptas, aperiam perspiciatis aut quis quisquam molestias alias inventore deleniti laudantium molestiae qui.</p>
-          <p>Eaque quas, tempore quis soluta nobis natus vitae explicabo earum ab. Facere dolore, distinctio voluptate dolorum. Illo eius inventore quibusdam, cupiditate veritatis optio nemo natus, repellendus odio, excepturi facilis dolorem!</p>
-          <p>Nisi, ex vitae exercitationem illum maxime illo nemo vero architecto voluptatum voluptate, dicta repellendus minima sequi similique animi temporibus velit inventore, atque voluptatibus corporis impedit. Voluptatibus, cupiditate ipsum nemo qui.</p>
-          <p>In blanditiis at hic, ex, culpa ducimus. Doloribus consectetur accusamus ea qui nam, nesciunt culpa quam, quos, omnis minima ab totam sit fugit illo quidem dignissimos soluta numquam reprehenderit eaque.</p>
-          <p>Ipsum cumque earum, libero voluptatem, quos aut impedit voluptates iste est, cum eveniet. Sapiente enim iure eaque dolore neque quaerat velit minus amet quam quos ducimus ad, ullam dolorum quae!</p>
-          <p>Alias, itaque ex. Quo dicta magnam laboriosam quam cum maiores ipsum. Mollitia neque, quis itaque odit, libero, veniam facere animi quia id veritatis ex cum vel earum ullam tempore ad?</p>
-      </div><!--end .sg-pattern-desc-->
 
     {{# patternDescExists }}
       <div class="sg-pattern-desc">
@@ -221,7 +220,7 @@
         </div>
       {{/ panels }}
     </div><!--end .sg-tabs-content-->
-    
+
   </div><!--end .sg-tabs-->
 
 </div><!--end .sg-pattern-extra-info-->
@@ -237,7 +236,7 @@
 </pre>
 
 	</script>
-	
+
 	<!-- the template for the annotations viewer slider -->
 	<script type="text/mustache" id="pl-annotations-template">
 		<div id="sg-annotation-close" class="sg-view-close">
