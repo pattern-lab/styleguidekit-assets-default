@@ -888,6 +888,15 @@ $sg-border-radius-med : 6px;
 			color: $sg-black  !important;
 		}
 	}
+
+    /**
+     * Pattern State that appears within a pattern title
+     */
+    .sg-pattern-state {
+        font-size: 80%;
+        font-weight: normal;
+        color: $sg-gray-light-3;
+    }
 }
 
 /**

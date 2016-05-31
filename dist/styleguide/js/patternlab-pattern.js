@@ -404,12 +404,6 @@ var modalStyleguide = {
   open: function(patternPartial, content) {
     
     // make sure templateRendered is modified to be an HTML element
-    //var temp         = document.createElement('div');
-    //temp.innerHTML   = content;
-    //temp.innerHTML    = content;
-    //content  = temp.innerHTML;
-    //content = temp.querySelector('div');
-    
     var div       = document.createElement('div');
     div.innerHTML = content;
     content       = document.createElement('div').appendChild(div).querySelector('div');
@@ -424,7 +418,7 @@ var modalStyleguide = {
     modalStyleguide.active[patternPartial] = true;
     
     // make sure there's no content
-    var div = document.getElementById('sg-pattern-extra-'+patternPartial);
+    div = document.getElementById('sg-pattern-extra-'+patternPartial);
     if (div.childNodes.length > 0) {
       div.removeChild(div.childNodes[0]);
     }

@@ -744,6 +744,9 @@
   font-weight: bold !important;
   margin: 0 !important;
   padding: 0 !important;
+  /**
+   * Pattern State that appears within a pattern title
+   */
 }
 .sg-pattern-title a {
   display: inline-block;
@@ -755,6 +758,11 @@
 }
 .sg-pattern-title a:hover, .sg-pattern-title a:focus {
   color: #000 !important;
+}
+.sg-pattern-title .sg-pattern-state {
+  font-size: 80%;
+  font-weight: normal;
+  color: #ccc;
 }
 
 /**
