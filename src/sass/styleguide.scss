@@ -854,15 +854,22 @@ $sg-border-radius-med : 6px;
     clear: both; /* 3 */
 }
 
+
 /**
  * Pattern Header
  */
 .sg-pattern-head {
-	margin: $sg-doublespace 0 0;
-	font-family: $sg-font;
-	font-weight: normal;
     position: relative;
+    padding: 0.5rem 0.5rem 0;
+	line-height: 1.3;
+	font-size: 90%;
+    color: $sg-gray;
+
+    &:empty {
+        padding: 0;
+    }
 }
+
 
 /**
  * Pattern Title
@@ -978,41 +985,7 @@ $sg-border-radius-med : 6px;
         display: flex;
         align-items: stretch;
         width: 100%;
-    }
-}
-
-/**
- * Pattern Extra - Dark
- * 1) This is the dark styling used on individual patterns
- */
-.sg-pattern-extra--dark {
-    background: $sg-black;
-    color: $sg-gray-light;
-    border: 0;
-
-    &.active {
-        border: 0;
-    }
-
-    /**
-     * Tabs that appear within the dark theme
-     */
-    .sg-tabs-list a {
-        border-color: $sg-gray;
-        color: $sg-gray-light;
-
-        &:hover, &:focus {
-            color: $sg-white;
-        }
-
-        &.active {
-            color: $sg-white;
-            border-bottom-color: $sg-black;
-        }
-    }
-
-    .sg-tabs-content {
-        border-color: $sg-gray;
+        flex: 1;
     }
 }
 
@@ -1025,6 +998,7 @@ $sg-border-radius-med : 6px;
 	line-height: 1.3;
 	font-size: 90%;
     color: $sg-gray;
+    overflow: auto; //allows scrolling on modals with extra long descriptions
 
     &:empty {
         padding: 0;
@@ -1129,6 +1103,7 @@ $sg-border-radius-med : 6px;
 		font-weight: bold;
 		line-height: 1;
 		padding: 0.5em 1em;
+        background: $sg-gray-light;
 		border: 1px solid $sg-gray-light-3;
         border-bottom: 0;
 		color: $sg-gray;
@@ -1174,7 +1149,11 @@ $sg-border-radius-med : 6px;
     flex-direction: column;
     flex: 1;
     position: relative;
-    min-height: 7em;
+    min-height: 12em;
+
+    @media all and (min-width: 42em) {
+        min-height: 7em;
+    }
 }
 
 
@@ -1210,14 +1189,31 @@ $sg-border-radius-med : 6px;
 	}
 
     /**
-     * Pattern Title
+     * Pattern Breadcrumbs inside modal
+     */
+    .sg-pattern-breadcrumb {
+         font-size: $sg-font-size-sm;
+         color: $sg-gray;
+         margin-bottom: 0.5rem;
+     }
+
+    /**
+     * Pattern Header inside modal
+     */
+    .sg-pattern-head {
+        padding: 0;
+     }
+
+    /**
+     * Pattern Title inside modal
      */
     .sg-pattern-title {
         font-size: 1.4rem !important;
+        color: $sg-gray-light;
     }
 
     /**
-     * Pattern Information
+     * Pattern Information inside modal
      */
     .sg-pattern-extra {
         flex: 1;
@@ -1229,10 +1225,31 @@ $sg-border-radius-med : 6px;
         }
     }
 
+    /**
+     * Pattern info links inside modal
+     */
     .sg-pattern-extra-info {
         a {
             color: $sg-gray-light-3;
+
+            &:hover, &:focus {
+                color: $sg-gray-light;
+            }
         }
+    }
+
+    /**
+     * Pattern Description inside modal
+     */
+    .sg-pattern-desc {
+        border-bottom-color: $sg-gray;
+    }
+
+    /**
+     * Pattern tab panel inside modal
+     */
+    .sg-tabs-content {
+        border: 0;
     }
 }
 
@@ -1254,7 +1271,7 @@ $sg-border-radius-med : 6px;
 	cursor: pointer;
 	position: absolute;
 	right: 0;
-	top: 0;
+	top: 1rem;
     transition: all $sg-animate-quick ease-out;
 
     /* 2 */
@@ -1279,7 +1296,18 @@ $sg-border-radius-med : 6px;
 	overflow-x: hidden;
 }
 
-//Annotated elements Styles
+/**
+ * Modal Content Inner Wrapper
+ */
+.sg-modal-content-inner {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+/**
+ * Annotated elements Styles
+ */
 .has-annotation {
 	cursor: help !important;
 	box-shadow: 0 0 10px $sg-gray;

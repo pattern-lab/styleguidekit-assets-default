@@ -1,25 +1,26 @@
 
 
-{{# isPatternView }}
-<div class="sg-pattern-head">
-
-  <div class="sg-pattern-breadcrumb">{{ patternBreadcrumb }}</div>
-
-  <h2 class="sg-pattern-title">
-    {{ patternName }}
-    {{# patternState }}
-      <span class="sg-pattern-state {{ patternState }}">{{ patternState }}</span>
-    {{/ patternState }}
-  </h2>
-
-</div><!--end .sg-pattern-head-->
-{{/ isPatternView }}
-
 <div class="sg-pattern-extra-inner">
 
 <!-- description, etc. -->
 {{# descBlockExists }}
   <div class="sg-pattern-extra-info">
+
+    {{# isPatternView }}
+      <div class="sg-pattern-head">
+
+        <div class="sg-pattern-breadcrumb">{{ patternBreadcrumb }}</div>
+
+        <h2 class="sg-pattern-title">
+          {{ patternName }}
+          {{# patternState }}
+            <span class="sg-pattern-state {{ patternState }}">{{ patternState }}</span>
+          {{/ patternState }}
+        </h2>
+
+      </div><!--end .sg-pattern-head-->
+    {{/ isPatternView }}
+
 
     {{# patternDescExists }}
       <div class="sg-pattern-desc">

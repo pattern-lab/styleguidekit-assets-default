@@ -727,10 +727,14 @@
  * Pattern Header
  */
 .sg-pattern-head {
-  margin: 2em 0 0;
-  font-family: "HelveticaNeue", "Helvetica", "Arial", sans-serif;
-  font-weight: normal;
   position: relative;
+  padding: 0.5rem 0.5rem 0;
+  line-height: 1.3;
+  font-size: 90%;
+  color: #808080;
+}
+.sg-pattern-head:empty {
+  padding: 0;
 }
 
 /**
@@ -842,37 +846,10 @@
         -ms-flex-align: stretch;
             align-items: stretch;
     width: 100%;
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
   }
-}
-
-/**
- * Pattern Extra - Dark
- * 1) This is the dark styling used on individual patterns
- */
-.sg-pattern-extra--dark {
-  background: #000;
-  color: #eee;
-  border: 0;
-  /**
-   * Tabs that appear within the dark theme
-   */
-}
-.sg-pattern-extra--dark.active {
-  border: 0;
-}
-.sg-pattern-extra--dark .sg-tabs-list a {
-  border-color: #808080;
-  color: #eee;
-}
-.sg-pattern-extra--dark .sg-tabs-list a:hover, .sg-pattern-extra--dark .sg-tabs-list a:focus {
-  color: #fff;
-}
-.sg-pattern-extra--dark .sg-tabs-list a.active {
-  color: #fff;
-  border-bottom-color: #000;
-}
-.sg-pattern-extra--dark .sg-tabs-content {
-  border-color: #808080;
 }
 
 /**
@@ -884,6 +861,7 @@
   line-height: 1.3;
   font-size: 90%;
   color: #808080;
+  overflow: auto;
 }
 .sg-pattern-extra-info:empty {
   padding: 0;
@@ -998,6 +976,7 @@
   font-weight: bold;
   line-height: 1;
   padding: 0.5em 1em;
+  background: #eee;
   border: 1px solid #ccc;
   border-bottom: 0;
   color: #808080;
@@ -1053,7 +1032,12 @@
       -ms-flex: 1;
           flex: 1;
   position: relative;
-  min-height: 7em;
+  min-height: 12em;
+}
+@media all and (min-width: 42em) {
+  .sg-tabs-panel {
+    min-height: 7em;
+  }
 }
 
 /*------------------------------------*\
@@ -1084,18 +1068,42 @@
       -ms-flex-direction: column;
           flex-direction: column;
   /**
-   * Pattern Title
+   * Pattern Breadcrumbs inside modal
    */
   /**
-   * Pattern Information
+   * Pattern Header inside modal
+   */
+  /**
+   * Pattern Title inside modal
+   */
+  /**
+   * Pattern Information inside modal
+   */
+  /**
+   * Pattern info links inside modal
+   */
+  /**
+   * Pattern Description inside modal
+   */
+  /**
+   * Pattern tab panel inside modal
    */
 }
 .sg-modal.anim-ready {
   -webkit-transition: bottom 0.3s ease-out;
           transition: bottom 0.3s ease-out;
 }
+.sg-modal .sg-pattern-breadcrumb {
+  font-size: 70%;
+  color: #808080;
+  margin-bottom: 0.5rem;
+}
+.sg-modal .sg-pattern-head {
+  padding: 0;
+}
 .sg-modal .sg-pattern-title {
   font-size: 1.4rem !important;
+  color: #eee;
 }
 .sg-modal .sg-pattern-extra {
   -webkit-box-flex: 1;
@@ -1109,6 +1117,15 @@
 }
 .sg-modal .sg-pattern-extra-info a {
   color: #ccc;
+}
+.sg-modal .sg-pattern-extra-info a:hover, .sg-modal .sg-pattern-extra-info a:focus {
+  color: #eee;
+}
+.sg-modal .sg-pattern-desc {
+  border-bottom-color: #808080;
+}
+.sg-modal .sg-tabs-content {
+  border: 0;
 }
 
 /**
@@ -1129,7 +1146,7 @@
   cursor: pointer;
   position: absolute;
   right: 0;
-  top: 0;
+  top: 1rem;
   -webkit-transition: all 0.1s ease-out;
           transition: all 0.1s ease-out;
   /* 2 */
@@ -1160,6 +1177,25 @@
   overflow-x: hidden;
 }
 
+/**
+ * Modal Content Inner Wrapper
+ */
+.sg-modal-content-inner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+/**
+ * Annotated elements Styles
+ */
 .has-annotation {
   cursor: help !important;
   -webkit-box-shadow: 0 0 10px #808080;
