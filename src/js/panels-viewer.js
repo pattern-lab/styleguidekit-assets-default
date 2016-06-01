@@ -93,6 +93,7 @@ var panelsViewer = {
 
     // add *Exists attributes for Hogan templates
     patternData      = this.setExists(patternData);
+    console.log(patternData);
 
     // set isPatternView based on if we have to pass it back to the styleguide level
     patternData.isPatternView = (iframePassback === false);
@@ -163,8 +164,10 @@ var panelsViewer = {
   setExists: function(pD) {
 
     // figure out if the description exists
-    pD.patternDescExists = ((pD.patternDesc !== '') || ((pD.patternDescAdditions !== undefined) && (pD.patternDescAdditions.length > 0)));
-
+    console.log(pD.patternDesc.length);
+    pD.patternDescExists = ((pD.patternDesc.length > 0) || ((pD.patternDescAdditions !== undefined) && (pD.patternDescAdditions.length > 0)));
+    console.log(pD.patternDescExists);
+    
     // figure out if lineage should be drawn
     pD.lineageExists = (pD.lineage.length !== 0);
 
@@ -172,11 +175,11 @@ var panelsViewer = {
     pD.lineageRExists = (pD.lineageR.length !== 0);
 
     // figure out if pattern state should be drawn
-    pD.patternStateExists = (pD.patternState !== undefined);
+    pD.patternStateExists = (pD.patternState.length > 0);
 
     // figure if the entire desc block should be drawn
     pD.descBlockExists = (pD.patternDescExists || pD.lineageExists || pD.lineageRExists || pD.patternStateExists);
-
+    
     return pD;
 
   },
