@@ -854,9 +854,13 @@ var panelsViewer = {
     var patternPartial = patternData.patternPartial;
     patternData.panels = panels;
 
+    // set a default pattern description for modal pop-up
+    if (!iframePassback && (patternData.patternDesc.length === 0)) {
+      patternData.patternDesc = "There is no description.";
+    }
+    
     // add *Exists attributes for Hogan templates
-    patternData      = this.setExists(patternData);
-    console.log(patternData);
+    patternData      = this.setExists(patternData, iframePassback);
 
     // set isPatternView based on if we have to pass it back to the styleguide level
     patternData.isPatternView = (iframePassback === false);
@@ -868,7 +872,7 @@ var panelsViewer = {
 
     // make sure templateRendered is modified to be an HTML element
     var div          = document.createElement('div');
-    div.className += 'sg-modal-content-inner';
+    div.className    = 'sg-modal-content-inner';
     div.innerHTML    = templateRendered;
     templateRendered = div;
 
@@ -927,9 +931,7 @@ var panelsViewer = {
   setExists: function(pD) {
 
     // figure out if the description exists
-    console.log(pD.patternDesc.length);
     pD.patternDescExists = ((pD.patternDesc.length > 0) || ((pD.patternDescAdditions !== undefined) && (pD.patternDescAdditions.length > 0)));
-    console.log(pD.patternDescExists);
     
     // figure out if lineage should be drawn
     pD.lineageExists = (pD.lineage.length !== 0);
