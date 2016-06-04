@@ -88,14 +88,16 @@ var modalViewer = {
   * toggle the modal window open and closed
   */
   toggle: function() {
-
-    if (!modalViewer.active) {
+    var message;
+    if (modalViewer.active === false) {
+      message = "Hide Pattern Info";
       modalViewer.active = true;
       modalViewer.queryPattern();
     } else {
+      message = "Show Pattern Info";
       modalViewer.close();
     }
-
+    
   },
 
   /**
@@ -114,7 +116,7 @@ var modalViewer = {
 
     //Add active class to modal
     $('#sg-modal-container').addClass('active');
-
+    
     // show the modal
     modalViewer.show();
 
@@ -133,10 +135,17 @@ var modalViewer = {
 
     // remove the active class from all of the checkbox items
     $('.sg-checkbox').removeClass('active');
-
+    
     // hide the modal
     modalViewer.hide();
-
+    
+    // update the wording
+    $('#sg-t-patterninfo').html("Show Pattern Info");
+    
+    // tell the styleguide to close
+    var obj = JSON.stringify({ 'event': 'patternLab.patternModalClose' });
+    document.getElementById('sg-viewport').contentWindow.postMessage(obj, modalViewer.targetOrigin);
+    
   },
 
   hide: function() {
@@ -150,7 +159,7 @@ var modalViewer = {
       // send a message to the pattern
       var obj = JSON.stringify({ 'event': 'patternLab.patternModalInsert', 'patternPartial': patternPartial, 'modalContent': templateRendered.outerHTML });
       document.getElementById('sg-viewport').contentWindow.postMessage(obj, modalViewer.targetOrigin);
-
+      
     } else {
 
       // insert the panels
@@ -160,8 +169,10 @@ var modalViewer = {
       modalViewer.open();
 
     }
-
-
+    
+    // update the wording
+    $('#sg-t-patterninfo').html("Hide Pattern Info");
+    
   },
 
   /**

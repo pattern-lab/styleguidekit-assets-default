@@ -117,7 +117,9 @@ var modalStyleguide = {
   * @param  {Object}      event info
   */
   receiveIframeMessage: function(event) {
-   
+    
+    var i;
+    
     // does the origin sending the message match the current host? if not dev/null the request
     if ((window.location.protocol !== 'file:') && (event.origin !== window.location.protocol+'//'+window.location.host)) {
       return;
@@ -135,7 +137,7 @@ var modalStyleguide = {
       iframePassback = (els.length > 1);
       
       // send each up to the parent to be read and compiled into panels
-      for (var i = 0; i < els.length; i++) {
+      for (i = 0; i < els.length; i++) {
         modalStyleguide.patternQueryInfo(els[i], iframePassback);
       }
       
@@ -143,6 +145,19 @@ var modalStyleguide = {
       
       // insert the previously rendered content being passed from the iframe
       modalStyleguide.open(data.patternPartial, data.modalContent);
+      
+    } else if (data.event == 'patternLab.patternModalClose') {
+      
+      var keys = [];
+      for (var k in modalStyleguide.active) {
+        keys.push(k);
+      }
+      for (i = 0; i < keys.length; i++) {
+        var patternPartial = keys[i];
+        if (modalStyleguide.active[patternPartial]) {
+          modalStyleguide.close(patternPartial);
+        }
+      }
       
     }
    
