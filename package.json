@@ -12,7 +12,7 @@
     "url": "https://github.com/pattern-lab/styleguidekit-assets-default/issues"
   },
   "homepage": "https://github.com/pattern-lab/styleguidekit-assets-default",
-  "dependencies": {
+  "devDependencies": {
     "del": "^1.1.1",
     "gulp": "^3.8.6",
     "gulp-autoprefixer": "^2.1",
