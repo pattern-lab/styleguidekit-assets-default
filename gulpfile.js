@@ -6,7 +6,7 @@ var gulp = require('gulp');
 
 /* load the plugins */
 var gulpLoadPlugins    = require('gulp-load-plugins');
-var plugins            = gulpLoadPlugins({ scope: ['dependencies'] });
+var plugins            = gulpLoadPlugins({ scope: ['devDependencies'] });
 plugins.del            = require("del");
 plugins.mainBowerFiles = require("main-bower-files");
 
