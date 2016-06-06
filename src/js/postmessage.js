@@ -64,9 +64,12 @@ function receiveIframeMessage(event) {
 	}
 	
 	var path;
-	var data = (typeof event.data !== "string") ? event.data : JSON.parse(event.data);
+	var data = {};
+	try {
+		data = (typeof event.data !== 'string') ? event.data : JSON.parse(event.data);
+	} catch(e) {}
 	
-	if (data.event == "patternLab.updatePath") {
+	if ((data.event !== undefined) && (data.event == "patternLab.updatePath")) {
 		
 		if (patternData.patternPartial !== undefined) {
 			
@@ -83,7 +86,7 @@ function receiveIframeMessage(event) {
 			
 		}
 		
-	} else if (data.event == "patternLab.reload") {
+	} else if ((data.event !== undefined) && (data.event == "patternLab.reload")) {
 		
 		// reload the location if there was a message to do so
 		window.location.reload();

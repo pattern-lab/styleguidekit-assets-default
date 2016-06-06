@@ -228,7 +228,11 @@ var modalViewer = {
       return;
     }
 
-    var data = (typeof event.data !== 'string') ? event.data : JSON.parse(event.data);
+    console.log(event);
+    var data = {};
+    try {
+      data = (typeof event.data !== 'string') ? event.data : JSON.parse(event.data);
+    } catch(e) {}
 
     // refresh the modal if a new pattern is loaded and the modal is active
     if ((data.event !== undefined) && (data.event == 'patternLab.patternQueryInfo')) {

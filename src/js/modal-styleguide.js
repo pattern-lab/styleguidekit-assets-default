@@ -125,10 +125,13 @@ var modalStyleguide = {
       return;
     }
     
-    var data = (typeof event.data !== 'string') ? event.data : JSON.parse(event.data);
+    var data = {};
+    try {
+      data = (typeof event.data !== 'string') ? event.data : JSON.parse(event.data);
+    } catch(e) {}
     
     // see if it got a path to replace
-    if (data.event == 'patternLab.patternQuery') {
+    if ((data.event !== undefined) && (data.event == 'patternLab.patternQuery')) {
      
       var els, iframePassback;
       
@@ -141,12 +144,12 @@ var modalStyleguide = {
         modalStyleguide.patternQueryInfo(els[i], iframePassback);
       }
       
-    } else if (data.event == 'patternLab.patternModalInsert') {
+    } else if ((data.event !== undefined) && (data.event == 'patternLab.patternModalInsert')) {
       
       // insert the previously rendered content being passed from the iframe
       modalStyleguide.open(data.patternPartial, data.modalContent);
       
-    } else if (data.event == 'patternLab.patternModalClose') {
+    } else if ((data.event !== undefined) && (data.event == 'patternLab.patternModalClose')) {
       
       var keys = [];
       for (var k in modalStyleguide.active) {

@@ -87,7 +87,10 @@ var patternFinder = {
 			return;
 		}
 		
-		var data = (typeof event.data !== "string") ? event.data : JSON.parse(event.data);
+		var data = {};
+		try {
+			data = (typeof event.data !== 'string') ? event.data : JSON.parse(event.data);
+		} catch(e) {}
 		
 		if ((data.event !== undefined) && (data.event == "patternLab.keyPress")) {
 			

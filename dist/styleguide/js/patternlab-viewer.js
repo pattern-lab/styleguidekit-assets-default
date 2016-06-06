@@ -338,7 +338,7 @@ var urlHandler = {
 			return;
 		} else if (state !== null) {
 			patternName = state.pattern;
-		} 
+		}
 		
 		var iFramePath = "";
 		iFramePath = this.getFileName(patternName);
@@ -368,6 +368,7 @@ window.onpopstate = function (event) {
 	urlHandler.skipBack = true;
 	urlHandler.popPattern(event);
 };
+
 /*!
  * Modal for the Viewer Layer
  * For both annotations and code/info
@@ -598,7 +599,11 @@ var modalViewer = {
       return;
     }
 
-    var data = (typeof event.data !== 'string') ? event.data : JSON.parse(event.data);
+    console.log(event);
+    var data = {};
+    try {
+      data = (typeof event.data !== 'string') ? event.data : JSON.parse(event.data);
+    } catch(e) {}
 
     // refresh the modal if a new pattern is loaded and the modal is active
     if ((data.event !== undefined) && (data.event == 'patternLab.patternQueryInfo')) {
@@ -1066,7 +1071,10 @@ var patternFinder = {
 			return;
 		}
 		
-		var data = (typeof event.data !== "string") ? event.data : JSON.parse(event.data);
+		var data = {};
+		try {
+			data = (typeof event.data !== 'string') ? event.data : JSON.parse(event.data);
+		} catch(e) {}
 		
 		if ((data.event !== undefined) && (data.event == "patternLab.keyPress")) {
 			
@@ -1161,9 +1169,12 @@ function receiveIframeMessage(event) {
 	}
 	
 	var path;
-	var data = (typeof event.data !== "string") ? event.data : JSON.parse(event.data);
+	var data = {};
+	try {
+		data = (typeof event.data !== 'string') ? event.data : JSON.parse(event.data);
+	} catch(e) {}
 	
-	if (data.event == "patternLab.updatePath") {
+	if ((data.event !== undefined) && (data.event == "patternLab.updatePath")) {
 		
 		if (patternData.patternPartial !== undefined) {
 			
@@ -1180,7 +1191,7 @@ function receiveIframeMessage(event) {
 			
 		}
 		
-	} else if (data.event == "patternLab.reload") {
+	} else if ((data.event !== undefined) && (data.event == "patternLab.reload")) {
 		
 		// reload the location if there was a message to do so
 		window.location.reload();
@@ -1760,61 +1771,69 @@ window.addEventListener("message", receiveIframeMessage, false);
 			return;
 		}
 
-		var data = (typeof event.data !== "string") ? event.data : JSON.parse(event.data);
+		var data = {};
+		try {
+			data = (typeof event.data !== 'string') ? event.data : JSON.parse(event.data);
+		} catch(e) {}
+		
+		if (data.event !== undefined) {
+			
+			if (data.event == "patternLab.bodyclick") {
 
-		if (data.event == "patternLab.bodyclick") {
+				closePanels();
 
-			closePanels();
+			} else if (data.event == "patternLab.pageLoad") {
 
-		} else if (data.event == "patternLab.pageLoad") {
+				if (!urlHandler.skipBack) {
 
-			if (!urlHandler.skipBack) {
+					if ((history.state === undefined) || (history.state === null) || (history.state.pattern !== data.patternpartial)) {
+						urlHandler.pushPattern(data.patternpartial, data.path);
+					}
 
-				if ((history.state === undefined) || (history.state === null) || (history.state.pattern !== data.patternpartial)) {
-					urlHandler.pushPattern(data.patternpartial, data.path);
+					/*
+					if (wsnConnected) {
+						var iFramePath = urlHandler.getFileName(data.patternpartial);
+						wsn.send( '{"url": "'+iFramePath+'", "patternpartial": "'+event.data.patternpartial+'" }' );
+					}
+					*/
 				}
 
-				/*
-				if (wsnConnected) {
-					var iFramePath = urlHandler.getFileName(data.patternpartial);
-					wsn.send( '{"url": "'+iFramePath+'", "patternpartial": "'+event.data.patternpartial+'" }' );
+				// reset the defaults
+				urlHandler.skipBack = false;
+
+			} else if (data.event == "patternLab.keyPress") {
+				if (data.keyPress == 'ctrl+shift+s') {
+					goSmall();
+				} else if (data.keyPress == 'ctrl+shift+m') {
+					goMedium();
+				} else if (data.keyPress == 'ctrl+shift+l') {
+					goLarge();
+				} else if (data.keyPress == 'ctrl+shift+d') {
+					if (!discoMode) {
+						startDisco();
+					} else {
+						killDisco();
+					}
+				} else if (data.keyPress == 'ctrl+shift+h') {
+					if (!hayMode) {
+						startHay();
+					} else {
+						killHay();
+					}
+				} else if (data.keyPress == 'ctrl+shift+0') {
+					sizeiframe(320,true);
+				} else if (found == data.keyPress.match(/ctrl\+shift\+([1-9])/)) {
+					var val = mqs[(found[1]-1)];
+					var type = (val.indexOf("px") !== -1) ? "px" : "em";
+					val = val.replace(type,"");
+					var width = (type === "px") ? val*1 : val*$bodySize;
+					sizeiframe(width,true);
 				}
-				*/
+				return false;
 			}
-
-			// reset the defaults
-			urlHandler.skipBack = false;
-
-		} else if (data.event == "patternLab.keyPress") {
-			if (data.keyPress == 'ctrl+shift+s') {
-				goSmall();
-			} else if (data.keyPress == 'ctrl+shift+m') {
-				goMedium();
-			} else if (data.keyPress == 'ctrl+shift+l') {
-				goLarge();
-			} else if (data.keyPress == 'ctrl+shift+d') {
-				if (!discoMode) {
-					startDisco();
-				} else {
-					killDisco();
-				}
-			} else if (data.keyPress == 'ctrl+shift+h') {
-				if (!hayMode) {
-					startHay();
-				} else {
-					killHay();
-				}
-			} else if (data.keyPress == 'ctrl+shift+0') {
-				sizeiframe(320,true);
-			} else if (found == data.keyPress.match(/ctrl\+shift\+([1-9])/)) {
-				var val = mqs[(found[1]-1)];
-				var type = (val.indexOf("px") !== -1) ? "px" : "em";
-				val = val.replace(type,"");
-				var width = (type === "px") ? val*1 : val*$bodySize;
-				sizeiframe(width,true);
-			}
-			return false;
+			
 		}
+		
 	}
 	window.addEventListener("message", receiveIframeMessage, false);
 
