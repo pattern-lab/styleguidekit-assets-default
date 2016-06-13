@@ -159,7 +159,14 @@
     {{# isPatternView }}
       <div class="sg-pattern-head">
 
-        <div class="sg-pattern-breadcrumb">{{ patternBreadcrumb }}</div>
+        <div class="sg-pattern-breadcrumb">
+          {{# patternBreadcrumb }}
+            {{ patternType }}
+            {{# patternSubtype }}
+              / {{ patternSubtype }}
+            {{/ patternSubtype }}
+          {{/ patternBreadcrumb }}
+        </div>
 
         <h2 class="sg-pattern-title">
           {{ patternName }}
