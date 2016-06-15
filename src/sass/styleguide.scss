@@ -1369,6 +1369,8 @@ $sg-border-radius-med : 6px;
         position: relative;
         padding-left: 1.5rem;
         margin-bottom: 1rem;
+        border-radius: $sg-border-radius-med;
+        transition: background $sg-animate-quick ease;
 
         &:before {
 	        content: counter(the-count);
@@ -1385,6 +1387,10 @@ $sg-border-radius-med : 6px;
             position: absolute;
             top: 0;
             left: 0;
+        }
+
+        &.active {
+            background: rgba(255,255,255,0.15);
         }
     }
 }

@@ -1256,6 +1256,9 @@
   position: relative;
   padding-left: 1.5rem;
   margin-bottom: 1rem;
+  border-radius: 6px;
+  -webkit-transition: background 0.1s ease;
+          transition: background 0.1s ease;
 }
 .sg-annoatations-list > li:before {
   content: counter(the-count);
@@ -1272,6 +1275,9 @@
   position: absolute;
   top: 0;
   left: 0;
+}
+.sg-annoatations-list > li.active {
+  background: rgba(255, 255, 255, 0.15);
 }
 
 #sg-comments-container {
