@@ -411,13 +411,6 @@ var modalViewer = {
       modalViewer.toggle();
     });
 
-    // add the annotations panel onclick handler
-    // there will be no separate modal. need to add a panel for this
-    $('#sg-t-annotations').click(function(e) {
-      e.preventDefault();
-      modalViewer.toggle('annotations');
-    });
-
     // if the iframe loads a new page query the pattern for its info if the modal is active
     $('#sg-viewport').on('load', function() {
       if (modalViewer.active) {
@@ -430,8 +423,16 @@ var modalViewer = {
 
     // make sure the close button handles the click
     $('#sg-modal-close-btn').on('click', function(e) {
+      
       e.preventDefault();
+      
+      // hide any open annotations
+      obj = JSON.stringify({ 'event': 'patternLab.annotationsHighlightHide' });
+      document.getElementById('sg-viewport').contentWindow.postMessage(obj, modalViewer.targetOrigin);
+      
+      // hide the viewer
       modalViewer.close();
+      
     });
 
     // review the query strings in case there is something the modal viewer is supposed to handle by default
@@ -466,6 +467,8 @@ var modalViewer = {
       modalViewer.queryPattern();
     } else {
       message = "Show Pattern Info";
+      obj = JSON.stringify({ 'event': 'patternLab.annotationsHighlightHide' });
+      document.getElementById('sg-viewport').contentWindow.postMessage(obj, modalViewer.targetOrigin);
       modalViewer.close();
     }
     
@@ -498,6 +501,8 @@ var modalViewer = {
   */
   close: function() {
 
+    var obj;
+    
     // not that the modal viewer is no longer active
     modalViewer.active = false;
 
@@ -514,7 +519,7 @@ var modalViewer = {
     $('#sg-t-patterninfo').html("Show Pattern Info");
     
     // tell the styleguide to close
-    var obj = JSON.stringify({ 'event': 'patternLab.patternModalClose' });
+    obj = JSON.stringify({ 'event': 'patternLab.patternModalClose' });
     document.getElementById('sg-viewport').contentWindow.postMessage(obj, modalViewer.targetOrigin);
     
   },
@@ -594,20 +599,40 @@ var modalViewer = {
   */
   receiveIframeMessage: function(event) {
 
+    var els, i, displayNumberCheck;
+    
     // does the origin sending the message match the current host? if not dev/null the request
     if ((window.location.protocol !== 'file:') && (event.origin !== window.location.protocol+'//'+window.location.host)) {
       return;
     }
 
-    console.log(event);
     var data = {};
     try {
       data = (typeof event.data !== 'string') ? event.data : JSON.parse(event.data);
     } catch(e) {}
 
-    // refresh the modal if a new pattern is loaded and the modal is active
+    
     if ((data.event !== undefined) && (data.event == 'patternLab.patternQueryInfo')) {
+      
+      // refresh the modal if a new pattern is loaded and the modal is active
       modalViewer.refresh(data.patternData, data.iframePassback);
+      
+    } else if ((data.event !== undefined) && (data.event == 'patternLab.annotationNumberClicked')) {
+      
+      // remove active class
+      els = document.querySelectorAll('#sg-annotations > .sg-annotations-list > li');
+      for (i = 0; i < els.length; ++i) {
+        els[i].classList.remove('active');
+      }
+      
+      // add active class to called element and scroll to it
+      for (i = 0; i < els.length; ++i) {
+        if ((i+1) == data.displayNumber) {
+          els[i].classList.add('active');
+          $('.sg-pattern-extra-info').animate({scrollTop: els[i].offsetTop - 10}, 600);
+        }
+      }
+      
     }
 
   }
@@ -771,8 +796,8 @@ var Panels = {
 
 // add the default panels
 // Panels.add({ 'id': 'sg-panel-info', 'name': 'info', 'default': true, 'templateID': 'pl-panel-template-info', 'httpRequest': false, 'prismHighlight': false, 'keyCombo': '' });
-Panels.add({ 'id': 'sg-panel-pattern', 'name': config.patternExtension, 'default': true, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': '.'+config.patternExtension, 'httpRequestCompleted': false, 'prismHighlight': true, 'language': PrismLanguages.get(config.patternExtension), 'keyCombo': 'ctrl+shift+u' });
-Panels.add({ 'id': 'sg-panel-html', 'name': 'html', 'default': false, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': '.markup-only.html', 'httpRequestCompleted': false, 'prismHighlight': true, 'language': 'markup', 'keyCombo': 'ctrl+shift+y' });
+Panels.add({ 'id': 'sg-panel-pattern', 'name': config.patternExtension.toUpperCase(), 'default': true, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': '.'+config.patternExtension, 'httpRequestCompleted': false, 'prismHighlight': true, 'language': PrismLanguages.get(config.patternExtension), 'keyCombo': 'ctrl+shift+u' });
+Panels.add({ 'id': 'sg-panel-html', 'name': 'HTML', 'default': false, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': '.markup-only.html', 'httpRequestCompleted': false, 'prismHighlight': true, 'language': 'markup', 'keyCombo': 'ctrl+shift+y' });
 
 // gather panels from plugins
 Dispatcher.trigger('setupPanels');
@@ -803,7 +828,7 @@ var panelsViewer = {
         panelContentCount++;
       }
     }
-
+    
     // see if the count of panels with content matches number of panels
     if (panelContentCount === Panels.count()) {
       panelsViewer.renderPanels(panels, patternData, iframePassback);
@@ -864,19 +889,84 @@ var panelsViewer = {
   },
 
   renderPanels: function(panels, patternData, iframePassback) {
-
+    
     // set-up defaults
     var template, templateCompiled, templateRendered;
+    var annotation, comment, count, div, els, item, markup, i;
     var patternPartial = patternData.patternPartial;
     patternData.panels = panels;
 
     // set a default pattern description for modal pop-up
     if (!iframePassback && (patternData.patternDesc.length === 0)) {
-      patternData.patternDesc = "There is no description.";
+      patternData.patternDesc = "There is no description for this pattern.";
+    }
+    
+    // capitilize the pattern name
+    patternData.patternNameCaps = patternData.patternName.toUpperCase();
+    
+    // check for annotations in the given mark-up
+    markup           = document.createElement('div');
+    markup.innerHTML = patternData.patternMarkup;
+    
+    count = 1;
+    patternData.annotations = [];
+    delete patternData['patternMarkup'];
+    
+    for (i = 0; i < comments.comments.length; ++i) {
+      
+      item = comments.comments[i];
+      els  = markup.querySelectorAll(item.el);
+      
+      if (els.length > 0) {
+        annotation = { 'displayNumber': count, 'el': item.el, 'title': item.title, 'comment': item.comment };
+        patternData.annotations.push(annotation);
+        count++;
+      }
+        
+    }
+    
+    // alert the pattern that annotations should be highlighted
+    if (patternData.annotations.length > 0) {
+      var obj = JSON.stringify({ 'event': 'patternLab.annotationsHighlightShow', 'annotations': patternData.annotations });
+      document.getElementById('sg-viewport').contentWindow.postMessage(obj, panelsViewer.targetOrigin);
+    }
+    
+    // add hasComma property to lineage
+    if (patternData.lineage.length > 0) {
+      for (i = 0; i < patternData.lineage.length; ++i) {
+        if (i < (patternData.lineage.length - 1)) {
+          patternData.lineage[i].hasComma = true;
+        }
+      }
+    }
+    
+    // add hasComma property to lineageR
+    if (patternData.lineageR.length > 0) {
+      for (i = 0; i < patternData.lineageR.length; ++i) {
+        if (i < (patternData.lineageR.length - 1)) {
+          patternData.lineageR[i].hasComma = true;
+        }
+      }
     }
     
     // add *Exists attributes for Hogan templates
-    patternData      = this.setExists(patternData, iframePassback);
+    // figure out if the description exists
+    patternData.patternDescExists = ((patternData.patternDesc.length > 0) || ((patternData.patternDescAdditions !== undefined) && (patternData.patternDescAdditions.length > 0)));
+    
+    // figure out if lineage should be drawn
+    patternData.lineageExists = (patternData.lineage.length !== 0);
+
+    // figure out if reverse lineage should be drawn
+    patternData.lineageRExists = (patternData.lineageR.length !== 0);
+
+    // figure out if pattern state should be drawn
+    patternData.patternStateExists = (patternData.patternState.length > 0);
+
+    // figure if the entire desc block should be drawn
+    patternData.descBlockExists = (patternData.patternDescExists || patternData.lineageExists || patternData.lineageRExists || patternData.patternStateExists);
+    
+    // figure if annotations should be drawn
+    patternData.annotationExists = (patternData.annotations.length > 0);
 
     // set isPatternView based on if we have to pass it back to the styleguide level
     patternData.isPatternView = (iframePassback === false);
@@ -887,7 +977,7 @@ var panelsViewer = {
     templateRendered = templateCompiled.render(patternData);
 
     // make sure templateRendered is modified to be an HTML element
-    var div          = document.createElement('div');
+    div              = document.createElement('div');
     div.className    = 'sg-modal-content-inner';
     div.innerHTML    = templateRendered;
     templateRendered = div;
@@ -896,7 +986,7 @@ var panelsViewer = {
     templateRendered = panelsUtil.addClickEvents(templateRendered, patternPartial);
 
     // add onclick events to the tabs in the rendered content
-    for (var i = 0; i < panels.length; ++i) {
+    for (i = 0; i < panels.length; ++i) {
 
       panel = panels[i];
 
@@ -915,10 +1005,8 @@ var panelsViewer = {
     // find lineage links in the rendered content and add postmessage handlers in case it's in the modal
     $('#sg-code-lineage-fill a, #sg-code-lineager-fill a', templateRendered).on('click', function(e){
       e.preventDefault();
-      if (modalViewer !== undefined) {
-        var obj = JSON.stringify({ 'event': 'patternLab.updatePath', 'path': urlHandler.getFileName($(this).attr('data-patternpartial')) });
-        document.getElementById('sg-viewport').contentWindow.postMessage(obj, modalViewer.targetOrigin);
-      }
+      var obj = JSON.stringify({ 'event': 'patternLab.updatePath', 'path': urlHandler.getFileName($(this).attr('data-patternpartial')) });
+      document.getElementById('sg-viewport').contentWindow.postMessage(obj, panelsViewer.targetOrigin);
     });
 
     // gather panels from plugins
@@ -931,7 +1019,7 @@ var panelsViewer = {
   */
   select: function(id) {
 
-    if (modalViewer.active) {
+    if ((modalViewer !== undefined) && (modalViewer.active)) {
       selection = window.getSelection();
       range = document.createRange();
       range.selectNodeContents(document.getElementById(id));
@@ -942,35 +1030,11 @@ var panelsViewer = {
   },
 
   /**
-  * set the various *Exists needed for the template view
-  */
-  setExists: function(pD) {
-
-    // figure out if the description exists
-    pD.patternDescExists = ((pD.patternDesc.length > 0) || ((pD.patternDescAdditions !== undefined) && (pD.patternDescAdditions.length > 0)));
-    
-    // figure out if lineage should be drawn
-    pD.lineageExists = (pD.lineage.length !== 0);
-
-    // figure out if reverse lineage should be drawn
-    pD.lineageRExists = (pD.lineageR.length !== 0);
-
-    // figure out if pattern state should be drawn
-    pD.patternStateExists = (pD.patternState.length > 0);
-
-    // figure if the entire desc block should be drawn
-    pD.descBlockExists = (pD.patternDescExists || pD.lineageExists || pD.lineageRExists || pD.patternStateExists);
-    
-    return pD;
-
-  },
-
-  /**
   * clear any selection of code when swapping tabs or opening a new pattern
   */
   clear: function() {
 
-    if (modalViewer.active) {
+    if ((modalViewer !== undefined) && modalViewer.active) {
       if (window.getSelection().empty) {
         window.getSelection().empty();
       } else if (window.getSelection().removeAllRanges) {

@@ -110,7 +110,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 4;
   width: 100%;
   /**
    * All lists appearing in the header
@@ -546,17 +546,27 @@
  */
 .sg-pattern-state:before {
   content: "\2022";
-  display: inline-block;
   margin-right: 4px;
-  position: relative;
-  top: 2px;
+  font-size: 18px;
+  vertical-align: bottom;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.sg-pattern-lineage .sg-pattern-state:before {
+  font-size: 12px;
 }
 
 /**
  * Pattern States that appear in the dropdown nav
  */
 .sg-nav .sg-pattern-state:before {
-  margin-left: -11px;
+  margin-top: -4px;
+  margin-bottom: 0;
+  margin-left: -4px;
+  height: 20px;
+  display: block;
+  float: left;
 }
 
 /**
@@ -1246,13 +1256,13 @@
   margin: 0 0 0.5rem;
 }
 
-.sg-annoatations-list {
+.sg-annotations-list {
   padding: 0;
   margin: 0;
   list-style: none;
   counter-reset: the-count;
 }
-.sg-annoatations-list > li {
+.sg-annotations-list > li {
   position: relative;
   padding-left: 1.5rem;
   margin-bottom: 1rem;
@@ -1260,7 +1270,7 @@
   -webkit-transition: background 0.1s ease;
           transition: background 0.1s ease;
 }
-.sg-annoatations-list > li:before {
+.sg-annotations-list > li:before {
   content: counter(the-count);
   counter-increment: the-count;
   font-size: 90%;
@@ -1276,7 +1286,7 @@
   top: 0;
   left: 0;
 }
-.sg-annoatations-list > li.active {
+.sg-annotations-list > li.active {
   background: rgba(255, 255, 255, 0.15);
 }
 

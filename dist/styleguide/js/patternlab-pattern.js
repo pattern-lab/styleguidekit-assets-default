@@ -395,7 +395,8 @@ var modalStyleguide = {
   toggle: function(patternPartial) {
     if ((modalStyleguide.active[patternPartial] === undefined) || !modalStyleguide.active[patternPartial]) {
       var el = document.getElementById('sg-pattern-data-'+patternPartial);
-      modalStyleguide.patternQueryInfo(el, true);
+      var patternData     = JSON.parse(el.innerHTML);
+      modalStyleguide.patternQueryInfo(patternData, true);
     } else {
       modalStyleguide.close(patternPartial);
     }
@@ -457,11 +458,11 @@ var modalStyleguide = {
   /**
   * return the pattern info to the top level
   */
-  patternQueryInfo: function(el, iframePassback) {
+  patternQueryInfo: function(patternData, iframePassback) {
     
     // send a message to the pattern
     try {
-      var obj = JSON.stringify({ 'event': 'patternLab.patternQueryInfo', 'patternData': JSON.parse(el.innerHTML), 'iframePassback': iframePassback});
+      var obj = JSON.stringify({ 'event': 'patternLab.patternQueryInfo', 'patternData': patternData, 'iframePassback': iframePassback});
       parent.postMessage(obj, modalStyleguide.targetOrigin);
     } catch(e) {}
     
@@ -489,7 +490,7 @@ var modalStyleguide = {
     // see if it got a path to replace
     if ((data.event !== undefined) && (data.event == 'patternLab.patternQuery')) {
      
-      var els, iframePassback;
+      var els, iframePassback, patternData, patternMarkupEl;
       
       // find all elements related to pattern info
       els = document.querySelectorAll('.sg-pattern-data');
@@ -497,13 +498,73 @@ var modalStyleguide = {
       
       // send each up to the parent to be read and compiled into panels
       for (i = 0; i < els.length; i++) {
-        modalStyleguide.patternQueryInfo(els[i], iframePassback);
+        patternData     = JSON.parse(els[i].innerHTML);
+        patternMarkupEl = document.querySelector('#'+patternData.patternPartial+' > .sg-pattern-example');
+        patternData.patternMarkup = (patternMarkupEl !== null) ? patternMarkupEl.innerHTML : document.querySelector('body').innerHTML;
+        modalStyleguide.patternQueryInfo(patternData, iframePassback);
       }
       
     } else if ((data.event !== undefined) && (data.event == 'patternLab.patternModalInsert')) {
       
       // insert the previously rendered content being passed from the iframe
       modalStyleguide.open(data.patternPartial, data.modalContent);
+      
+    } else if ((data.event !== undefined) && (data.event == 'patternLab.annotationsHighlightShow')) {
+      
+      var elsToHighlight, j, item, span;
+      
+      // go over the supplied annotations
+      for (i = 0; i < data.annotations.length; i++) {
+        
+        item = data.annotations[i];
+        elsToHighlight = document.querySelectorAll(item.el);
+        
+        if (elsToHighlight.length > 0) {
+          
+          for (j = 0; j < elsToHighlight.length; j++) {
+            
+            elsToHighlight[j].classList.add('has-annotation');
+            
+            span = document.createElement('span');
+            span.innerHTML = item.displayNumber;
+            span.classList.add('annotation-tip');
+            
+            if (window.getComputedStyle(elsToHighlight[j],null).getPropertyValue('max-height') == '0px') {
+              span.style.display = 'none';
+            }
+            
+            annotationTip = document.querySelector(item.el+' > span.annotation-tip');
+            if (annotationTip === null) {
+              elsToHighlight[j].insertBefore(span,elsToHighlight[j].firstChild);
+            } else {
+              annotationTip.style.display = 'inline';
+            }
+            
+            elsToHighlight[j].onclick = (function(item) {
+              return function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var obj = JSON.stringify({'event': 'patternLab.annotationNumberClicked', 'displayNumber': item.displayNumber });
+                parent.postMessage(obj, modalStyleguide.targetOrigin);
+              };
+            })(item);
+            
+          }
+          
+        }
+        
+      }
+          
+    } else if ((data.event !== undefined) && (data.event == 'patternLab.annotationsHighlightHide')) {
+      
+      elsToHide = document.querySelectorAll('.has-annotation');
+      for (i = 0; i < elsToHide.length; i++) {
+        elsToHide[i].classList.remove('has-annotation');
+      }
+      elsToHide = document.querySelectorAll('.annotation-tip');
+      for (i = 0; i < elsToHide.length; i++) {
+        elsToHide[i].style.display = 'none';
+      }
       
     } else if ((data.event !== undefined) && (data.event == 'patternLab.patternModalClose')) {
       
