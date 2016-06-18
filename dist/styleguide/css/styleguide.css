@@ -728,7 +728,7 @@
  */
 .sg-pattern-head {
   position: relative;
-  padding: 0.5rem 0.5rem 0;
+  padding: 0.5rem 0 0;
   line-height: 1.3;
   font-size: 90%;
   color: #808080;
@@ -858,7 +858,7 @@
  */
 .sg-pattern-extra-info {
   padding: 0.5rem 0.5rem 0;
-  line-height: 1.3;
+  line-height: 1.4;
   font-size: 90%;
   color: #808080;
   overflow: auto;
@@ -879,7 +879,7 @@
 .sg-pattern-desc {
   margin-bottom: 1em;
   padding-bottom: 1em;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #808080;
 }
 .sg-pattern-desc p:last-child {
   margin: 0;
@@ -1099,7 +1099,7 @@
   margin-bottom: 0.5rem;
 }
 .sg-modal .sg-pattern-head {
-  padding: 0;
+  margin-bottom: 0.5rem;
 }
 .sg-modal .sg-pattern-title {
   font-size: 1.4rem !important;
@@ -1194,8 +1194,15 @@
 }
 
 /**
- * Annotated elements Styles
+ * Annotations
+ * 1) Annotation styles that appear in the modal
  */
+/**
+* Annotated elements styles
+* 1) For elements in the DOM that have an annotation, we want to
+* provide styles that help the user understand that annotations are available.
+* We do this with some cursor helpers and a
+*/
 .has-annotation {
   cursor: help !important;
   -webkit-box-shadow: 0 0 10px #808080;
@@ -1229,6 +1236,50 @@
   z-index: 100;
 }
 
+.sg-annotations {
+  margin: 1rem 0;
+  border-top: 1px solid #808080;
+  padding-top: 1rem;
+}
+
+.sg-annotations-title {
+  margin: 0 0 0.5rem;
+}
+
+.sg-annoatations-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  counter-reset: the-count;
+}
+.sg-annoatations-list > li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  -webkit-transition: background 0.1s ease;
+          transition: background 0.1s ease;
+}
+.sg-annoatations-list > li:before {
+  content: counter(the-count);
+  counter-increment: the-count;
+  font-size: 90%;
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  padding: 2px;
+  text-align: center;
+  background: #444;
+  color: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.sg-annoatations-list > li.active {
+  background: rgba(255, 255, 255, 0.15);
+}
+
 #sg-comments-container {
   max-width: 60em;
   margin: 0 auto;
@@ -1244,54 +1295,4 @@
 }
 .sg-comment-container h2 {
   margin-bottom: 0.25em;
-}
-
-.sg-code, .sg-annotations {
-  clear: both;
-  background: #ddd;
-  color: #000;
-  padding: 1em 0.5em;
-  margin: 1em 0;
-}
-.sg-code a, .sg-annotations a {
-  text-decoration: underline;
-}
-
-.sg-code-contains {
-  margin-bottom: 1rem;
-  font-size: 85%;
-  color: #808080;
-}
-.sg-code-contains code {
-  padding: 0.2em;
-  background: rgba(0, 0, 0, 0.3);
-  color: #999;
-  position: relative;
-  top: -2px;
-}
-
-.sg-code-head {
-  color: #808080;
-  font-size: 1em;
-}
-
-.sg-code-patternname {
-  color: #aaa;
-}
-
-#sg-code-loader {
-  display: none;
-  position: absolute;
-  left: 45%;
-  top: 20%;
-  width: 150px;
-  padding: 10px;
-  text-align: center;
-  border-radius: 10px;
-  background-color: #000;
-  z-index: 100;
-}
-
-.show-overflow {
-  overflow: visible;
 }

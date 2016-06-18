@@ -149,7 +149,6 @@
 	<!-- the template for the code view slider -->
 	<script type="text/mustache" id="pl-panel-template-base">
 		
-
 <div class="sg-pattern-extra-inner">
 
 <!-- description, etc. -->
@@ -169,7 +168,7 @@
         </div>
 
         <h2 class="sg-pattern-title">
-          {{ patternName }}
+          {{ patternNameCaps }}
           {{# patternState }}
             <span class="sg-pattern-state {{ patternState }}">{{ patternState }}</span>
           {{/ patternState }}
@@ -183,7 +182,7 @@
       <div class="sg-pattern-desc">
           {{{ patternDesc }}}
           {{# patternDescAdditions }}
-            {{{ . }}}
+            {{{ patternDescAdditions }}}
           {{/ patternDescAdditions }}
       </div><!--end .sg-pattern-desc-->
     {{/ patternDescExists }}
@@ -193,7 +192,7 @@
           The <strong>{{ patternName }}</strong> pattern contains the following patterns:
           <span id="sg-code-lineage-fill">
           {{# lineage }}
-            <a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ . }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>
+            <a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ lineageState }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>{{# hasComma }}, {{/ hasComma }}
           {{/ lineage }}
           </span>
       </p><!--end .sg-pattern-lineage-->
@@ -202,13 +201,25 @@
     {{# lineageRExists }}
       <p class="sg-pattern-lineage">
           The <strong>{{ patternName }}</strong> pattern is included in the following patterns:
-          <span id="sg-pattern-extra-lineage">
+          <span id="sg-code-lineager-fill">
           {{# lineageR }}
-            <a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ . }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>
+            <a href='{{ lineagePath }}' class='{{# lineageState }}sg-pattern-state {{ lineageState }}{{/ lineageState }}' data-patternPartial='{{ lineagePattern }}'>{{ lineagePattern }}</a>{{# hasComma }}, {{/ hasComma }}
           {{/ lineageR }}
           </span>
       </p><!--end .sg-pattern-lineage-->
     {{/ lineageRExists }}
+
+    {{# annotationExists }}
+      <div class="sg-annotations" id="sg-annotations">
+        <h2 class="sg-annotations-title">Annotations</h2>
+        <ol class="sg-annotations-list">
+          {{# annotations }}
+            <li><strong>{{ title }}</strong>{{{ comment }}}</li>
+          {{/ annotations }}
+        </ol>
+      </div>
+    {{/ annotationExists }}
+    
 </div><!--end .sg-pattern-extra-info-->
 {{/ descBlockExists }}
 
@@ -233,7 +244,7 @@
 
 </div><!--end .sg-pattern-extra-info-->
 
-</div><!--end .sg-pattern-body-->
+</div><!--end .sg-pattern-extra-inner-->
 
 	</script>
 
