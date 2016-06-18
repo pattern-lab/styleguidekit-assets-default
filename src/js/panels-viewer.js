@@ -24,7 +24,7 @@ var panelsViewer = {
         panelContentCount++;
       }
     }
-
+    
     // see if the count of panels with content matches number of panels
     if (panelContentCount === Panels.count()) {
       panelsViewer.renderPanels(panels, patternData, iframePassback);
@@ -85,19 +85,84 @@ var panelsViewer = {
   },
 
   renderPanels: function(panels, patternData, iframePassback) {
-
+    
     // set-up defaults
     var template, templateCompiled, templateRendered;
+    var annotation, comment, count, div, els, item, markup, i;
     var patternPartial = patternData.patternPartial;
     patternData.panels = panels;
 
     // set a default pattern description for modal pop-up
     if (!iframePassback && (patternData.patternDesc.length === 0)) {
-      patternData.patternDesc = "There is no description.";
+      patternData.patternDesc = "There is no description for this pattern.";
+    }
+    
+    // capitilize the pattern name
+    patternData.patternNameCaps = patternData.patternName.toUpperCase();
+    
+    // check for annotations in the given mark-up
+    markup           = document.createElement('div');
+    markup.innerHTML = patternData.patternMarkup;
+    
+    count = 1;
+    patternData.annotations = [];
+    delete patternData['patternMarkup'];
+    
+    for (i = 0; i < comments.comments.length; ++i) {
+      
+      item = comments.comments[i];
+      els  = markup.querySelectorAll(item.el);
+      
+      if (els.length > 0) {
+        annotation = { 'displayNumber': count, 'el': item.el, 'title': item.title, 'comment': item.comment };
+        patternData.annotations.push(annotation);
+        count++;
+      }
+        
+    }
+    
+    // alert the pattern that annotations should be highlighted
+    if (patternData.annotations.length > 0) {
+      var obj = JSON.stringify({ 'event': 'patternLab.annotationsHighlightShow', 'annotations': patternData.annotations });
+      document.getElementById('sg-viewport').contentWindow.postMessage(obj, panelsViewer.targetOrigin);
+    }
+    
+    // add hasComma property to lineage
+    if (patternData.lineage.length > 0) {
+      for (i = 0; i < patternData.lineage.length; ++i) {
+        if (i < (patternData.lineage.length - 1)) {
+          patternData.lineage[i].hasComma = true;
+        }
+      }
+    }
+    
+    // add hasComma property to lineageR
+    if (patternData.lineageR.length > 0) {
+      for (i = 0; i < patternData.lineageR.length; ++i) {
+        if (i < (patternData.lineageR.length - 1)) {
+          patternData.lineageR[i].hasComma = true;
+        }
+      }
     }
     
     // add *Exists attributes for Hogan templates
-    patternData      = this.setExists(patternData, iframePassback);
+    // figure out if the description exists
+    patternData.patternDescExists = ((patternData.patternDesc.length > 0) || ((patternData.patternDescAdditions !== undefined) && (patternData.patternDescAdditions.length > 0)));
+    
+    // figure out if lineage should be drawn
+    patternData.lineageExists = (patternData.lineage.length !== 0);
+
+    // figure out if reverse lineage should be drawn
+    patternData.lineageRExists = (patternData.lineageR.length !== 0);
+
+    // figure out if pattern state should be drawn
+    patternData.patternStateExists = (patternData.patternState.length > 0);
+
+    // figure if the entire desc block should be drawn
+    patternData.descBlockExists = (patternData.patternDescExists || patternData.lineageExists || patternData.lineageRExists || patternData.patternStateExists);
+    
+    // figure if annotations should be drawn
+    patternData.annotationExists = (patternData.annotations.length > 0);
 
     // set isPatternView based on if we have to pass it back to the styleguide level
     patternData.isPatternView = (iframePassback === false);
@@ -108,7 +173,7 @@ var panelsViewer = {
     templateRendered = templateCompiled.render(patternData);
 
     // make sure templateRendered is modified to be an HTML element
-    var div          = document.createElement('div');
+    div              = document.createElement('div');
     div.className    = 'sg-modal-content-inner';
     div.innerHTML    = templateRendered;
     templateRendered = div;
@@ -117,7 +182,7 @@ var panelsViewer = {
     templateRendered = panelsUtil.addClickEvents(templateRendered, patternPartial);
 
     // add onclick events to the tabs in the rendered content
-    for (var i = 0; i < panels.length; ++i) {
+    for (i = 0; i < panels.length; ++i) {
 
       panel = panels[i];
 
@@ -136,10 +201,8 @@ var panelsViewer = {
     // find lineage links in the rendered content and add postmessage handlers in case it's in the modal
     $('#sg-code-lineage-fill a, #sg-code-lineager-fill a', templateRendered).on('click', function(e){
       e.preventDefault();
-      if (modalViewer !== undefined) {
-        var obj = JSON.stringify({ 'event': 'patternLab.updatePath', 'path': urlHandler.getFileName($(this).attr('data-patternpartial')) });
-        document.getElementById('sg-viewport').contentWindow.postMessage(obj, modalViewer.targetOrigin);
-      }
+      var obj = JSON.stringify({ 'event': 'patternLab.updatePath', 'path': urlHandler.getFileName($(this).attr('data-patternpartial')) });
+      document.getElementById('sg-viewport').contentWindow.postMessage(obj, panelsViewer.targetOrigin);
     });
 
     // gather panels from plugins
@@ -152,7 +215,7 @@ var panelsViewer = {
   */
   select: function(id) {
 
-    if (modalViewer.active) {
+    if ((modalViewer !== undefined) && (modalViewer.active)) {
       selection = window.getSelection();
       range = document.createRange();
       range.selectNodeContents(document.getElementById(id));
@@ -163,35 +226,11 @@ var panelsViewer = {
   },
 
   /**
-  * set the various *Exists needed for the template view
-  */
-  setExists: function(pD) {
-
-    // figure out if the description exists
-    pD.patternDescExists = ((pD.patternDesc.length > 0) || ((pD.patternDescAdditions !== undefined) && (pD.patternDescAdditions.length > 0)));
-    
-    // figure out if lineage should be drawn
-    pD.lineageExists = (pD.lineage.length !== 0);
-
-    // figure out if reverse lineage should be drawn
-    pD.lineageRExists = (pD.lineageR.length !== 0);
-
-    // figure out if pattern state should be drawn
-    pD.patternStateExists = (pD.patternState.length > 0);
-
-    // figure if the entire desc block should be drawn
-    pD.descBlockExists = (pD.patternDescExists || pD.lineageExists || pD.lineageRExists || pD.patternStateExists);
-    
-    return pD;
-
-  },
-
-  /**
   * clear any selection of code when swapping tabs or opening a new pattern
   */
   clear: function() {
 
-    if (modalViewer.active) {
+    if ((modalViewer !== undefined) && modalViewer.active) {
       if (window.getSelection().empty) {
         window.getSelection().empty();
       } else if (window.getSelection().removeAllRanges) {

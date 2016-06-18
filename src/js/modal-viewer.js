@@ -40,13 +40,6 @@ var modalViewer = {
       modalViewer.toggle();
     });
 
-    // add the annotations panel onclick handler
-    // there will be no separate modal. need to add a panel for this
-    $('#sg-t-annotations').click(function(e) {
-      e.preventDefault();
-      modalViewer.toggle('annotations');
-    });
-
     // if the iframe loads a new page query the pattern for its info if the modal is active
     $('#sg-viewport').on('load', function() {
       if (modalViewer.active) {
@@ -59,8 +52,16 @@ var modalViewer = {
 
     // make sure the close button handles the click
     $('#sg-modal-close-btn').on('click', function(e) {
+      
       e.preventDefault();
+      
+      // hide any open annotations
+      obj = JSON.stringify({ 'event': 'patternLab.annotationsHighlightHide' });
+      document.getElementById('sg-viewport').contentWindow.postMessage(obj, modalViewer.targetOrigin);
+      
+      // hide the viewer
       modalViewer.close();
+      
     });
 
     // review the query strings in case there is something the modal viewer is supposed to handle by default
@@ -95,6 +96,8 @@ var modalViewer = {
       modalViewer.queryPattern();
     } else {
       message = "Show Pattern Info";
+      obj = JSON.stringify({ 'event': 'patternLab.annotationsHighlightHide' });
+      document.getElementById('sg-viewport').contentWindow.postMessage(obj, modalViewer.targetOrigin);
       modalViewer.close();
     }
     
@@ -127,6 +130,8 @@ var modalViewer = {
   */
   close: function() {
 
+    var obj;
+    
     // not that the modal viewer is no longer active
     modalViewer.active = false;
 
@@ -143,7 +148,7 @@ var modalViewer = {
     $('#sg-t-patterninfo').html("Show Pattern Info");
     
     // tell the styleguide to close
-    var obj = JSON.stringify({ 'event': 'patternLab.patternModalClose' });
+    obj = JSON.stringify({ 'event': 'patternLab.patternModalClose' });
     document.getElementById('sg-viewport').contentWindow.postMessage(obj, modalViewer.targetOrigin);
     
   },
@@ -223,20 +228,40 @@ var modalViewer = {
   */
   receiveIframeMessage: function(event) {
 
+    var els, i, displayNumberCheck;
+    
     // does the origin sending the message match the current host? if not dev/null the request
     if ((window.location.protocol !== 'file:') && (event.origin !== window.location.protocol+'//'+window.location.host)) {
       return;
     }
 
-    console.log(event);
     var data = {};
     try {
       data = (typeof event.data !== 'string') ? event.data : JSON.parse(event.data);
     } catch(e) {}
 
-    // refresh the modal if a new pattern is loaded and the modal is active
+    
     if ((data.event !== undefined) && (data.event == 'patternLab.patternQueryInfo')) {
+      
+      // refresh the modal if a new pattern is loaded and the modal is active
       modalViewer.refresh(data.patternData, data.iframePassback);
+      
+    } else if ((data.event !== undefined) && (data.event == 'patternLab.annotationNumberClicked')) {
+      
+      // remove active class
+      els = document.querySelectorAll('#sg-annotations > .sg-annotations-list > li');
+      for (i = 0; i < els.length; ++i) {
+        els[i].classList.remove('active');
+      }
+      
+      // add active class to called element and scroll to it
+      for (i = 0; i < els.length; ++i) {
+        if ((i+1) == data.displayNumber) {
+          els[i].classList.add('active');
+          $('.sg-pattern-extra-info').animate({scrollTop: els[i].offsetTop - 10}, 600);
+        }
+      }
+      
     }
 
   }
