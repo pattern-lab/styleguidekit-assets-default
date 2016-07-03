@@ -162,17 +162,26 @@ var DataSaver = {
  * Licensed under the MIT license
  */
 
-/* load pattern nav */
-var template         = document.getElementById("pl-pattern-nav-template");
-var templateCompiled = Hogan.compile(template.innerHTML);
-var templateRendered = templateCompiled.render(navItems);
-document.getElementById("pl-pattern-nav-target").innerHTML = templateRendered;
-
-/* load ish controls */
-var template         = document.getElementById("pl-ish-controls-template");
-var templateCompiled = Hogan.compile(template.innerHTML);
-var templateRendered = templateCompiled.render(ishControls);
-document.getElementById("sg-controls").innerHTML = templateRendered;
+try {
+  
+  /* load pattern nav */
+  var template         = document.getElementById("pl-pattern-nav-template");
+  var templateCompiled = Hogan.compile(template.innerHTML);
+  var templateRendered = templateCompiled.render(navItems);
+  document.getElementById("pl-pattern-nav-target").innerHTML = templateRendered;
+  
+  /* load ish controls */
+  var template         = document.getElementById("pl-ish-controls-template");
+  var templateCompiled = Hogan.compile(template.innerHTML);
+  var templateRendered = templateCompiled.render(ishControls);
+  document.getElementById("sg-controls").innerHTML = templateRendered;
+  
+} catch(e) {
+  
+  var message = "<h1>Nothing Here Yet</h1><p>Please generate your site before trying to view it.</p>";
+  document.getElementById("pl-pattern-nav-target").innerHTML = message;
+  
+}
 
 /*!
  * URL Handler
@@ -1239,14 +1248,6 @@ if (self != top) {
     };
   }
   
-  // if there are clicks on the iframe make sure the nav in the iframe parent closes
-  var body = document.getElementsByTagName('body');
-  body[0].onclick = function() {
-    var targetOrigin = (window.location.protocol == "file:") ? "*" : window.location.protocol+"//"+window.location.host;
-    var obj = JSON.stringify({ "event": "patternLab.bodyClick", "bodyclick": "bodyclick" });
-    parent.postMessage(obj,targetOrigin);
-  };
-  
 }
 
 // watch the iframe source so that it can be sent back to everyone else.
@@ -1867,11 +1868,7 @@ window.addEventListener("message", receiveIframeMessage, false);
     
     if (data.event !== undefined) {
       
-      if (data.event == "patternLab.bodyClick") {
-
-        closePanels();
-
-      } else if (data.event == "patternLab.pageLoad") {
+      if (data.event == "patternLab.pageLoad") {
 
         if (!urlHandler.skipBack) {
 
