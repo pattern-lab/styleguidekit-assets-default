@@ -1009,7 +1009,7 @@ $sg-border-radius-med : 6px;
         display: flex;
         align-items: stretch;
         width: 100%;
-        flex: 1;
+        flex: 1 1 auto;
     }
 }
 
@@ -1063,7 +1063,7 @@ $sg-border-radius-med : 6px;
     flex-direction: column;
     font-size: 90%;
     padding: 0.5rem;
-    flex: 1;
+    flex: 1 1 auto;
 
     /**
      * Code blocks
@@ -1073,7 +1073,7 @@ $sg-border-radius-med : 6px;
         padding: 0 0.5rem 0.5rem !important;
         margin: 0 !important;
         line-height: 1 !important;
-        flex: 1;
+        flex: 1 1 auto;
         border-radius: 0 $sg-border-radius-med $sg-border-radius-med $sg-border-radius-med !important;
         position: absolute;
         top: 0;
@@ -1102,7 +1102,7 @@ $sg-border-radius-med : 6px;
 \*------------------------------------*/
 
 .sg-tabs {
-    flex: 1;
+    flex: 1 1 auto;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -1159,7 +1159,7 @@ $sg-border-radius-med : 6px;
 }
 
 .sg-tabs-content {
-    flex: 1;
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
   border: 1px solid $sg-gray-light-3;
@@ -1171,7 +1171,7 @@ $sg-border-radius-med : 6px;
   display: none;
     display: flex;
     flex-direction: column;
-    flex: 1;
+    flex: 1 1 auto;
     position: relative;
     min-height: 12em;
 
@@ -1240,7 +1240,7 @@ $sg-border-radius-med : 6px;
      * Pattern Information inside modal
      */
     .sg-pattern-extra {
-        flex: 1;
+        flex: 1 1 auto;
         max-height: none;
         padding: 0;
 
@@ -1314,7 +1314,7 @@ $sg-border-radius-med : 6px;
  */
 .sg-modal-content {
     display: flex;
-    flex: 1;
+    flex: 1 1 auto;
     flex-direction: column;
     overflow-y: auto;
   overflow-x: hidden;
@@ -1325,7 +1325,7 @@ $sg-border-radius-med : 6px;
  */
 .sg-modal-content-inner {
     display: flex;
-    flex: 1;
+    flex: 1 1 auto;
     flex-direction: column;
 }
 
