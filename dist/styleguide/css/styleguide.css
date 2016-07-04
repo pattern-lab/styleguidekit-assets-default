@@ -1150,6 +1150,9 @@
   * Pattern Description inside modal
   */
   /**
+  * Pattern Annotations inside modal
+  */
+  /**
   * Pattern tab panel inside modal
   */
 }
@@ -1187,6 +1190,9 @@
 }
 .sg-modal .sg-pattern-desc {
   border-bottom-color: #808080;
+}
+.sg-modal .sg-annotations {
+  border-top-color: #808080;
 }
 .sg-modal .sg-tabs-content {
   border: 0;
@@ -1307,7 +1313,7 @@
 }
 
 .sg-annotations-title {
-  font-size: 1.2rem !important;
+  font-size: 1rem !important;
   margin: 0 0 0.5rem;
 }
 
