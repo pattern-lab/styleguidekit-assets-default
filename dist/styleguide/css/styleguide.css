@@ -1,6 +1,6 @@
 @charset "UTF-8";
 /*------------------------------------*\
-    $PATTERN LAB STYLES
+    #PATTERN LAB STYLES
 \*------------------------------------*/
 /**
  * NOTES:
@@ -43,7 +43,7 @@
  * -----Code View
  */
 /*------------------------------------*\
-    #PATTERN LAB VARIABLES
+    #VARIABLES
 \*------------------------------------*/
 /**
  * These variables are specific to the Pattern Lab shell and exist
@@ -903,7 +903,7 @@
 .sg-pattern-desc {
   margin-bottom: 1em;
   padding-bottom: 1em;
-  border-bottom: 1px solid #808080;
+  border-bottom: 1px solid #ccc;
 }
 .sg-pattern-desc p:last-child {
   margin: 0;
@@ -965,6 +965,45 @@
   }
 }
 
+/**
+ * Pattern Category
+ * 1) This appears in the index page and delineates a major section,
+ *    such as "global", "blocks", "etc".
+ * 2) The category contains a title and optional description
+ */
+.sg-pattern-category {
+  margin-top: 6rem;
+  font: "HelveticaNeue", "Helvetica", "Arial", sans-serif !important;
+}
+.sg-pattern-category:first-of-type {
+  margin-top: 2rem;
+}
+
+/**
+ * Pattern Category Title
+ */
+.sg-pattern-category-title {
+  font-size: 1.4rem !important;
+  color: #222 !important;
+  margin: 0 0 0.2rem;
+}
+.sg-pattern-category-title a {
+  -webkit-transition: color 0.1s ease-out;
+          transition: color 0.1s ease-out;
+}
+
+/**
+ * Pattern Category Description
+ * 1) This is an optional description that sits below the category title.
+ */
+.sg-pattern-category-body {
+  font-size: 80%;
+  line-height: 1.3;
+}
+.sg-pattern-category-body:empty {
+  display: none;
+}
+
 /*------------------------------------*\
     #TABS
 \*------------------------------------*/
@@ -980,6 +1019,7 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  font: "HelveticaNeue", "Helvetica", "Arial", sans-serif !important;
 }
 
 .sg-tabs-list {

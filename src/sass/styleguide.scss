@@ -50,7 +50,7 @@
 
 
 /*------------------------------------*\
-    #PATTERN LAB VARIABLES
+    #VARIABLES
 \*------------------------------------*/
 /**
  * These variables are specific to the Pattern Lab shell and exist
@@ -1040,7 +1040,7 @@ $sg-border-radius-med : 6px;
 .sg-pattern-desc {
   margin-bottom: 1em;
   padding-bottom: 1em;
-  border-bottom: 1px solid $sg-gray;
+  border-bottom: 1px solid $sg-gray-light-3;
 
   p:last-child {
     margin: 0;
@@ -1093,6 +1093,46 @@ $sg-border-radius-med : 6px;
     }
 }
 
+/**
+ * Pattern Category
+ * 1) This appears in the index page and delineates a major section,
+ *    such as "global", "blocks", "etc".
+ * 2) The category contains a title and optional description
+ */
+.sg-pattern-category {
+    margin-top: 6rem;
+    font: $sg-font !important;
+
+    &:first-of-type {
+        margin-top: 2rem;
+    }
+}
+
+/**
+ * Pattern Category Title
+ */
+.sg-pattern-category-title {
+    font-size: 1.4rem !important;
+    color: $sg-gray-dark !important;
+    margin: 0 0 0.2rem;
+
+    a {
+        transition: color $sg-animate-quick ease-out;
+    }
+}
+
+/**
+ * Pattern Category Description
+ * 1) This is an optional description that sits below the category title.
+ */
+.sg-pattern-category-body {
+    font-size: 80%;
+    line-height: 1.3;
+
+    &:empty {
+        display: none;
+    }
+}
 
 
 
@@ -1106,6 +1146,7 @@ $sg-border-radius-med : 6px;
     width: 100%;
     display: flex;
     flex-direction: column;
+    font: $sg-font !important;
 }
 
 .sg-tabs-list {
@@ -1304,7 +1345,7 @@ $sg-border-radius-med : 6px;
     }
 
   &:hover, &:focus {
-        background: $sg-gray-dark;
+     background: $sg-gray-dark;
     color: $sg-gray-light;
   }
 }
