@@ -1023,6 +1023,7 @@ $sg-border-radius-med : 6px;
     font-size: 90%;
     color: $sg-gray;
     overflow: auto; //allows scrolling on modals with extra long descriptions
+    -webkit-overflow-scrolling: touch;
 
     &:empty {
         padding: 0;
@@ -1070,6 +1071,7 @@ $sg-border-radius-med : 6px;
     */
     pre {
         overflow: scroll !important;
+        -webkit-overflow-scrolling: touch;
         padding: 0 0.5rem 0.5rem !important;
         margin: 0 !important;
         line-height: 1 !important;

@@ -886,6 +886,7 @@
   font-size: 90%;
   color: #808080;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .sg-pattern-extra-info:empty {
   padding: 0;
@@ -939,6 +940,7 @@
 }
 .sg-pattern-extra-code pre {
   overflow: scroll !important;
+  -webkit-overflow-scrolling: touch;
   padding: 0 0.5rem 0.5rem !important;
   margin: 0 !important;
   line-height: 1 !important;
