@@ -1023,6 +1023,7 @@ $sg-border-radius-med : 6px;
   font-size: 90%;
     color: $sg-gray;
     overflow: auto; //allows scrolling on modals with extra long descriptions
+    -webkit-overflow-scrolling: touch; //smooth overflow scrolling on iOS
 
     &:empty {
         padding: 0;
@@ -1070,6 +1071,7 @@ $sg-border-radius-med : 6px;
      */
   pre {
         overflow: scroll !important;
+        -webkit-overflow-scrolling: touch; //smooth scrolling on iOS
         padding: 0 0.5rem 0.5rem !important;
         margin: 0 !important;
         line-height: 1 !important;
@@ -1091,6 +1093,18 @@ $sg-border-radius-med : 6px;
         width: 60%;
         padding: $sg-pad;
     }
+}
+
+
+//Override the default Prism CSS to force code examples to wrap on smaller screen sizes for legibility 
+.language-markup {
+  code[class*=language-], 
+  pre[class*=language-] {
+    white-space: pre-wrap;
+    @media all and (min-width: 42em) {
+      white-space: pre;
+    }
+  }
 }
 
 
