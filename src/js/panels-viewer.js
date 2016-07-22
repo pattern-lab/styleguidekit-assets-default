@@ -57,6 +57,13 @@ var panelsViewer = {
     for (var i = 0; i < panels.length; ++i) {
 
       panel = panels[i];
+      
+      // catch pattern panel since it doesn't have a name defined by default
+      if (panel.name === undefined) {
+        panel.name = patternData.patternExtension;
+        panel.httpRequestReplace = panel.httpRequestReplace+'.'+patternData.patternExtension;
+        panel.language = patternData.patternExtension;
+      }
 
       if ((panel.templateID !== undefined) && (panel.templateID)) {
 
@@ -67,14 +74,15 @@ var panelsViewer = {
           var e        = new XMLHttpRequest();
           e.onload     = (function(i, panels, patternData, iframeRequest) {
             return function() {
-              prismedContent    = Prism.highlight(this.responseText, Prism.languages[panels[i].language]);
+              prismedContent    = Prism.highlight(this.responseText, Prism.languages['html']);
               template          = document.getElementById(panels[i].templateID);
               templateCompiled  = Hogan.compile(template.innerHTML);
-              templateRendered  = templateCompiled.render({ 'language': panels[i].language, 'code': prismedContent });
+              templateRendered  = templateCompiled.render({ 'language': 'html', 'code': prismedContent });
               panels[i].content = templateRendered;
               Dispatcher.trigger('checkPanels', [panels, patternData, iframePassback, switchText]);
             };
           })(i, panels, patternData, iframePassback);
+          
           e.open('GET', fileName.replace(/\.html/,panel.httpRequestReplace)+'?'+(new Date()).getTime(), true);
           e.send();
 
