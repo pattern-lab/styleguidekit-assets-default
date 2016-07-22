@@ -146,10 +146,10 @@ var modalViewer = {
   },
   
   /**
-  * hide the modal window
+  * hide the modal window, add 30px to account for the X box
   */
   hide: function() {
-    modalViewer.slide($('#sg-modal-container').outerHeight());
+    modalViewer.slide($('#sg-modal-container').outerHeight()+30);
   },
   
   /**
