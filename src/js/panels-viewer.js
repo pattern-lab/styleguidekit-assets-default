@@ -70,7 +70,7 @@ var panelsViewer = {
         if ((panel.httpRequest !== undefined) && (panel.httpRequest)) {
 
           // need a file and then render
-          var fileName = urlHandler.getFileName(patternData.patternPartial);
+          var fileBase = urlHandler.getFileName(patternData.patternPartial, false);
           var e        = new XMLHttpRequest();
           e.onload     = (function(i, panels, patternData, iframeRequest) {
             return function() {
@@ -83,7 +83,7 @@ var panelsViewer = {
             };
           })(i, panels, patternData, iframePassback);
           
-          e.open('GET', fileName.replace(/\.html/,panel.httpRequestReplace)+'?'+(new Date()).getTime(), true);
+          e.open('GET', fileBase+panel.httpRequestReplace+'?'+(new Date()).getTime(), true);
           e.send();
 
         } else {
