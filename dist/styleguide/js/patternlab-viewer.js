@@ -204,16 +204,21 @@ var urlHandler = {
   /**
   * get the real file name for a given pattern name
   * @param  {String}       the shorthand partials syntax for a given pattern
+  * @param  {Boolean}      with the file name should be returned with the full rendered suffix or not
   *
   * @return {String}       the real file path
   */
-  getFileName: function (name) {
+  getFileName: function (name, withRenderedSuffix) {
     
     var baseDir     = "patterns";
     var fileName    = "";
     
     if (name === undefined) {
       return fileName;
+    }
+    
+    if (withRenderedSuffix === undefined) {
+      withRenderedSuffix = true;
     }
     
     if (name == "all") {
@@ -250,13 +255,18 @@ var urlHandler = {
     }
     
     var regex = /\//g;
-    if ((name.indexOf("viewall-") != -1) && (fileName !== "")) {
+    if ((name.indexOf("viewall-") !== -1) && (name.indexOf("viewall-") === 0) && (fileName !== "")) {
       fileName = baseDir+"/"+fileName.replace(regex,"-")+"/index.html";
     } else if (fileName !== "") {
-      fileName = baseDir+"/"+fileName.replace(regex,"-")+"/"+fileName.replace(regex,"-")+".html";
+      fileName = baseDir+"/"+fileName.replace(regex,"-")+"/"+fileName.replace(regex,"-");
+      if (withRenderedSuffix) {
+        var fileSuffixRendered = ((config.outputFileSuffixes !== undefined) && (config.outputFileSuffixes.rendered !== undefined)) ? config.outputFileSuffixes.rendered : '';
+        fileName = fileName+fileSuffixRendered+".html";
+      }
     }
     
     return fileName;
+    
   },
   
   /**
@@ -527,10 +537,10 @@ var modalViewer = {
   },
   
   /**
-  * hide the modal window
+  * hide the modal window, add 30px to account for the X box
   */
   hide: function() {
-    modalViewer.slide($('#sg-modal-container').outerHeight());
+    modalViewer.slide($('#sg-modal-container').outerHeight()+30);
   },
   
   /**
@@ -839,10 +849,13 @@ var Panels = {
   
 };
 
+// set-up the base file extensions to fetch
+var fileSuffixPattern = ((config.outputFileSuffixes !== undefined) && (config.outputFileSuffixes.rawTemplate !== undefined)) ? config.outputFileSuffixes.rawTemplate : '';
+var fileSuffixMarkup  = ((config.outputFileSuffixes !== undefined) && (config.outputFileSuffixes.markupOnly !== undefined)) ? config.outputFileSuffixes.markupOnly : '.markup-only';
+
 // add the default panels
-// Panels.add({ 'id': 'sg-panel-info', 'name': 'info', 'default': true, 'templateID': 'pl-panel-template-info', 'httpRequest': false, 'prismHighlight': false, 'keyCombo': '' });
-Panels.add({ 'id': 'sg-panel-pattern', 'name': config.patternExtension.toUpperCase(), 'default': true, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': '.'+config.patternExtension, 'httpRequestCompleted': false, 'prismHighlight': true, 'language': PrismLanguages.get(config.patternExtension), 'keyCombo': 'ctrl+shift+u' });
-Panels.add({ 'id': 'sg-panel-html', 'name': 'HTML', 'default': false, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': '.markup-only.html', 'httpRequestCompleted': false, 'prismHighlight': true, 'language': 'markup', 'keyCombo': 'ctrl+shift+y' });
+Panels.add({ 'id': 'sg-panel-pattern', 'default': true, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': fileSuffixPattern, 'httpRequestCompleted': false, 'prismHighlight': true, 'keyCombo': 'ctrl+shift+u' });
+Panels.add({ 'id': 'sg-panel-html', 'name': 'HTML', 'default': false, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': fileSuffixMarkup+'.html', 'httpRequestCompleted': false, 'prismHighlight': true, 'language': 'markup', 'keyCombo': 'ctrl+shift+y' });
 
 // gather panels from plugins
 Dispatcher.trigger('setupPanels');
@@ -906,25 +919,33 @@ var panelsViewer = {
     for (var i = 0; i < panels.length; ++i) {
 
       panel = panels[i];
+      
+      // catch pattern panel since it doesn't have a name defined by default
+      if (panel.name === undefined) {
+        panel.name = patternData.patternExtension;
+        panel.httpRequestReplace = panel.httpRequestReplace+'.'+patternData.patternExtension;
+        panel.language = patternData.patternExtension;
+      }
 
       if ((panel.templateID !== undefined) && (panel.templateID)) {
 
         if ((panel.httpRequest !== undefined) && (panel.httpRequest)) {
 
           // need a file and then render
-          var fileName = urlHandler.getFileName(patternData.patternPartial);
+          var fileBase = urlHandler.getFileName(patternData.patternPartial, false);
           var e        = new XMLHttpRequest();
           e.onload     = (function(i, panels, patternData, iframeRequest) {
             return function() {
-              prismedContent    = Prism.highlight(this.responseText, Prism.languages[panels[i].language]);
+              prismedContent    = Prism.highlight(this.responseText, Prism.languages['html']);
               template          = document.getElementById(panels[i].templateID);
               templateCompiled  = Hogan.compile(template.innerHTML);
-              templateRendered  = templateCompiled.render({ 'language': panels[i].language, 'code': prismedContent });
+              templateRendered  = templateCompiled.render({ 'language': 'html', 'code': prismedContent });
               panels[i].content = templateRendered;
               Dispatcher.trigger('checkPanels', [panels, patternData, iframePassback, switchText]);
             };
           })(i, panels, patternData, iframePassback);
-          e.open('GET', fileName.replace(/\.html/,panel.httpRequestReplace)+'?'+(new Date()).getTime(), true);
+          
+          e.open('GET', fileBase+panel.httpRequestReplace+'?'+(new Date()).getTime(), true);
           e.send();
 
         } else {
@@ -960,7 +981,7 @@ var panelsViewer = {
     
     // set a default pattern description for modal pop-up
     if (!iframePassback && (patternData.patternDesc.length === 0)) {
-      patternData.patternDesc = "";
+      patternData.patternDesc = "This pattern doesn't have a description.";
     }
 
     // capitilize the pattern name

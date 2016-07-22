@@ -37,10 +37,13 @@ var Panels = {
   
 };
 
+// set-up the base file extensions to fetch
+var fileSuffixPattern = ((config.outputFileSuffixes !== undefined) && (config.outputFileSuffixes.rawTemplate !== undefined)) ? config.outputFileSuffixes.rawTemplate : '';
+var fileSuffixMarkup  = ((config.outputFileSuffixes !== undefined) && (config.outputFileSuffixes.markupOnly !== undefined)) ? config.outputFileSuffixes.markupOnly : '.markup-only';
+
 // add the default panels
-// Panels.add({ 'id': 'sg-panel-info', 'name': 'info', 'default': true, 'templateID': 'pl-panel-template-info', 'httpRequest': false, 'prismHighlight': false, 'keyCombo': '' });
-Panels.add({ 'id': 'sg-panel-pattern', 'name': config.patternExtension.toUpperCase(), 'default': true, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': '.'+config.patternExtension, 'httpRequestCompleted': false, 'prismHighlight': true, 'language': PrismLanguages.get(config.patternExtension), 'keyCombo': 'ctrl+shift+u' });
-Panels.add({ 'id': 'sg-panel-html', 'name': 'HTML', 'default': false, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': '.markup-only.html', 'httpRequestCompleted': false, 'prismHighlight': true, 'language': 'markup', 'keyCombo': 'ctrl+shift+y' });
+Panels.add({ 'id': 'sg-panel-pattern', 'default': true, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': fileSuffixPattern, 'httpRequestCompleted': false, 'prismHighlight': true, 'keyCombo': 'ctrl+shift+u' });
+Panels.add({ 'id': 'sg-panel-html', 'name': 'HTML', 'default': false, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': fileSuffixMarkup+'.html', 'httpRequestCompleted': false, 'prismHighlight': true, 'language': 'markup', 'keyCombo': 'ctrl+shift+y' });
 
 // gather panels from plugins
 Dispatcher.trigger('setupPanels');
