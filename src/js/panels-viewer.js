@@ -111,7 +111,7 @@ var panelsViewer = {
     
     // set a default pattern description for modal pop-up
     if (!iframePassback && (patternData.patternDesc.length === 0)) {
-      patternData.patternDesc = "";
+      patternData.patternDesc = "This pattern doesn't have a description.";
     }
 
     // capitilize the pattern name
