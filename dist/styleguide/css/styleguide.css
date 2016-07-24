@@ -1012,6 +1012,17 @@
   display: none;
 }
 
+.language-markup code[class*=language-],
+.language-markup pre[class*=language-] {
+  white-space: pre-wrap;
+}
+@media all and (min-width: 42em) {
+  .language-markup code[class*=language-],
+  .language-markup pre[class*=language-] {
+    white-space: pre;
+  }
+}
+
 /*------------------------------------*\
 #TABS
 \*------------------------------------*/
