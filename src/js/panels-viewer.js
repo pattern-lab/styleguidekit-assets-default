@@ -61,7 +61,7 @@ var panelsViewer = {
       // catch pattern panel since it doesn't have a name defined by default
       if (panel.name === undefined) {
         panel.name = patternData.patternExtension;
-        panel.httpRequestReplace = panel.httpRequestReplace+'.'+patternData.patternExtension;
+        panel.httpRequestReplace = panel.httpRequestReplace + '.' + patternData.patternExtension.replace(/\./g, '');
         panel.language = patternData.patternExtension;
       }
 
