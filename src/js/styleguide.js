@@ -517,7 +517,7 @@
     history.replaceState({ "pattern": patternName }, null, null);
   }
 
-  if (document.getElementById("sg-raw") !== undefined) {
+  if (document.getElementById("sg-raw") !== null) {
     document.getElementById("sg-raw").setAttribute("href",urlHandler.getFileName(patternName));
   }
 
