@@ -1001,6 +1001,7 @@ $sg-border-radius-med : 6px;
         border-radius: $sg-border-radius-med;
         border-top-right-radius: 0;
         max-height: 50em;
+        overflow: auto;
     }
 }
 
@@ -1148,7 +1149,7 @@ $sg-border-radius-med : 6px;
    pre[class*=language-] {
      white-space: pre-wrap;
      @media all and (min-width: 42em) {
-       white-space: pre;		
+       white-space: pre;
      }
    }
  }
