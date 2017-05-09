@@ -10,29 +10,29 @@
  */
 
 var Panels = {
-  
+
   panels: [],
-  
+
   count: function() {
     return this.panels.length;
   },
-  
+
   get: function() {
     return JSON.parse(JSON.stringify(this.panels));
   },
-  
+
   add: function(panel) {
-    
+
     // if ID already exists in panels array ignore the add()
     for (var i = 0; i < this.panels.length; ++i) {
       if (panel.id === this.panels[i].id) {
         return;
       }
     }
-    
+
     // it wasn't found so push the tab onto the tabs
     this.panels.push(panel);
-    
+
   },
 
   remove: function(id) {
@@ -49,7 +49,7 @@ var Panels = {
       }
     }
   }
-  
+
 };
 
 // set-up the base file extensions to fetch
