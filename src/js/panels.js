@@ -33,6 +33,15 @@ var Panels = {
     // it wasn't found so push the tab onto the tabs
     this.panels.push(panel);
     
+  },
+
+  remove: function(id) {
+    var panels = this.panels;
+    for (var i = panels.length - 1; i >= 0; i--) {
+      if (panels[i].id === id) {
+        panels.splice(i, 1);
+      }
+    }
   }
   
 };
