@@ -38,8 +38,14 @@ var Panels = {
   remove: function(id) {
     var panels = this.panels;
     for (var i = panels.length - 1; i >= 0; i--) {
-      if (panels[i].id === id) {
+      if (panels[i].id === id){
+        var panelToRemove = panels[i];
         panels.splice(i, 1);
+        //if removed panel was default, set first panel as new default, if exists
+        if (panelToRemove.default && panels.length){
+          panels[0].default = true;
+        }
+        return; //should be no more panels with the same id
       }
     }
   }
