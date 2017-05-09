@@ -24,7 +24,7 @@ var Panels = {
   add: function(panel) {
     
     // if ID already exists in panels array ignore the add()
-    for (i = 0; i < this.panels.length; ++i) {
+    for (var i = 0; i < this.panels.length; ++i) {
       if (panel.id === this.panels[i].id) {
         return;
       }
