@@ -1,12 +1,17 @@
 {
   "name": "styleguidekit-assets-default",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "description": "The default set of front-end assets for Pattern Lab.",
   "repository": {
     "type": "git",
     "url": "git://github.com/pattern-lab/styleguidekit-assets-default.git"
   },
   "author": "Dave Olsen",
+  "contributors": [
+    {
+      "name": "Brian Muenzenmeyer"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/pattern-lab/styleguidekit-assets-default/issues"

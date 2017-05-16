@@ -7,10 +7,26 @@
 (function (w) {
 
   var sw = document.body.clientWidth, //Viewport Width
-    sh = $(document).height(), //Viewport Height
-    minViewportWidth = parseInt(config.ishMinimum), //Minimum Size for Viewport
-    maxViewportWidth = parseInt(config.ishMaximum), //Maxiumum Size for Viewport
-    viewportResizeHandleWidth = 14, //Width of the viewport drag-to-resize handle
+    sh = $(document).height(); //Viewport Height
+
+    var minViewportWidth = 240;
+    var maxViewportWidth = 2600;
+
+    //set minimum and maximum viewport based on confg
+    if (config.ishMinimum !== undefined) {
+      minViewportWidth = parseInt(config.ishMinimum); //Minimum Size for Viewport
+    }
+    if (config.ishMaximum !== undefined) {
+      maxViewportWidth = parseInt(config.ishMaximum); //Maxiumum Size for Viewport
+    }
+
+    //alternatively, use the ishViewportRange object
+    if (config.ishViewportRange !== undefined) {
+      minViewportWidth = config.ishViewportRange.s[0];
+      maxViewportWidth = config.ishViewportRange.l[1];
+    }
+
+    var viewportResizeHandleWidth = 14, //Width of the viewport drag-to-resize handle
     $sgViewport = $('#sg-viewport'), //Viewport element
     $sizePx = $('.sg-size-px'), //Px size input element in toolbar
     $sizeEms = $('.sg-size-em'), //Em size input element in toolbar
@@ -105,7 +121,10 @@
     killDisco();
     killHay();
     fullMode = false;
-    sizeiframe(getRandom(minViewportWidth,500));
+    sizeiframe(getRandom(
+      minViewportWidth,
+      config.ishViewportRange !== undefined ? parseInt(config.ishViewportRange.s[1]) : 500
+    ));
   }
 
   $('#sg-size-s').on("click", function(e){
@@ -123,7 +142,10 @@
     killDisco();
     killHay();
     fullMode = false;
-    sizeiframe(getRandom(500,800));
+    sizeiframe(getRandom(
+      config.ishViewportRange !== undefined ? parseInt(config.ishViewportRange.m[0]) : 500,
+      config.ishViewportRange !== undefined ? parseInt(config.ishViewportRange.m[1]) : 800
+    ));
   }
 
   $('#sg-size-m').on("click", function(e){
@@ -141,7 +163,10 @@
     killDisco();
     killHay();
     fullMode = false;
-    sizeiframe(getRandom(800,1200));
+    sizeiframe(getRandom(
+      config.ishViewportRange !== undefined ? parseInt(config.ishViewportRange.l[0]) : 800,
+      config.ishViewportRange !== undefined ? parseInt(config.ishViewportRange.l[1]) : 1200
+    ));
   }
 
   $('#sg-size-l').on("click", function(e){
@@ -572,9 +597,9 @@
     try {
       data = (typeof event.data !== 'string') ? event.data : JSON.parse(event.data);
     } catch(e) {}
-    
+
     if (data.event !== undefined) {
-      
+
       if (data.event == "patternLab.pageLoad") {
 
         if (!urlHandler.skipBack) {
@@ -624,9 +649,9 @@
         }
         return false;
       }
-      
+
     }
-    
+
   }
   window.addEventListener("message", receiveIframeMessage, false);
 
