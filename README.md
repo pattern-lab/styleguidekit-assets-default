@@ -17,7 +17,6 @@ In order to modify these assets you need to install the following:
 
 * the [Development Edition of Pattern Lab PHP](https://github.com/pattern-lab/edition-php-development)
 * [Node.js](http://nodejs.org) and NPM
-* [Bower](http://bower.io)
 * [Ruby Sass](http://sass-lang.com/install)
 	
 ## Development Set-up
@@ -26,8 +25,7 @@ Once you've installed the requirements do the following to set-up for developmen
 
 1. `cd /path/to/dev-edition/packages/pattern-lab/styleguidekit-assets-default`
 2. `git config branch.dev.remote origin`
-3. `npm install`
-4. `bower install`
+3. `npm install` (`bower install` is run automatically afterwards)
 
 ## Making Changes
 
