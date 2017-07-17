@@ -1513,3 +1513,30 @@ $sg-border-radius-med : 6px;
         margin-bottom: 0.25em;
     }
 }
+
+
+
+
+
+/*------------------------------------*\
+#PATTERN STATES | STYLEGUIDE ADD-ON
+\*------------------------------------*/
+.inprogress:before {
+    color: red !important;
+}
+
+.technical-review:before {
+    color: yellow !important;
+}
+
+.visual-review:before {
+    color: deeppink !important;
+}
+
+.customer-review:before {
+    color: aqua !important;
+}
+
+.complete:before {
+    color: #2ECC40 !important;
+}

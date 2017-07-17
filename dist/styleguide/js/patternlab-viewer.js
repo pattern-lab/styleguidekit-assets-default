@@ -856,7 +856,7 @@ var fileSuffixPattern = ((config.outputFileSuffixes !== undefined) && (config.ou
 var fileSuffixMarkup  = ((config.outputFileSuffixes !== undefined) && (config.outputFileSuffixes.markupOnly !== undefined)) ? config.outputFileSuffixes.markupOnly : '.markup-only';
 
 // add the default panels
-Panels.add({ 'id': 'sg-panel-pattern', 'default': true, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': fileSuffixPattern, 'httpRequestCompleted': false, 'prismHighlight': true, 'keyCombo': 'ctrl+shift+u' });
+Panels.add({ 'id': 'sg-panel-pattern', 'default': true, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': fileSuffixPattern, 'httpRequestCompleted': false, 'prismHighlight': true, 'keyCombo': 'ctrl+shift+u', language: 'handlebars' });
 Panels.add({ 'id': 'sg-panel-html', 'name': 'HTML', 'default': false, 'templateID': 'pl-panel-template-code', 'httpRequest': true, 'httpRequestReplace': fileSuffixMarkup+'.html', 'httpRequestCompleted': false, 'prismHighlight': true, 'language': 'markup', 'keyCombo': 'ctrl+shift+y' });
 
 // gather panels from plugins
@@ -926,7 +926,7 @@ var panelsViewer = {
       if (panel.name === undefined) {
         panel.name = patternData.patternEngineName || patternData.patternExtension;
         panel.httpRequestReplace = panel.httpRequestReplace+'.'+patternData.patternExtension;
-        panel.language = patternData.patternExtension;
+        panel.language = panel.language || patternData.patternExtension;
       }
 
       if ((panel.templateID !== undefined) && (panel.templateID)) {
@@ -938,7 +938,7 @@ var panelsViewer = {
           var e        = new XMLHttpRequest();
           e.onload     = (function(i, panels, patternData, iframeRequest) {
             return function() {
-              prismedContent    = Prism.highlight(this.responseText, Prism.languages['html']);
+              prismedContent    = Prism.highlight(this.responseText, Prism.languages[panels[i].language]);
               template          = document.getElementById(panels[i].templateID);
               templateCompiled  = Hogan.compile(template.innerHTML);
               templateRendered  = templateCompiled.render({ 'language': 'html', 'code': prismedContent });

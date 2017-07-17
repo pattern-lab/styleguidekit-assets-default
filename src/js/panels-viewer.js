@@ -62,7 +62,7 @@ var panelsViewer = {
       if (panel.name === undefined) {
         panel.name = patternData.patternEngineName || patternData.patternExtension;
         panel.httpRequestReplace = panel.httpRequestReplace+'.'+patternData.patternExtension;
-        panel.language = patternData.patternExtension;
+        panel.language = panel.language || patternData.patternExtension;
       }
 
       if ((panel.templateID !== undefined) && (panel.templateID)) {
@@ -74,7 +74,7 @@ var panelsViewer = {
           var e        = new XMLHttpRequest();
           e.onload     = (function(i, panels, patternData, iframeRequest) {
             return function() {
-              prismedContent    = Prism.highlight(this.responseText, Prism.languages['html']);
+              prismedContent    = Prism.highlight(this.responseText, Prism.languages[panels[i].language]);
               template          = document.getElementById(panels[i].templateID);
               templateCompiled  = Hogan.compile(template.innerHTML);
               templateRendered  = templateCompiled.render({ 'language': 'html', 'code': prismedContent });
