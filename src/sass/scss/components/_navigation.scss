@@ -81,7 +81,7 @@
     * Dropdown caret after accordion handle
     */
     &:after {
-        content: '▼';
+        content: '\25bc';
         color: $pl-color-trans-white-25;
         display: inline-block;
         font-size: 7px;

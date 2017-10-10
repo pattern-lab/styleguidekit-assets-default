@@ -314,7 +314,7 @@
   */
 }
 .pl-c-nav__link--dropdown:after {
-  content: 'Γû╝';
+  content: '\25bc';
   color: rgba(255, 255, 255, 0.25);
   display: inline-block;
   font-size: 7px;
@@ -1246,7 +1246,7 @@
  * Breadcrumb Item
  */
 .pl-c-breadcrumb__item:after {
-  content: 'Γû╢';
+  content: '▶';
   opacity: 0.4;
   font-size: 6px;
   display: inline-block;
@@ -1589,7 +1589,7 @@
 }
 
 /*------------------------------------*\
-┬á┬á┬á #ANNOTATIONS INSIDE MODAL
+    #ANNOTATIONS INSIDE MODAL
 \*------------------------------------*/
 /**
  * Annotations area
