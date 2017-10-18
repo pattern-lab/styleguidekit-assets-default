@@ -29,6 +29,7 @@
             max-height: 50rem;  /* 1 */
             height: calc(100vh - #{$offset-top}); /* 2 */
             overflow: auto;
+            @include hideScrollBar();
         }
     }
 
