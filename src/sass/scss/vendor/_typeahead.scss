@@ -32,9 +32,11 @@
     /**
      * Typeahead wrapper
      * 1) This is the JS-generated wrapper around the input
+     * 2) Display after nav list items for horizontal theme
      */
     .twitter-typeahead {
         display: flex !important;
+        order: 2; /* 2 */
         width: 100%;
     }
 
