@@ -1,8 +1,10 @@
 <header class="pl-c-header" role="banner">
 
-	{{ color }}
-	{{ density }}
-	{{ layout }}
+	{{# logoImage }}
+    <div class="pl-c-logo">
+        <img class="pl-c-logo__img" src="{{ logoImage }}" />
+    </div><!--end pl-c-logo-->
+    {{/ logoImage }}
 
 	<button class="pl-c-header__nav-toggle pl-js-nav-trigger">Menu</button>
 

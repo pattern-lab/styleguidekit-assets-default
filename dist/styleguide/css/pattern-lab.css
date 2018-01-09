@@ -70,7 +70,7 @@
 \*------------------------------------*/
 /**
 * The HTML and body elements for the Pattern Lab shell.
-* 1)These exist indepenedent of any project-specific styles
+* 1) These exist indepenedent of any project-specific styles
 * 2) Styled as IDs to avoid collisions with user <body> tag
 */
 .pl-c-body {
@@ -1121,7 +1121,7 @@
     #PATTERN INFO
 \*------------------------------------*/
 /**
- * 1) Pattern info contains two sidy-by-side panels that
+ * 1) Pattern info contains two side-by-side panels that
  *    house a pattern's information, such as title, lineage,
  *    code, annotations, and more.
  */
@@ -1226,7 +1226,7 @@
  * 1) Right panel that displays the pattern's code (found in _tabs.scss)
  * 2) Using a sibling selector because the pattern info isn't always present.
  *    The sibling selector allows the code panel to occupy the full width of 
- *    the 
+ *    the modal
  * 1) Cap the height of the code panel in the modal
  */
 @media all and (min-width: 53em) {
@@ -1382,7 +1382,7 @@
     #TABS
 \*------------------------------------*/
 /**
- * 1) Tabs contain a set of horintally-arranged tabs
+ * 1) Tabs contain a set of horizontally-arranged tabs
  *    with accompanying panels. When a tab link is clicked
  *    the corresponding panel becomes visible
  */
@@ -1765,7 +1765,7 @@
 
 /**
  * Annotations Title
- * Says the world "Annotations" 
+ * Says the word "Annotations" 
  */
 .pl-c-annotations__title {
   font-size: 1.2rem !important;
@@ -2041,7 +2041,7 @@
     #VISIBILITY
 \*------------------------------------*/
 /**
-* Visibilly hidden but still accessible to screen readers
+* Visibly hidden but still accessible to screen readers
 */
 .is-vishidden {
   position: absolute !important;
@@ -2063,7 +2063,7 @@
  * Using Twitter Typeahead to autocomplete pattern
  * searches. https://twitter.github.io/typeahead.js/
  * 1) Wrapped in pl-c-header to contain styles for projects that 
- *    might be using Typeahead in their own projects
+ *    might already be using Typeahead
 */
 .pl-c-header {
   /**
@@ -2321,7 +2321,7 @@ pre.line-numbers > code {
 }
 
 /*------------------------------------*\
-    #VENDOR
+    #THEMES
 \*------------------------------------*/
 /*------------------------------------*\
     #LIGHT THEME
@@ -2445,11 +2445,7 @@ pre.line-numbers > code {
 \*------------------------------------*/
 /**
  * A theme that adjusts the density of the PL UI.
- * Options are comapct (default), cozy, and comfortable
- */
-/**
- * A theme that adjusts the density of the PL UI.
- * Options are default (compact), cozy, and comfortable
+ * Options are compact (default), cozy, and comfortable
  */
 .pl-c-body--theme-density-cozy {
   /**
@@ -2856,4 +2852,55 @@ pre.line-numbers > code {
     /* 1 */
     width: auto;
   }
+}
+/*------------------------------------*\
+    #STYLE GUIDE THEME
+\*------------------------------------*/
+/**
+ * 1) A theme that displays documentation more prominently
+ *    and hides certain dev features
+ */
+/*------------------------------------*\
+    #PL MAIN 
+\*------------------------------------*/
+/**
+ * 2) The theme has to be applied to the main selector inside of the 
+ *    iframe since it affects the pattern info inside PL's shell
+ */
+.pl-c-main--theme-styleguide .pl-c-category__title {
+  font-size: 2.2rem;
+}
+.pl-c-main--theme-styleguide .pl-c-pattern__title {
+  font-size: 1.6rem;
+}
+.pl-c-main--theme-styleguide .pl-c-pattern__extra-toggle {
+  display: none;
+}
+.pl-c-main--theme-styleguide .pl-c-pattern__extra {
+  max-height: none;
+  overflow: visible;
+  background: transparent;
+  padding: 0;
+  border-top: 0;
+}
+.pl-c-main--theme-styleguide .pl-c-pattern__extra.pl-is-active {
+  border: 0;
+}
+.pl-c-main--theme-styleguide .pl-c-pattern-info {
+  margin-bottom: 1rem;
+}
+.pl-c-main--theme-styleguide .pl-c-pattern-info__panel {
+  padding: 0;
+  padding-top: 1rem;
+  position: relative;
+}
+.pl-c-main--theme-styleguide .pl-c-pattern-info__panel--code .pl-c-tabs {
+  position: relative;
+  left: 0;
+  right: 0;
+}
+.pl-c-main--theme-styleguide .pl-c-pattern .pl-c-pattern-info {
+  height: auto;
+  max-height: none;
+  min-height: 20rem;
 }

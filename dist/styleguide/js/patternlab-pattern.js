@@ -99,7 +99,7 @@ window.addEventListener("message", receiveIframeMessage, false);
  * Licensed under the MIT license
  *
  * Helps handle the initial iFrame source. Parses a string to see if it matches
- * an expected pattern in Pattern Lab. Supports Pattern Labs fuzzy pattern partial
+ * an expected pattern in Pattern Lab. Supports Pattern Lab's fuzzy pattern partial
  * matching style.
  *
  */
@@ -459,7 +459,7 @@ var modalStyleguide = {
 	 */
 	close: function (patternPartial) {
 
-		// not that the modal viewer is no longer active
+		// note that the modal viewer is no longer active
 		modalStyleguide.active[patternPartial] = false;
 
 		// hide the modal, look at info-panel.js

@@ -1,0 +1,72 @@
+/*------------------------------------*\
+    #STYLE GUIDE THEME
+\*------------------------------------*/
+
+/**
+ * 1) A theme that displays documentation more prominently
+ *    and hides certain dev features
+ */
+ .pl-c-body--theme-styleguide {
+    
+}
+
+
+
+
+
+
+/*------------------------------------*\
+    #PL MAIN 
+\*------------------------------------*/
+
+/**
+ * 2) The theme has to be applied to the main selector inside of the 
+ *    iframe since it affects the pattern info inside PL's shell
+ */
+.pl-c-main--theme-styleguide {
+    .pl-c-category__title {
+        font-size: 2.2rem;
+    }
+
+    .pl-c-pattern__title {
+        font-size: 1.6rem;
+    }
+
+    .pl-c-pattern__extra-toggle {
+        display: none;
+    }
+
+    .pl-c-pattern__extra {
+        max-height: none;
+        overflow: visible;
+        background: transparent;
+        padding: 0;
+        border-top: 0;
+
+        &.pl-is-active {
+            border: 0;
+        }
+    }
+
+    .pl-c-pattern-info {
+        margin-bottom: 1rem;
+    }
+
+    .pl-c-pattern-info__panel {
+        padding: 0;
+        padding-top: 1rem;
+        position: relative;
+    }
+
+    .pl-c-pattern-info__panel--code .pl-c-tabs {
+        position: relative;
+        left: 0;
+        right: 0;
+    }
+
+    .pl-c-pattern .pl-c-pattern-info {
+        height: auto;
+        max-height: none;
+        min-height: 20rem;
+    }
+}

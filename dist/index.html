@@ -10,27 +10,8 @@
 
 <body class="pl-c-body">
 
-	<header class="pl-c-header" role="banner">
+	<div class="pl-js-header-target"></div>
 
-	<button class="pl-c-header__nav-toggle pl-js-nav-trigger">Menu</button>
-
-	<nav class="pl-c-nav pl-js-nav-target pl-js-nav-container" role="navigation">
-
-		<input class="pl-c-typeahead pl-js-typeahead" id="typeahead" type="text" placeholder="Find Pattern" />
-
-		<ol class="pl-c-nav__list pl-js-pattern-nav-target">
-			<!-- pattern lab nav will be inserted here -->
-		</ol><!--end pl-c-nav__list-->
-
-	</nav><!--end pl-c-nav-->
-
-	<div class="pl-c-controls pl-js-controls">
-		<!-- ish and tools controls will be inserted here -->
-	</div><!--end pl-c-controls-->
-
-</header><!--end pl-c-header-->
- 
-	
 	<div class="pl-c-viewport pl-js-viewport">
     
     <div class="pl-c-viewport__cover pl-js-viewport-cover"></div>
@@ -64,6 +45,35 @@
 
 
 	<!-- mustache templates -->
+	<script type="text/mustache" class="pl-js-header-template">
+		<header class="pl-c-header" role="banner">
+
+	{{# logoImage }}
+    <div class="pl-c-logo">
+        <img class="pl-c-logo__img" src="{{ logoImage }}" />
+    </div><!--end pl-c-logo-->
+    {{/ logoImage }}
+
+	<button class="pl-c-header__nav-toggle pl-js-nav-trigger">Menu</button>
+
+	<nav class="pl-c-nav pl-js-nav-target pl-js-nav-container" role="navigation">
+
+		<input class="pl-c-typeahead pl-js-typeahead" id="typeahead" type="text" placeholder="Find Pattern" />
+
+		<ol class="pl-c-nav__list pl-js-pattern-nav-target">
+			<!-- pattern lab nav will be inserted here -->
+		</ol><!--end pl-c-nav__list-->
+
+	</nav><!--end pl-c-nav-->
+
+	<div class="pl-c-controls pl-js-controls">
+		<!-- ish and tools controls will be inserted here -->
+	</div><!--end pl-c-controls-->
+
+</header><!--end pl-c-header-->
+ 
+	</script>
+
 	<script type="text/mustache" class="pl-js-pattern-nav-template">
 		{{# patternTypes }}
 <li class="pl-c-nav__item pl-c-nav__item--{{ patternTypeLC }}">
@@ -347,12 +357,18 @@
   <!-- @todo Consider moving this to own file -->
   <script>
     if (config && config.theme) {
-      if (config.theme.color === 'light') {
+      
+	  // Apply light theme if configured 
+	  if (config.theme.color === 'light') {
         document.body.classList.add('pl-c-body--theme-light');
       }
+
+	  // Apply vertical theme if configured
       if (config.theme.layout === 'vertical') {
         document.body.classList.add('pl-c-body--theme-sidebar');
       }
+
+	  // Apply theme density
       switch (config.theme.density) {
         case 'cozy':
           document.body.classList.add('pl-c-body--theme-density-cozy');
@@ -361,8 +377,12 @@
           document.body.classList.add('pl-c-body--theme-density-comfortable');
           break;
         default:
-          // not sure if you even need/want this
-          document.body.classList.add('pl-c-body--theme-density-compact');
+          
+      }
+
+	  // Apply vertical theme if configured
+      if (config.theme.mode === 'storefront') {
+        document.body.classList.add('pl-c-body--theme-styleguide');
       }
     }
   </script>
@@ -390,4 +410,3 @@
 </body>
 
 </html>
-

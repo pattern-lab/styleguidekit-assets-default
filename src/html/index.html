@@ -46,12 +46,18 @@
   <!-- @todo Consider moving this to own file -->
   <script>
     if (config && config.theme) {
-      if (config.theme.color === 'light') {
+      
+	  // Apply light theme if configured 
+	  if (config.theme.color === 'light') {
         document.body.classList.add('pl-c-body--theme-light');
       }
+
+	  // Apply vertical theme if configured
       if (config.theme.layout === 'vertical') {
         document.body.classList.add('pl-c-body--theme-sidebar');
       }
+
+	  // Apply theme density
       switch (config.theme.density) {
         case 'cozy':
           document.body.classList.add('pl-c-body--theme-density-cozy');
@@ -60,8 +66,12 @@
           document.body.classList.add('pl-c-body--theme-density-comfortable');
           break;
         default:
-          // not sure if you even need/want this
-          document.body.classList.add('pl-c-body--theme-density-compact');
+          
+      }
+
+	  // Apply vertical theme if configured
+      if (config.theme.mode === 'storefront') {
+        document.body.classList.add('pl-c-body--theme-styleguide');
       }
     }
   </script>
@@ -89,4 +99,3 @@
 </body>
 
 </html>
-
