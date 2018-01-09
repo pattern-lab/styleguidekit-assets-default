@@ -37,13 +37,13 @@
  * Pattern Title
  */
 .pl-c-pattern__title {
-    font-family: $pl-font !important;
-    font-size: 0.85rem !important;
-    line-height: 1 !important;
-    font-weight: normal !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    text-transform: capitalize !important;
+    font-family: $pl-font;
+    font-size: 0.85rem;
+    line-height: 1;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+    text-transform: capitalize;
 }
 
 /**
@@ -54,12 +54,12 @@
     display: inline-flex; /* 1 */
     align-items: center; /* 1 */
     padding: $pl-pad 0 0.3rem;
-    color: $pl-color-gray-50 !important;
+    color: $pl-color-gray-50;
     text-decoration: none;
     cursor: pointer;
 
     &:hover, &:focus {
-        color: $pl-color-black  !important;
+        color: $pl-color-black;
     }
 }
 

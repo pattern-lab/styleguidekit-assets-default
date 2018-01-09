@@ -77,27 +77,27 @@
      * Typeahead container
      */
     .typeahead {
-        background: $pl-color-gray-13 !important;
+        background: $pl-color-gray-13;
     }
 
     /**
      * Typeahead input
      */
      .pl-c-typeahead {
-        background: $pl-color-gray-13 !important;
-        color: $pl-color-gray-70 !important;
+        background: $pl-color-gray-13;
+        color: $pl-color-gray-70;
     }
 
     /**
      * Typeahead input
      */
     .tt-input {
-        background: $pl-color-gray-07 !important;
-        color: $pl-color-gray-70 !important;
+        background: $pl-color-gray-07;
+        color: $pl-color-gray-70;
 
         &:hover {
             color: $pl-color-gray-87;
-            background: $pl-color-gray-13 !important;
+            background: $pl-color-gray-13;
     
             &::-webkit-input-placeholder {
                 color: $pl-color-gray-87;

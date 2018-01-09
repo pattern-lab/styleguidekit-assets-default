@@ -16,7 +16,7 @@
      */
     .pl-c-typeahead {
         border: 0;
-        background: $pl-color-gray-87 !important;
+        background: $pl-color-gray-87;
         color: $pl-color-gray-50;
         width: 100%;
         right: 0;
@@ -35,7 +35,7 @@
      * 2) Display after nav list items for horizontal theme
      */
     .twitter-typeahead {
-        display: flex !important;
+        display: flex;
         order: 2; /* 2 */
         width: 100%;
     }
@@ -46,7 +46,7 @@
 
         &:hover {
             color: $pl-color-white;
-            background: $pl-color-gray-87 !important;
+            background: $pl-color-gray-87;
 
             &::-webkit-input-placeholder {
                 color: $pl-color-white;

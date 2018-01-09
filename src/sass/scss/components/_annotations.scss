@@ -10,13 +10,13 @@
  * We do this with some cursor helpers and a
  */
 .pl-has-annotation {
-    cursor: help !important;
+    cursor: help;
     outline: 1px dotted $pl-color-gray-50;
     outline-offset: -4px;
     transition: box-shadow $pl-animate-quick ease;
 
     a, input {
-        cursor: help !important;
+        cursor: help;
     }
 
     &:hover {
@@ -41,14 +41,14 @@
     display: flex; /* 2 */
     align-items: center;
     justify-content: center;
-    width: 24px !important;
-    height: 24px !important;
-    margin-top: 6px !important;
-    margin-left: 6px !important;
-    border-radius: 50% !important;
-    background: $pl-color-gray-87 !important;
-    color: $pl-color-white !important;
-    font-size: 16px !important;
+    width: 24px;
+    height: 24px;
+    margin-top: 6px;
+    margin-left: 6px;
+    border-radius: 50%;
+    background: $pl-color-gray-87;
+    color: $pl-color-white;
+    font-size: 16px;
     position: absolute;
     z-index: 100;
 }
@@ -74,7 +74,7 @@
  * Says the world "Annotations" 
  */
 .pl-c-annotations__title {
-    font-size: 1.2rem !important;
+    font-size: 1.2rem;
     margin: 0 0 0.5rem;
 }
 
