@@ -7,7 +7,6 @@
  *    and hides certain dev features
  */
 .pl-c-body--theme-styleguide {
-
     
 }
 
@@ -26,11 +25,11 @@
  */
 .pl-c-main--theme-styleguide {
     .pl-c-category__title {
-        font-size: 2.2rem !important;
+        font-size: 2.2rem;
     }
 
     .pl-c-pattern__title {
-        font-size: 1.6rem !important;
+        font-size: 1.6rem;
     }
 
     .pl-c-pattern__extra-toggle {
@@ -56,11 +55,11 @@
     .pl-c-pattern-info__panel {
         padding: 0;
         padding-top: 1rem;
-        position: relative !important;
+        position: relative;
     }
 
     .pl-c-pattern-info__panel--code .pl-c-tabs {
-        position: relative !important;
+        position: relative;
         left: 0;
         right: 0;
     }
