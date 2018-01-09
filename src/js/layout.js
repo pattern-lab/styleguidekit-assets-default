@@ -6,6 +6,12 @@
  */
 
 try {
+
+  /* load header */
+  var template         = document.querySelector(".pl-js-header-template");
+  var templateCompiled = Hogan.compile(template.innerHTML);
+  var templateRendered = templateCompiled.render(config.theme);
+  document.querySelector(".pl-js-header-target").innerHTML = templateRendered;
   
   /* load pattern nav */
   var template         = document.querySelector(".pl-js-pattern-nav-template");

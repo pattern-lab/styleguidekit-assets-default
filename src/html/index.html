@@ -10,13 +10,17 @@
 
 <body class="pl-c-body">
 
-	@@include('./partials/header.html') 
-	
+	<div class="pl-js-header-target"></div>
+
 	@@include('./partials/iframe.html') 
 	
 	@@include('./partials/modal.html')
 
 	<!-- mustache templates -->
+	<script type="text/mustache" class="pl-js-header-template">
+		@@include('./partials/header.html') 
+	</script>
+
 	<script type="text/mustache" class="pl-js-pattern-nav-template">
 		@@include('./partials/pattern-nav.html')
 	</script>
