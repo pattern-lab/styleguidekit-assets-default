@@ -226,7 +226,7 @@ $pl-sidebar-width: 14rem; //Define sidebar width for calculating dimensions
          * 1) Wipe out dynamic resizing functionality for sidebar mode 
          */
         .pl-c-viewport__iframe-wrapper {
-            width: 100% !important; /* 1 */
+            width: 100%; /* 1 */
         }
 
         /**
@@ -235,7 +235,7 @@ $pl-sidebar-width: 14rem; //Define sidebar width for calculating dimensions
          *    TODO: revisit to find ways to resize 
          */
         .pl-c-viewport__iframe {
-            width: 100% !important; /* 1 */
+            width: 100%; /* 1 */
         }
 
         /**

@@ -10,7 +10,7 @@
 */
 .pl-c-category {
     margin-top: 6rem;
-    font: $pl-font !important;
+    font: $pl-font;
 
     &:first-of-type {
         margin-top: 2rem;
@@ -21,8 +21,8 @@
 * Pattern Category Title
 */
 .pl-c-category__title {
-    font-size: 1.4rem !important;
-    color: $pl-color-gray-87 !important;
+    font-size: 1.4rem;
+    color: $pl-color-gray-87;
     margin: 0 0 0.2rem;
     text-transform: capitalize;
 }
