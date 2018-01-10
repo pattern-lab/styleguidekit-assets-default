@@ -69,9 +69,10 @@
           
       }
 
-	  // Apply vertical theme if configured
+	  // Apply storefront mode if configured
       if (config.theme.mode === 'storefront') {
         document.body.classList.add('pl-c-body--theme-styleguide');
+		document.querySelector('.pl-c-main').classList.add('pl-c-main--theme-styleguide');
       }
     }
   </script>

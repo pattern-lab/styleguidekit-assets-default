@@ -2,9 +2,9 @@
     #SIDEBAR THEME
 \*------------------------------------*/
 
-$pl-sidebar-width: 14rem; //Define sidebar width for calculating dimensions
+$pl-sidebar-width: 15.5rem; //Define sidebar width for calculating dimensions
 
-@media all and (min-width: 48em) {
+@media all and (min-width: 50em) {
     /**
     * A theme that places displays the header as a sidebar
     */
@@ -223,19 +223,21 @@ $pl-sidebar-width: 14rem; //Define sidebar width for calculating dimensions
 
         /**
          * Iframe wrapper div
-         * 1) Wipe out dynamic resizing functionality for sidebar mode 
+         * 1) Wipe out dynamic resizing functionality for sidebar mode.
+         *    !important needed to override inline width set by JS
          */
         .pl-c-viewport__iframe-wrapper {
-            width: 100%; /* 1 */
+            width: 100% !important; /* 1 */
         }
 
         /**
          * Iframe
          * 1) Wipe out dynamic resizing  functionality for sidebar mode 
+         *    !important needed to override inline width set by JS
          *    TODO: revisit to find ways to resize 
          */
         .pl-c-viewport__iframe {
-            width: 100%; /* 1 */
+            width: 100% !important; /* 1 */
         }
 
         /**

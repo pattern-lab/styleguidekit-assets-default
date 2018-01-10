@@ -6,9 +6,18 @@
  * 1) A theme that displays documentation more prominently
  *    and hides certain dev features
  */
- .pl-c-body--theme-styleguide {
+.pl-c-body--theme-styleguide {
     
 }
+
+/**
+ * PL Controls
+ * 1) Hide dev-specific functionality from style guide
+ */
+.pl-c-controls {
+    display: none; /* 1 */
+}
+
 
 
 
@@ -24,38 +33,72 @@
  *    iframe since it affects the pattern info inside PL's shell
  */
 .pl-c-main--theme-styleguide {
+    padding: 0 2rem;
+
     .pl-c-category__title {
-        font-size: 2.2rem;
+        font-size: 2.6rem;
     }
 
-    .pl-c-pattern__title {
-        font-size: 1.6rem;
+    .pl-c-category__description.pl-c-text-passage {
+        font-size: 1.2rem;
     }
-
+    
+    .pl-c-text-passage {
+        font-size: 1rem;
+    }
+    
+    /**
+     * Pattern in view all mode 
+     */
+    .pl-c-pattern {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .pl-c-pattern__header {
+        order: 1;
+    }
+    
     .pl-c-pattern__extra-toggle {
         display: none;
     }
-
+    
+    .pl-js-pattern-example {
+        order: 2;
+        margin-bottom: 1rem;
+    }
+    
     .pl-c-pattern__extra {
-        max-height: none;
+        order: 3;
+        max-height: none; /* 2 */
         overflow: visible;
         background: transparent;
         padding: 0;
-        border-top: 0;
-
+        border: 0;
+    
         &.pl-is-active {
+            max-height: none;
             border: 0;
         }
     }
 
+    .pl-c-pattern__title {
+        font-size: 1.7rem;
+        margin-bottom: 1rem;
+    }
+
     .pl-c-pattern-info {
+        display: block;
         margin-bottom: 1rem;
     }
 
     .pl-c-pattern-info__panel {
         padding: 0;
-        padding-top: 1rem;
         position: relative;
+    }
+
+    .pl-c-pattern-info__panel {
+        position: static;
     }
 
     .pl-c-pattern-info__panel--code .pl-c-tabs {

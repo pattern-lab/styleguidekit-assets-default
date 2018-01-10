@@ -2575,7 +2575,7 @@ pre.line-numbers > code {
 /*------------------------------------*\
     #SIDEBAR THEME
 \*------------------------------------*/
-@media all and (min-width: 48em) {
+@media all and (min-width: 50em) {
   /**
   * A theme that places displays the header as a sidebar
   */
@@ -2658,11 +2658,13 @@ pre.line-numbers > code {
      */
     /**
      * Iframe wrapper div
-     * 1) Wipe out dynamic resizing functionality for sidebar mode 
+     * 1) Wipe out dynamic resizing functionality for sidebar mode.
+     *    !important needed to override inline width set by JS
      */
     /**
      * Iframe
      * 1) Wipe out dynamic resizing  functionality for sidebar mode 
+     *    !important needed to override inline width set by JS
      *    TODO: revisit to find ways to resize 
      */
     /**
@@ -2679,7 +2681,7 @@ pre.line-numbers > code {
      */
   }
   .pl-c-body--theme-sidebar .pl-c-header {
-    width: 14rem;
+    width: 15.5rem;
     /* 1 */
     height: 100vh;
     /* 2 */
@@ -2742,13 +2744,13 @@ pre.line-numbers > code {
     border-left-color: #eee;
   }
 }
-@media all and (min-width: 48em) and (min-width: 42em) {
+@media all and (min-width: 50em) and (min-width: 42em) {
   .pl-c-body--theme-sidebar .pl-c-nav__sublist--dropdown.pl-is-active {
     height: auto;
     /* 1 */
   }
 }
-@media all and (min-width: 48em) {
+@media all and (min-width: 50em) {
   .pl-c-body--theme-sidebar .pl-c-nav__subsublist {
     border-left: 1px solid #4d4c4c;
     margin-left: 1rem;
@@ -2761,7 +2763,7 @@ pre.line-numbers > code {
     border-right: 0;
   }
 }
-@media all and (min-width: 48em) and (min-width: 42em) {
+@media all and (min-width: 50em) and (min-width: 42em) {
   .pl-c-body--theme-sidebar .pl-c-nav__sublist > .pl-c-nav__item:last-child .pl-c-nav__link {
     border-bottom-left-radius: 0;
     /* 1 */
@@ -2771,7 +2773,7 @@ pre.line-numbers > code {
     /* 1 */
   }
 }
-@media all and (min-width: 48em) {
+@media all and (min-width: 50em) {
   .pl-c-body--theme-sidebar .pl-c-controls {
     margin-top: auto;
     /* 1 */
@@ -2819,27 +2821,27 @@ pre.line-numbers > code {
   .pl-c-body--theme-sidebar .pl-c-viewport {
     top: 0;
     /* 1 */
-    left: 14rem;
+    left: 15.5rem;
     /* 1 */
     width: auto;
   }
   .pl-c-body--theme-sidebar .pl-c-viewport__iframe-wrapper {
-    width: 100%;
+    width: 100% !important;
     /* 1 */
   }
   .pl-c-body--theme-sidebar .pl-c-viewport__iframe {
-    width: 100%;
+    width: 100% !important;
     /* 1 */
   }
   .pl-c-body--theme-sidebar .pl-c-viewport {
     top: 0;
     /* 1 */
-    left: 14rem;
+    left: 15.5rem;
     /* 1 */
     width: auto;
   }
   .pl-c-body--theme-sidebar .pl-c-modal {
-    left: 14rem;
+    left: 15.5rem;
     /* 1 */
     right: 0;
     /* 1 */
@@ -2853,6 +2855,15 @@ pre.line-numbers > code {
  * 1) A theme that displays documentation more prominently
  *    and hides certain dev features
  */
+/**
+ * PL Controls
+ * 1) Hide dev-specific functionality from style guide
+ */
+.pl-c-controls {
+  display: none;
+  /* 1 */
+}
+
 /*------------------------------------*\
     #PL MAIN 
 \*------------------------------------*/
@@ -2860,32 +2871,73 @@ pre.line-numbers > code {
  * 2) The theme has to be applied to the main selector inside of the 
  *    iframe since it affects the pattern info inside PL's shell
  */
-.pl-c-main--theme-styleguide .pl-c-category__title {
-  font-size: 2.2rem;
+.pl-c-main--theme-styleguide {
+  padding: 0 2rem;
+  /**
+   * Pattern in view all mode 
+   */
 }
-.pl-c-main--theme-styleguide .pl-c-pattern__title {
-  font-size: 1.6rem;
+.pl-c-main--theme-styleguide .pl-c-category__title {
+  font-size: 2.6rem;
+}
+.pl-c-main--theme-styleguide .pl-c-category__description.pl-c-text-passage {
+  font-size: 1.2rem;
+}
+.pl-c-main--theme-styleguide .pl-c-text-passage {
+  font-size: 1rem;
+}
+.pl-c-main--theme-styleguide .pl-c-pattern {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.pl-c-main--theme-styleguide .pl-c-pattern__header {
+  -webkit-box-ordinal-group: 2;
+      -ms-flex-order: 1;
+          order: 1;
 }
 .pl-c-main--theme-styleguide .pl-c-pattern__extra-toggle {
   display: none;
 }
+.pl-c-main--theme-styleguide .pl-js-pattern-example {
+  -webkit-box-ordinal-group: 3;
+      -ms-flex-order: 2;
+          order: 2;
+  margin-bottom: 1rem;
+}
 .pl-c-main--theme-styleguide .pl-c-pattern__extra {
+  -webkit-box-ordinal-group: 4;
+      -ms-flex-order: 3;
+          order: 3;
   max-height: none;
+  /* 2 */
   overflow: visible;
   background: transparent;
   padding: 0;
-  border-top: 0;
-}
-.pl-c-main--theme-styleguide .pl-c-pattern__extra.pl-is-active {
   border: 0;
 }
+.pl-c-main--theme-styleguide .pl-c-pattern__extra.pl-is-active {
+  max-height: none;
+  border: 0;
+}
+.pl-c-main--theme-styleguide .pl-c-pattern__title {
+  font-size: 1.7rem;
+  margin-bottom: 1rem;
+}
 .pl-c-main--theme-styleguide .pl-c-pattern-info {
+  display: block;
   margin-bottom: 1rem;
 }
 .pl-c-main--theme-styleguide .pl-c-pattern-info__panel {
   padding: 0;
-  padding-top: 1rem;
   position: relative;
+}
+.pl-c-main--theme-styleguide .pl-c-pattern-info__panel {
+  position: static;
 }
 .pl-c-main--theme-styleguide .pl-c-pattern-info__panel--code .pl-c-tabs {
   position: relative;
