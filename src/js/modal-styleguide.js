@@ -263,3 +263,8 @@ var modalStyleguide = {
 modalStyleguide.onReady();
 window.addEventListener('message', modalStyleguide.receiveIframeMessage, false);
 
+// Copy to clipboard functionality
+var clipboard = new Clipboard('.pl-js-code-copy-btn');
+clipboard.on('success', function(e) {
+    e.trigger.textContent = 'Copied';
+});
