@@ -258,3 +258,18 @@ var panelsViewer = {
 
 };
 
+var panelResizer = document.querySelector('.pl-js-modal-resizer');
+$('.pl-js-modal-resizer').mousedown(function (event) {
+
+	$('.pl-js-modal').mousemove(function (event) {
+		var panelHeight = window.innerHeight - event.clientY + 26;
+		this.setAttribute("style", "height: " + panelHeight + "px");
+		console.log("Window Inner Height: " + window.innerHeight);
+		console.log("Event Client Y: " + event.clientY)
+		console.log("panelHeight: " + panelHeight);
+	});
+});
+
+$('body').mouseup(function () {
+	$('.pl-js-modal').unbind('mousemove');
+});

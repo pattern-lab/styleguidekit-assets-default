@@ -72,6 +72,23 @@
 	}
 }
 
+.pl-c-modal__resizer {
+	position: absolute;
+	bottom: 100%;
+	left: 0;
+	height: 26px;
+	width: 100%;
+	background: $pl-color-gray-20;
+	transition: background $pl-animate-quick ease-out;
+	z-index: 2;
+	cursor: move;
+
+	&:hover,
+	&:focus {
+		background: $pl-color-gray-50;
+	}
+}
+
 /**
  * Close button icon
  * 1) Displayed as an e
