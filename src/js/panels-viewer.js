@@ -284,3 +284,9 @@ $('body').mouseup(function () { /* 5 */
 	$('.pl-js-modal').unbind('mousemove'); /* 5 */
 	$('.pl-js-modal-cover').css("display", "none"); /* 5 */
 });
+
+// Copy to clipboard functionality
+var clipboard = new Clipboard('.pl-js-code-copy-btn');
+clipboard.on('success', function(e) {
+    e.trigger.textContent = 'Copied';
+});

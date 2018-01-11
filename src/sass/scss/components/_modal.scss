@@ -109,3 +109,21 @@
 	fill: currentColor;
 	transition: fill $pl-animate-quick ease-out;
 }
+
+.pl-c-code-copy-btn {
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 1rem 1.5rem;
+	background: $pl-color-black;
+	font-size: $pl-font-size-sm-2;
+	color: $pl-color-gray-20;
+	cursor: pointer;
+	z-index: 2;
+	transition: background $pl-animate-quick ease-out;
+
+	&:hover, &:focus {
+		background: $pl-color-gray-70;
+	}
+}
