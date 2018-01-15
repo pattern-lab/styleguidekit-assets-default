@@ -275,7 +275,7 @@ $('.pl-js-modal-resizer').mousedown(function (event) { /* 1 */
 	$(".pl-js-modal-cover").css("display", "block"); /* 2 */
 
 	$('.pl-js-modal-cover').mousemove(function (event) { /* 3 */
-		var panelHeight = window.innerHeight - event.clientY; /* 4 */
+		var panelHeight = window.innerHeight - event.clientY + 32; /* 4 */
 		$('.pl-js-modal').css("height", panelHeight + "px"); /* 4 */
 	});
 });

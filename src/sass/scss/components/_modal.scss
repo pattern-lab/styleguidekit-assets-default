@@ -30,6 +30,10 @@
 	}
 }
 
+.pl-c-modal__toolbar {
+	display: flex;
+}
+
 /**
  * Modal close button
  * 1) Closes the modal popup
@@ -45,9 +49,6 @@
 	margin: 0;
 	text-decoration: none;
 	cursor: pointer;
-	position: absolute;
-	right: 0;
-	bottom: 0;
 	z-index: 2;
 	transition: all $pl-animate-quick ease-out;
 
@@ -82,19 +83,28 @@
 }
 
 .pl-c-modal__resizer {
-	position: absolute;
-	bottom: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	left: 0;
-	height: 26px;
+	height: 14px;
 	width: 100%;
-	background: $pl-color-gray-20;
-	transition: background $pl-animate-quick ease-out;
+	background: $pl-color-black;
 	z-index: 2;
 	cursor: move;
 
-	&:hover,
-	&:focus {
-		background: $pl-color-gray-50;
+	&:after {
+		content: "";
+		height: 3px;
+		width: 50px;
+		border-top: 1px solid $pl-color-gray-50;
+		border-bottom: 1px solid $pl-color-gray-50;
+		transition: border-color $pl-animate-quick ease-out;
+	}
+
+	&:hover:after,
+	&:focus:after {
+		border-color: $pl-color-white;
 	}
 }
 

@@ -1218,6 +1218,9 @@
  * Pattern Info Panel
  * 1) Left panel that contains pattern title, lineage, description, annotations
  */
+.pl-c-pattern-info__panel--info {
+  padding-top: 2rem;
+}
 @media all and (min-width: 53em) {
   .pl-c-pattern-info__panel--info {
     left: 0;
@@ -1239,7 +1242,7 @@
  * Pattern Code Panel
  * 1) Right panel that displays the pattern's code (found in _tabs.scss)
  * 2) Using a sibling selector because the pattern info isn't always present.
- *    The sibling selector allows the code panel to occupy the full width of 
+ *    The sibling selector allows the code panel to occupy the full width of
  *    the modal
  * 1) Cap the height of the code panel in the modal
  */
@@ -1247,6 +1250,7 @@
   .pl-c-pattern-info__panel--info + .pl-c-pattern-info__panel--code {
     right: 0;
     left: 50%;
+    top: 1.2rem;
   }
 }
 @media all and (min-width: 62em) {
@@ -1881,6 +1885,12 @@
   bottom: 0;
 }
 
+.pl-c-modal__toolbar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 /**
  * Modal close button
  * 1) Closes the modal popup
@@ -1896,9 +1906,6 @@
   margin: 0;
   text-decoration: none;
   cursor: pointer;
-  position: absolute;
-  right: 0;
-  bottom: 0;
   z-index: 2;
   -webkit-transition: all 0.1s ease-out;
           transition: all 0.1s ease-out;
@@ -1930,19 +1937,33 @@
 }
 
 .pl-c-modal__resizer {
-  position: absolute;
-  bottom: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   left: 0;
-  height: 26px;
+  height: 14px;
   width: 100%;
-  background: #ccc;
-  -webkit-transition: background 0.1s ease-out;
-          transition: background 0.1s ease-out;
+  background: #000;
   z-index: 2;
   cursor: move;
 }
-.pl-c-modal__resizer:hover, .pl-c-modal__resizer:focus {
-  background: #808080;
+.pl-c-modal__resizer:after {
+  content: "";
+  height: 3px;
+  width: 50px;
+  border-top: 1px solid #808080;
+  border-bottom: 1px solid #808080;
+  -webkit-transition: border-color 0.1s ease-out;
+          transition: border-color 0.1s ease-out;
+}
+.pl-c-modal__resizer:hover:after, .pl-c-modal__resizer:focus:after {
+  border-color: #fff;
 }
 
 /**
