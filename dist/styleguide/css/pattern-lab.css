@@ -915,7 +915,7 @@
   width: 14px;
   margin: 0;
   height: 100%;
-  cursor: move;
+  cursor: ew-resize;
 }
 
 /**
@@ -1950,7 +1950,7 @@
   width: 100%;
   background: #000;
   z-index: 2;
-  cursor: move;
+  cursor: ns-resize;
 }
 .pl-c-modal__resizer:after {
   content: "";

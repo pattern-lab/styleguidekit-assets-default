@@ -91,7 +91,7 @@
 	width: 100%;
 	background: $pl-color-black;
 	z-index: 2;
-	cursor: move;
+	cursor: ns-resize;
 
 	&:after {
 		content: "";
