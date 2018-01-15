@@ -123,17 +123,22 @@
 .pl-c-code-copy-btn {
 	display: inline-block;
 	position: absolute;
-	top: 0;
-	right: 0;
-	padding: 1rem 1.5rem;
-	background: $pl-color-black;
-	font-size: $pl-font-size-sm-2;
-	color: $pl-color-gray-20;
+	top: 0.5rem;
+	right: 0.5rem;
+	padding: 0.2rem 0.4rem;
+	background: $pl-color-gray-07;
+	color: $pl-color-gray-87;
+	border: 1px solid $pl-color-gray-13;
+	border-radius: $pl-border-radius-med;
+	font-family: $pl-font;
+	font-size: $pl-font-size-norm;
+	text-transform: lowercase;
+	line-height: 1;
 	cursor: pointer;
 	z-index: 2;
 	transition: background $pl-animate-quick ease-out;
 
 	&:hover, &:focus {
-		background: $pl-color-gray-70;
+		background: $pl-color-gray-20;
 	}
 }

@@ -1409,7 +1409,7 @@
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 6px;
-  font: "HelveticaNeue", "Helvetica", "Arial", sans-serif;
+  font-family: "HelveticaNeue", "Helvetica", "Arial", sans-serif;
   position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1420,7 +1420,7 @@
           flex-direction: column;
   overflow: hidden;
   /**
-   * Tabs inside a code panel 
+   * Tabs inside a code panel
    */
 }
 @media all and (min-width: 53em) {
@@ -1515,7 +1515,6 @@
  */
 .pl-c-tabs__panel {
   display: none;
-  position: relative;
   min-height: 12rem;
   /**
    * Tab code
@@ -1982,19 +1981,24 @@
 .pl-c-code-copy-btn {
   display: inline-block;
   position: absolute;
-  top: 0;
-  right: 0;
-  padding: 1rem 1.5rem;
-  background: #000;
-  font-size: 0.85rem;
-  color: #ccc;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.2rem 0.4rem;
+  background: #eee;
+  color: #222;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: "HelveticaNeue", "Helvetica", "Arial", sans-serif;
+  font-size: 1rem;
+  text-transform: lowercase;
+  line-height: 1;
   cursor: pointer;
   z-index: 2;
   -webkit-transition: background 0.1s ease-out;
           transition: background 0.1s ease-out;
 }
 .pl-c-code-copy-btn:hover, .pl-c-code-copy-btn:focus {
-  background: #4d4c4c;
+  background: #ccc;
 }
 
 /*------------------------------------*\
