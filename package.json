@@ -1,12 +1,12 @@
 {
-  "name": "styleguidekit-assets-default",
-  "version": "3.4.0",
+  "name": "@pattern-lab/styleguidekit-assets-default",
+  "version": "4.0.0-alpha.2",
   "description": "The default set of front-end assets for Pattern Lab.",
   "repository": {
     "type": "git",
     "url": "git://github.com/pattern-lab/styleguidekit-assets-default.git"
   },
-  "author": "Dave Olsen",
+  "author": "Brad Frost",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/pattern-lab/styleguidekit-assets-default/issues"
@@ -24,7 +24,7 @@
     "gulp-minify-css": "^0.3.7",
     "gulp-rename": "^1.2.0",
     "gulp-resolve-dependencies": "^1.0.1",
-    "gulp-ruby-sass": "^1.0.0-alpha",
+    "gulp-ruby-sass": "^3.0.0",
     "gulp-uglify": "^1.1.0",
     "gulp-util": "^3.0.0",
     "imagemin-pngcrush": "^0.1.0",
