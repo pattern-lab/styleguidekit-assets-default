@@ -54,41 +54,42 @@ if (self != top) {
 
 // watch the iframe source so that it can be sent back to everyone else.
 function receiveIframeMessage(event) {
-
-	// does the origin sending the message match the current host? if not dev/null the request
-	if ((window.location.protocol != "file:") && (event.origin !== window.location.protocol + "//" + window.location.host)) {
-		return;
-	}
-
-	var path;
-	var data = {};
-	try {
-		data = (typeof event.data !== 'string') ? event.data : JSON.parse(event.data);
-	} catch (e) {}
-
-	if ((data.event !== undefined) && (data.event == "patternLab.updatePath")) {
-
-		if (patternData.patternPartial !== undefined) {
-
-			// handle patterns and the view all page
-			var re = /(patterns|snapshots)\/(.*)$/;
-			path = window.location.protocol + "//" + window.location.host + window.location.pathname.replace(re, '') + data.path + '?' + Date.now();
-			window.location.replace(path);
-
-		} else {
-
-			// handle the style guide
-			path = window.location.protocol + "//" + window.location.host + window.location.pathname.replace("styleguide\/html\/styleguide.html", "") + data.path + '?' + Date.now();
-			window.location.replace(path);
-
-		}
-
-	} else if ((data.event !== undefined) && (data.event == "patternLab.reload")) {
-
-		// reload the location if there was a message to do so
-		window.location.reload();
-
-	}
-
+  
+  // does the origin sending the message match the current host? if not dev/null the request
+  if ((window.location.protocol != "file:") && (event.origin !== window.location.protocol+"//"+window.location.host)) {
+    return;
+  }
+  
+  var path;
+  var data = {};
+  try {
+    data = (typeof event.data !== 'string') ? event.data : JSON.parse(event.data);
+  } catch(e) {}
+  
+  if ((data.event !== undefined) && (data.event == "patternLab.updatePath")) {
+    
+    if (patternData.patternPartial !== undefined) {
+      
+      // handle patterns and the view all page
+      var re = /(patterns|snapshots)\/(.*)$/;
+      path = window.location.protocol + "//" + window.location.host + "/patterns" + window.location.pathname.replace(re, '') + data.path + '?' + Date.now();
+      // path = window.location.protocol+"//"+window.location.host+window.location.pathname.replace(re,'')+data.path+'?'+Date.now();
+      window.location.replace(path);
+      
+    } else {
+      
+      // handle the style guide
+      path = window.location.protocol+"//"+window.location.host+window.location.pathname.replace("styleguide\/html\/styleguide.html","")+data.path+'?'+Date.now();
+      window.location.replace(path);
+      
+    }
+    
+  } else if ((data.event !== undefined) && (data.event == "patternLab.reload")) {
+    
+    // reload the location if there was a message to do so
+    window.location.reload();
+    
+  }
+  
 }
 window.addEventListener("message", receiveIframeMessage, false);
