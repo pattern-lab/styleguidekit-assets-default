@@ -34,7 +34,9 @@
 		}
 	
 		var viewportResizeHandleWidth = 14, //Width of the viewport drag-to-resize handle
+		$sgIframeContainer = $('.pl-js-vp-iframe-container'), //Outer container for viewport
 		$sgIframe = $('.pl-js-iframe'), //Viewport element
+		$sgViewportCover = $('.pl-js-viewport-cover'), //Viewport cover element
 		$sizePx = $('#pl-size-px'), //Px size input element in toolbar
 		$sizeEms = $('#pl-size-em'), //Em size input element in toolbar
 		$bodySize = (config.ishFontSize !== undefined) ? parseInt(config.ishFontSize) : parseInt($('body').css('font-size')), //Body size of the document
@@ -213,18 +215,18 @@
 		var currentWidth = $sgIframe.width();
 		hayMode = false;
 		$sgIframe.removeClass('hay-mode');
-		$('.pl-js-vp-iframe-container').removeClass('hay-mode');
+		$sgIframeContainer.removeClass('hay-mode');
 		sizeiframe(Math.floor(currentWidth));
 	}
 
 	// start Hay! mode
 	function startHay() {
 		hayMode = true;
-		$('.pl-js-vp-iframe-container').removeClass("vp-animate").width(minViewportWidth + viewportResizeHandleWidth);
+		$sgIframeContainer.removeClass("vp-animate").width(minViewportWidth + viewportResizeHandleWidth);
 		$sgIframe.removeClass("vp-animate").width(minViewportWidth);
 
 		var timeoutID = window.setTimeout(function () {
-			$('.pl-js-vp-iframe-container').addClass('hay-mode').width(maxViewportWidth + viewportResizeHandleWidth);
+			$sgIframeContainer.addClass('hay-mode').width(maxViewportWidth + viewportResizeHandleWidth);
 			$sgIframe.addClass('hay-mode').width(maxViewportWidth);
 
 			setInterval(function () {
@@ -309,12 +311,12 @@
 
 		//Conditionally remove CSS animation class from viewport
 		if (animate === false) {
-			$('.pl-js-vp-iframe-container, .pl-js-iframe').removeClass("vp-animate"); //If aninate is set to false, remove animate class from viewport
+			$sgIframe.add($sgIframeContainer).removeClass("vp-animate"); //If aninate is set to false, remove animate class from viewport
 		} else {
-			$('.pl-js-vp-iframe-container, .pl-js-iframe').addClass("vp-animate");
+			$sgIframe.add($sgIframeContainer).addClass("vp-animate");
 		}
 
-		$('.pl-js-vp-iframe-container').width(theSize + viewportResizeHandleWidth); //Resize viewport wrapper to desired size + size of drag resize handler
+		$sgIframeContainer.width(theSize + viewportResizeHandleWidth); //Resize viewport wrapper to desired size + size of drag resize handler
 		$sgIframe.width(theSize); //Resize viewport to desired size
 
 		var targetOrigin = (window.location.protocol === "file:") ? "*" : window.location.protocol + "//" + window.location.host;
@@ -322,19 +324,19 @@
 			"event": "patternLab.resize",
 			"resize": "true"
 		});
-		document.querySelector('.pl-js-iframe').contentWindow.postMessage(obj, targetOrigin);
+		$sgIframe.get(0).contentWindow.postMessage(obj, targetOrigin);
 
 		updateSizeReading(theSize); //Update values in toolbar
 		saveSize(theSize); //Save current viewport to cookie
 	}
 
-	$(".pl-js-vp-iframe-container").on('transitionend webkitTransitionEnd', function (e) {
+	$sgIframeContainer.on('transitionend webkitTransitionEnd', function (e) {
 		var targetOrigin = (window.location.protocol === "file:") ? "*" : window.location.protocol + "//" + window.location.host;
 		var obj = JSON.stringify({
 			"event": "patternLab.resize",
 			"resize": "true"
 		});
-		document.querySelector('.pl-js-iframe').contentWindow.postMessage(obj, targetOrigin);
+		$sgIframe.get(0).contentWindow.postMessage(obj, targetOrigin);
 	});
 
 	function saveSize(size) {
@@ -378,13 +380,13 @@
 
 	//Update The viewport size
 	function updateViewportWidth(size) {
-		$(".pl-js-iframe").width(size);
-		$(".pl-js-vp-iframe-container").width(size * 1 + 14);
+		$sgIframe.width(size);
+		$sgIframeContainer.width(size * 1 + 14);
 
 		updateSizeReading(size);
 	}
 
-	$('.pl-js-vp-iframe-container').on('touchstart', function (event) {});
+	$sgIframeContainer.on('touchstart', function (event) {});
 
 	// handles widening the "viewport"
 	//   1. on "mousedown" store the click location
@@ -399,10 +401,10 @@
 		fullMode = false;
 
 		// show the cover
-		$(".pl-js-viewport-cover").css("display", "block");
+		$sgViewportCover.css("display", "block");
 
 		// add the mouse move event and capture data. also update the viewport width
-		$('.pl-js-viewport-cover').mousemove(function (event) {
+		$sgViewportCover.mousemove(function (event) {
 			var viewportWidth;
 
 			viewportWidth = origViewportWidth + 2 * (event.clientX - origClientX);
@@ -425,14 +427,14 @@
 
 	// on "mouseup" we unbind the "mousemove" event and hide the cover again
 	$('body').mouseup(function () {
-		$('.pl-js-viewport-cover').unbind('mousemove');
-		$('.pl-js-viewport-cover').css("display", "none");
+		$sgViewportCover.unbind('mousemove');
+		$sgViewportCover.css("display", "none");
 	});
 
 
 	// capture the viewport width that was loaded and modify it so it fits with the pull bar
-	var origViewportWidth = $(".pl-js-iframe").width();
-	$(".pl-js-vp-iframe-container").width(origViewportWidth);
+	var origViewportWidth = $sgIframe.width();
+	$sgIframeContainer.width(origViewportWidth);
 
 	var testWidth = screen.width;
 	if (window.orientation !== undefined) {
@@ -441,9 +443,9 @@
 	if (($(window).width() == testWidth) && ('ontouchstart' in document.documentElement) && ($(window).width() <= 1024)) {
 		$(".pl-js-resize-container").width(0);
 	} else {
-		$(".pl-js-iframe").width(origViewportWidth - 14);
+		$sgIframe.width(origViewportWidth - 14);
 	}
-	updateSizeReading($(".pl-js-iframe").width());
+	updateSizeReading($sgIframe.width());
 
 	// get the request vars
 	var oGetVars = urlHandler.getRequestVars();
@@ -489,7 +491,7 @@
 	}
 
 	urlHandler.skipBack = true;
-	document.querySelector('.pl-js-iframe').contentWindow.location.replace(iFramePath);
+	$sgIframe.get(0).contentWindow.location.replace(iFramePath);
 
 	// Close all dropdowns and navigation
 	function closePanels() {
@@ -506,7 +508,7 @@
 			"event": "patternLab.updatePath",
 			"path": urlHandler.getFileName($(this).attr("data-patternpartial"))
 		});
-		document.querySelector('.pl-js-iframe').contentWindow.postMessage(obj, urlHandler.targetOrigin);
+		$sgIframe.get(0).contentWindow.postMessage(obj, urlHandler.targetOrigin);
 		closePanels();
 	});
 
@@ -520,8 +522,8 @@
 		var origOrientation = window.orientation;
 		window.addEventListener("orientationchange", function () {
 			if (window.orientation != origOrientation) {
-				$(".pl-js-vp-iframe-container").width($(window).width());
-				$(".pl-js-iframe").width($(window).width());
+				$sgIframeContainer.width($(window).width());
+				$sgIframe.width($(window).width());
 				updateSizeReading($(window).width());
 				origOrientation = window.orientation;
 			}
